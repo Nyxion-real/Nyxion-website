@@ -1,243 +1,170 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NΞXUS</title>
+<title>NΞXUS</title>
 
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: white;
-      font-family: Arial;
-      overflow-x: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: monospace;
+  overflow-x: hidden;
+}
 
-    /* ANIMATED BACKGROUND */
-    body::before {
-      content: "";
-      position: fixed;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(176,38,255,0.1), transparent 70%);
-      animation: smoke 20s linear infinite;
-      z-index: -1;
-    }
+/* LOADING SCREEN */
+#loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b026ff;
+  font-size: 20px;
+  z-index: 9999;
+}
 
-    @keyframes smoke {
-      from { transform: translate(0,0); }
-      to { transform: translate(-200px, -200px); }
-    }
+/* FÜST */
+.smoke {
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(176,38,255,0.08), transparent);
+  animation: smokeMove 20s linear infinite;
+  z-index: -1;
+}
 
-    h1 {
-      text-align: center;
-      color: gold;
-      font-size: 80px;
-      letter-spacing: 8px;
-      margin-top: 60px;
-      text-shadow: 0 0 20px gold;
-    }
+@keyframes smokeMove {
+  from { transform: translate(-10%, -10%); }
+  to { transform: translate(10%, 10%); }
+}
 
-    .subtitle {
-      text-align: center;
-      color: #b026ff;
-      text-shadow: 0 0 15px #b026ff;
-      margin-bottom: 50px;
-    }
+/* VILLÁM */
+.lightning {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0;
+  animation: flash 6s infinite;
+  z-index: -1;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
+@keyframes flash {
+  0%, 95%, 100% { opacity: 0; }
+  96% { opacity: 0.4; }
+  97% { opacity: 0; }
+  98% { opacity: 0.6; }
+}
 
-    .box {
-      background: rgba(20,20,20,0.85);
-      border: 1px solid #222;
-      border-radius: 15px;
-      padding: 30px;
-      margin-bottom: 40px;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 0 20px rgba(176,38,255,0.2);
-      transition: 0.3s;
-    }
+/* TITLE */
+h1 {
+  text-align: center;
+  color: gold;
+  font-size: 70px;
+  letter-spacing: 6px;
+  margin-top: 60px;
+}
 
-    .box:hover {
-      box-shadow: 0 0 30px rgba(176,38,255,0.5);
-    }
+/* TERMINAL BOX */
+.box {
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #b026ff;
+  padding: 25px;
+  margin: 30px auto;
+  max-width: 1000px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(176,38,255,0.3);
+}
 
-    .box h2 {
-      color: gold;
-      margin-bottom: 20px;
-    }
+/* BUTTON */
+.btn {
+  display: inline-block;
+  padding: 12px 25px;
+  border: 1px solid gold;
+  color: gold;
+  text-decoration: none;
+  transition: 0.2s;
+}
 
-    /* BUTTON FIX (NO BLUR BUG) */
-    .btn {
-      display: inline-block;
-      padding: 12px 35px;
-      border: 2px solid gold;
-      color: gold;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      margin-top: 10px;
-      letter-spacing: 2px;
-      transform: translateZ(0); /* FIX BLUR */
-    }
+.btn:hover {
+  background: #b026ff;
+  color: white;
+}
 
-    .btn:hover {
-      background: #b026ff;
-      border-color: #b026ff;
-      color: white;
-      box-shadow: 0 0 15px #b026ff;
-    }
+/* TABLE */
+table {
+  width: 100%;
+}
 
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-    }
+td {
+  padding: 10px;
+}
 
-    th {
-      color: #888;
-      font-size: 12px;
-      padding-bottom: 10px;
-    }
+.download-btn {
+  border: 1px solid #b026ff;
+  padding: 5px 12px;
+  color: #b026ff;
+  text-decoration: none;
+}
 
-    td {
-      padding: 20px;
-    }
+.download-btn:hover {
+  background: #b026ff;
+  color: white;
+}
+</style>
 
-    tr:hover {
-      background: rgba(176,38,255,0.1);
-    }
-
-    /* FILE STYLE */
-    .file-name {
-      font-size: 18px;
-      color: white;
-    }
-
-    .file-size {
-      font-size: 12px;
-      color: #888;
-      margin-top: 5px;
-    }
-
-    .download-btn {
-      padding: 8px 18px;
-      border: 1px solid #b026ff;
-      color: #b026ff;
-      text-decoration: none;
-      transition: 0.2s;
-    }
-
-    .download-btn:hover {
-      background: #b026ff;
-      color: white;
-      box-shadow: 0 0 10px #b026ff;
-    }
-
-    /* LICENSE */
-    .license-box {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: #0a0a0a;
-      border-top: 1px solid #222;
-    }
-
-    .license-header {
-      padding: 15px;
-      cursor: pointer;
-      color: gold;
-      text-align: center;
-    }
-
-    .license-content {
-      display: none;
-      padding: 25px;
-      color: #aaa;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-  </style>
-
-  <script>
-    function toggleLicense() {
-      var content = document.getElementById("licenseContent");
-      content.style.display = content.style.display === "block" ? "none" : "block";
-    }
-  </script>
+<script>
+window.onload = function() {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+  }, 1500);
+}
+</script>
 
 </head>
 
 <body>
 
-<h1>NΞXUS</h1>
-<p class="subtitle">Gaming • Programs • Fake Virus</p>
-
-<div class="container">
-
-  <!-- DISCORD -->
-  <div class="box">
-    <h2>COMMUNITY</h2>
-    <p>Join the NΞXUS network.</p>
-    <a class="btn" href="https://discord.com/invite/vdmzkXfefU" target="_blank">
-JOIN NΞXUS
-</a>
-  </div>
-
-  <!-- DOWNLOADS -->
-  <div class="box">
-    <h2>DOWNLOADS</h2>
-
-    <table>
-      <tr>
-        <th>Date</th>
-        <th>File</th>
-        <th></th>
-      </tr>
-
-      <tr>
-        <td>2026-03-20</td>
-
-        <td>
-          <div class="file-name">TEST BUTTON</div>
-          <div class="file-size">0 MB</div>
-        </td>
-
-        <td>
-          <a class="download-btn" href="files/program1.zip">Download</a>
-        </td>
-      </tr>
-
-    </table>
-  </div>
-
+<div id="loader">
+⚡ INITIALIZING NΞXUS SYSTEM...
 </div>
 
-<!-- LICENSE -->
-<div class="license-box">
-  <div class="license-header" onclick="toggleLicense()">
-    LICENSE ▼
-  </div>
+<div class="smoke"></div>
+<div class="lightning"></div>
 
-  <div class="license-content" id="licenseContent">
+<h1>NΞXUS</h1>
 
-    <p>
-    All content is provided for educational and entertainment purposes only.
-    </p>
+<div class="box">
+<pre>
+> system.boot()
+> loading modules...
+> access granted
+</pre>
 
-    <p>
-    You agree not to use any content for harmful or illegal activities.
-    </p>
+<a class="btn" href="https://discord.gg/IDE_A_LINKED" target="_blank">
+JOIN NΞXUS
+</a>
+</div>
 
-    <p>
-    Use everything at your own risk. NΞXUS is not responsible for any damage.
-    </p>
+<div class="box">
+<h2>DOWNLOADS</h2>
 
-  </div>
+<table>
+<tr>
+<td>2026-03-20</td>
+<td>
+TEST BUTTON<br>
+<small>0 MB</small>
+</td>
+<td>
+<a class="download-btn" href="files/program1.zip">Download</a>
+</td>
+</tr>
+</table>
+
 </div>
 
 </body>
