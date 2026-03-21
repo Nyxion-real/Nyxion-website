@@ -58,6 +58,8 @@
     }
 
     .bolt {
+      transform: translateZ(0);
+      backface-visibility: hidden;
       position: absolute;
       background: linear-gradient(135deg, #b77cff, #5f2eff);
       filter: blur(18px);
@@ -580,7 +582,8 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);window.firebaseAuth = auth;
+  const auth = getAuth(app);
+  window.firebaseAuth = auth;
   const provider = new GoogleAuthProvider();
   const db = getFirestore(app);   // <-- Firestore inicializálása
 
