@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NΞXUS — lightning core</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
-  <!-- Firebase globális SDK (összevont, stabil) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase.js"></script>
+  <!-- GLOBÁLIS FIREBASE SDK (10.8.0) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -308,15 +308,17 @@
     <div class="sub">Gaming • Programs • Innovative Tech</div>
   </div>
 
+  <!-- Bejelentkezési kártya -->
   <div class="glass-card" style="text-align: center;">
     <div class="btn-group" style="justify-content: center;">
-      <button id="loginBtn" class="btn">🔐 Google</button>
+      <button id="loginBtn" class="btn">🔐 Google bejelentkezés</button>
       <button id="logoutBtn" class="btn" style="display: none;">🚪 Kijelentkezés</button>
     </div>
     <div id="userInfo" style="display: none; margin-top: 10px;"></div>
   </div>
 
   <div class="grid-2">
+    <!-- COMMUNITY -->
     <div class="glass-card">
       <div class="card-header"><h2>✦ COMMUNITY</h2></div>
       <p>Join the inner circle — Discord hub, latest updates, and exclusive content.</p>
@@ -360,11 +362,20 @@
   </div>
 </div>
 
- <script>
-  if (typeof firebase === 'undefined') {
-    console.error('Firebase SDK nem töltődött be – ellenőrizd a hálózatot vagy a script URL-t!');
-    document.getElementById('userInfo').innerHTML = '⚠️ Firebase hiba – próbáld újra később.';
-  } else {
+<script>
+  // Próbálkozzunk a Firebase SDK betöltésével, ha nem lenne elérhető
+  function waitForFirebase(attempts = 0) {
+    if (typeof firebase !== 'undefined') {
+      initFirebase();
+    } else if (attempts < 10) {
+      setTimeout(() => waitForFirebase(attempts + 1), 500);
+    } else {
+      document.getElementById('userInfo').innerHTML = '⚠️ Firebase SDK nem töltődött be – ellenőrizd a hálózatot vagy az engedélyezett domaineket.';
+      console.error('Firebase SDK nem elérhető 5 másodperc után.');
+    }
+  }
+
+  function initFirebase() {
     const firebaseConfig = {
       apiKey: "AIzaSyDW0lUVCf0N8VmLwmlnyoc2GAdW6llHuKs",
       authDomain: "nexus-67676.firebaseapp.com",
@@ -385,6 +396,7 @@
     const userInfo = document.getElementById('userInfo');
     const downloadsCard = document.getElementById('downloadsCard');
 
+    // Állapotfigyelés
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         loginBtn.style.display = 'none';
@@ -393,6 +405,7 @@
         userInfo.innerHTML = `👋 Üdv, ${user.displayName || user.email}!`;
         downloadsCard.style.display = 'block';
 
+        // Felhasználó dokumentum létrehozása (ha nincs)
         const userRef = db.collection('users').doc(user.uid);
         try {
           await userRef.set({
@@ -421,6 +434,7 @@
     };
     logoutBtn.onclick = () => auth.signOut();
 
+    // Letöltés naplózás
     async function logDownload(fileName, fileUrl) {
       const user = auth.currentUser;
       if (!user) return;
@@ -445,6 +459,9 @@
     });
   }
 
+  // Indítás
+  waitForFirebase();
+
   function toggleLicense() {
     const panel = document.getElementById('licensePanel');
     const arrow = document.getElementById('licenseArrow');
@@ -457,6 +474,6 @@
     }
   }
   document.getElementById('licensePanel').style.display = 'none';
- </script>
+</script>
 </body>
 </html>
