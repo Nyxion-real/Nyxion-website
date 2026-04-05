@@ -4,33 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>NEXUS STORE | Digital Exe Hub</title>
-  <!-- Google Fonts + Font Awesome Icons -->
+  <!-- Favicon: villám emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='70' font-size='70' text-anchor='middle' fill='gold'>⚡</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Firebase SDKs (Auth only) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-deep: #03030c;
-      --card-bg: rgba(18, 18, 30, 0.82);
+      --card-bg: rgba(18, 18, 30, 0.85);
       --glass-border: rgba(255, 255, 255, 0.08);
       --gold-primary: #e8b73b;
       --purple-neon: #b77cff;
       --purple-dark: #7c3aff;
-      --blue-shine: #2b6ef0;
-      --blue-glow: #1e4fd9;
       --text-light: #f0f0ff;
       --text-muted: #b0b0cc;
-      --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      --transition: all 0.25s cubic-bezier(0.2,0.9,0.4,1.1);
     }
-
     body {
       background: radial-gradient(ellipse at 30% 20%, #120c2a 0%, #020208 100%);
       font-family: 'Inter', system-ui, sans-serif;
@@ -39,698 +31,119 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-
-    /* Lightning / aura background */
-    .lightning-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .bolt {
-      position: absolute;
-      background: linear-gradient(135deg, #b77cff, #5f2eff);
-      filter: blur(18px);
-      opacity: 0.4;
-      animation: pulseGlow 6s infinite alternate;
-    }
-
-    .bolt1 {
-      top: 5%;
-      left: -5%;
-      width: 260px;
-      height: 460px;
-      clip-path: polygon(40% 0%, 60% 20%, 35% 40%, 55% 60%, 30% 80%, 50% 100%, 20% 100%, 0% 70%, 25% 45%, 10% 20%);
-      opacity: 0.3;
-      animation: floatLightning 14s infinite alternate ease-in-out;
-    }
-
-    .bolt2 {
-      bottom: 0;
-      right: -2%;
-      width: 320px;
-      height: 520px;
-      clip-path: polygon(70% 0%, 85% 25%, 65% 45%, 90% 70%, 60% 85%, 80% 100%, 40% 95%, 30% 70%, 55% 55%, 40% 30%);
-      background: linear-gradient(45deg, #a260ff, #4610b0);
-      opacity: 0.25;
-      filter: blur(22px);
-      animation: floatLightning2 18s infinite alternate;
-    }
-
-    .bolt3 {
-      top: 40%;
-      left: 20%;
-      width: 180px;
-      height: 380px;
-      background: linear-gradient(120deg, #c28aff, #672eff);
-      clip-path: polygon(50% 0%, 65% 30%, 45% 45%, 70% 65%, 48% 80%, 68% 100%, 35% 95%, 25% 70%, 45% 55%, 30% 30%);
-      filter: blur(14px);
-      opacity: 0.35;
-      animation: flicker 3.5s infinite alternate, drift 12s infinite alternate;
-    }
-
-    @keyframes floatLightning {
-      0% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
-      100% { transform: translate(25px, -15px) rotate(3deg); opacity: 0.45; }
-    }
-
-    @keyframes floatLightning2 {
-      0% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
-      100% { transform: translate(-20px, 20px) rotate(-4deg); opacity: 0.4; }
-    }
-
-    @keyframes flicker {
-      0% { opacity: 0.2; filter: blur(16px); }
-      100% { opacity: 0.5; filter: blur(10px); }
-    }
-
-    @keyframes drift {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(30px, 20px); }
-    }
-
-    @keyframes pulseGlow {
-      0% { filter: blur(18px); opacity: 0.2; }
-      100% { filter: blur(24px); opacity: 0.45; }
-    }
-
-    /* Main container */
-    .wrapper {
-      position: relative;
-      z-index: 2;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem 5rem;
-    }
-
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      margin: 1.5rem 0 2.5rem 0;
-    }
-
-    .avatar {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 215, 120, 0.7);
-      box-shadow: 0 0 25px rgba(212, 160, 23, 0.4);
-    }
-
-    .brand {
-      margin-top: 0.8rem;
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      background: linear-gradient(135deg, #f5e3b0, #d4a017);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      font-weight: 600;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 10vw, 5.2rem);
-      font-weight: 800;
-      letter-spacing: 6px;
-      background: linear-gradient(130deg, #ffffff 20%, #f5cf7b 60%, #d4a017 90%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .sub {
-      color: var(--text-muted);
-      border-bottom: 1px dashed rgba(212, 160, 23, 0.4);
-      display: inline-block;
-      padding-bottom: 6px;
-      font-weight: 500;
-    }
-
-    /* Fixed Auth Button (top right) */
-    .auth-fixed {
-      position: fixed;
-      top: 1.2rem;
-      right: 1.5rem;
-      z-index: 100;
-      background: rgba(10, 10, 20, 0.75);
-      backdrop-filter: blur(12px);
-      border-radius: 60px;
-      padding: 0.5rem 1.2rem;
-      border: 1px solid rgba(183, 124, 255, 0.5);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      transition: 0.2s;
-    }
-
-    .auth-btn {
-      background: linear-gradient(105deg, #3c2b6e, #201c42);
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: inherit;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 215, 120, 0.5);
-    }
-
-    .auth-btn:hover {
-      background: linear-gradient(105deg, #5a40b0, #2f2670);
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 12px rgba(124, 58, 255, 0.6);
-      transform: scale(1.02);
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .user-avatar-sm {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--gold-primary);
-      object-fit: cover;
-    }
-
-    .user-name {
-      font-size: 0.85rem;
-      font-weight: 500;
-      max-width: 130px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 1.8rem;
-      margin-bottom: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .tab {
-      padding: 0.7rem 1.8rem;
-      cursor: pointer;
-      border-radius: 40px;
-      background: rgba(20, 20, 35, 0.65);
-      border: 1px solid rgba(183, 124, 255, 0.5);
-      transition: var(--transition);
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-    }
-
-    .tab.active {
-      background: var(--purple-dark);
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 12px rgba(124, 58, 255, 0.4);
-    }
-
-    .tab:hover {
-      background: var(--purple-dark);
-      border-color: var(--gold-primary);
-    }
-
-    /* Grid & Cards */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-
-    .glass-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--glass-border);
-      border-radius: 2rem;
-      padding: 1.6rem;
-      transition: var(--transition);
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .glass-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(212, 160, 23, 0.5);
-      box-shadow: 0 28px 40px -15px rgba(0, 0, 0, 0.6);
-    }
-
-    .card-header {
-      border-left: 4px solid var(--gold-primary);
-      padding-left: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .card-header h2 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      background: linear-gradient(145deg, #ffffff, #e2ca86);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .product-details {
-      margin: 0.8rem 0 1rem 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .price-badge {
-      background: rgba(0, 255, 100, 0.15);
-      padding: 0.25rem 0.9rem;
-      border-radius: 40px;
-      font-weight: 700;
-      color: #a0ffb0;
-      font-size: 1rem;
-      border: 1px solid #2eff7a30;
-    }
-
-    .file-type {
-      background: rgba(183, 124, 255, 0.2);
-      padding: 0.25rem 0.9rem;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    /* BIG DOWNLOAD BUTTON */
-    .btn-download {
-      background: linear-gradient(95deg, #2a6ef0, #174ac9);
-      border: none;
-      width: 100%;
-      padding: 1rem 0;
-      margin: 1rem 0 0.8rem 0;
-      border-radius: 60px;
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: 1px;
-      color: white;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 8px 18px rgba(0, 80, 255, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-family: inherit;
-    }
-
-    .btn-download:hover {
-      background: linear-gradient(95deg, #3f7eff, #2059e0);
-      transform: scale(1.02);
-      box-shadow: 0 10px 24px rgba(0, 100, 255, 0.5);
-    }
-
-    .icon-group {
-      display: flex;
-      gap: 0.8rem;
-      justify-content: flex-end;
-      margin-top: 0.5rem;
-    }
-
-    .icon-btn {
-      background: rgba(25, 25, 45, 0.8);
-      border: 1px solid rgba(183, 124, 255, 0.5);
-      border-radius: 40px;
-      padding: 0.5rem 0.9rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: 0.2s;
-      color: var(--text-light);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 500;
-    }
-
-    .icon-btn i {
-      font-size: 1rem;
-    }
-
-    .icon-btn:hover {
-      background: var(--purple-dark);
-      border-color: var(--gold-primary);
-    }
-
-    /* Community tab links */
-    .community-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
-      margin-top: 1rem;
-    }
-
-    .community-btn {
-      background: rgba(20, 20, 35, 0.8);
-      padding: 0.9rem 1.8rem;
-      border-radius: 60px;
-      font-weight: 700;
-      transition: 0.2s;
-      text-decoration: none;
-    }
-
-    /* Tab content */
-    #tabsContent > div {
-      display: none;
-    }
-
-    #tabsContent > div.active {
-      display: block;
-    }
-
-    /* Toast message */
-    .toast-msg {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1a1a2ee6;
-      backdrop-filter: blur(12px);
-      padding: 12px 24px;
-      border-radius: 60px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border-left: 4px solid var(--gold-primary);
-      z-index: 200;
-      color: white;
-      pointer-events: none;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
-
-    @media (max-width: 700px) {
-      .wrapper {
-        padding: 1rem 1rem 3rem;
-      }
-      .auth-fixed {
-        top: 0.8rem;
-        right: 1rem;
-        padding: 0.3rem 0.9rem;
-      }
-      .user-name {
-        display: none;
-      }
-      .btn-download {
-        font-size: 1rem;
-      }
-      .icon-btn span {
-        display: none;
-      }
-      .icon-btn i {
-        margin: 0;
-      }
-      .icon-btn {
-        padding: 0.5rem 0.8rem;
-      }
-    }
+    .lightning-bg { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+    .bolt { position:absolute; background:linear-gradient(135deg,#b77cff,#5f2eff); filter:blur(18px); opacity:0.4; animation:pulseGlow 6s infinite alternate; }
+    .bolt1 { top:5%; left:-5%; width:260px; height:460px; clip-path:polygon(40% 0%,60% 20%,35% 40%,55% 60%,30% 80%,50% 100%,20% 100%,0% 70%,25% 45%,10% 20%); opacity:0.3; animation:floatLightning 14s infinite alternate ease-in-out;}
+    .bolt2 { bottom:0; right:-2%; width:320px; height:520px; clip-path:polygon(70% 0%,85% 25%,65% 45%,90% 70%,60% 85%,80% 100%,40% 95%,30% 70%,55% 55%,40% 30%); background:linear-gradient(45deg,#a260ff,#4610b0); opacity:0.25; filter:blur(22px); animation:floatLightning2 18s infinite alternate;}
+    .bolt3 { top:40%; left:20%; width:180px; height:380px; background:linear-gradient(120deg,#c28aff,#672eff); clip-path:polygon(50% 0%,65% 30%,45% 45%,70% 65%,48% 80%,68% 100%,35% 95%,25% 70%,45% 55%,30% 30%); filter:blur(14px); opacity:0.35; animation:flicker 3.5s infinite alternate,drift 12s infinite alternate;}
+    @keyframes floatLightning{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(25px,-15px) rotate(3deg);opacity:0.45;}}
+    @keyframes floatLightning2{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(-20px,20px) rotate(-4deg);opacity:0.4;}}
+    @keyframes flicker{0%{opacity:0.2;filter:blur(16px);}100%{opacity:0.5;filter:blur(10px);}}
+    @keyframes drift{0%{transform:translate(0,0);}100%{transform:translate(30px,20px);}}
+    @keyframes pulseGlow{0%{filter:blur(18px);opacity:0.2;}100%{filter:blur(24px);opacity:0.45;}}
+    .wrapper { position:relative; z-index:2; max-width:1280px; margin:0 auto; padding:2rem 1.5rem 5rem; }
+    .hero { text-align:center; margin:1.5rem 0 2.5rem 0; }
+    .avatar { width:110px; height:110px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,215,120,0.7); box-shadow:0 0 25px rgba(212,160,23,0.4);}
+    .brand { margin-top:0.8rem; font-size:1.4rem; letter-spacing:6px; background:linear-gradient(135deg,#f5e3b0,#d4a017); background-clip:text; -webkit-background-clip:text; color:transparent; font-weight:600;}
+    h1 { font-size:clamp(2.8rem,10vw,5.2rem); font-weight:800; letter-spacing:6px; background:linear-gradient(130deg,#ffffff 20%,#f5cf7b 60%,#d4a017 90%); background-clip:text; -webkit-background-clip:text; color:transparent;}
+    .sub { color:var(--text-muted); border-bottom:1px dashed rgba(212,160,23,0.4); display:inline-block; padding-bottom:6px; font-weight:500;}
+    .auth-fixed { position:fixed; top:1.2rem; right:1.5rem; z-index:100; background:rgba(10,10,20,0.75); backdrop-filter:blur(12px); border-radius:60px; padding:0.5rem 1.2rem; border:1px solid rgba(183,124,255,0.5); display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.3);}
+    .auth-btn { background:linear-gradient(105deg,#3c2b6e,#201c42); border:none; padding:0.5rem 1.2rem; border-radius:40px; font-weight:700; font-size:0.9rem; color:white; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:8px; font-family:inherit; backdrop-filter:blur(4px); border:1px solid rgba(255,215,120,0.5);}
+    .auth-btn:hover { background:linear-gradient(105deg,#5a40b0,#2f2670); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.6); transform:scale(1.02);}
+    .user-info { display:flex; align-items:center; gap:10px; }
+    .user-avatar-sm { width:34px; height:34px; border-radius:50%; border:1px solid var(--gold-primary); object-fit:cover; }
+    .user-name { font-size:0.85rem; font-weight:500; max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .tabs { display:flex; gap:1.8rem; margin-bottom:2rem; justify-content:center; flex-wrap:wrap; }
+    .tab { padding:0.7rem 1.8rem; cursor:pointer; border-radius:40px; background:rgba(20,20,35,0.65); border:1px solid rgba(183,124,255,0.5); transition:var(--transition); font-weight:700; font-size:1rem; }
+    .tab.active { background:var(--purple-dark); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.4); }
+    .tab:hover { background:var(--purple-dark); border-color:var(--gold-primary); }
+    .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2rem; }
+    .glass-card { background:var(--card-bg); backdrop-filter:blur(14px); border:1px solid var(--glass-border); border-radius:2rem; padding:1.6rem; transition:var(--transition); box-shadow:0 20px 35px -12px rgba(0,0,0,0.5); display:flex; flex-direction:column; }
+    .glass-card:hover { transform:translateY(-6px); border-color:rgba(212,160,23,0.5); box-shadow:0 28px 40px -15px rgba(0,0,0,0.6);}
+    .card-header { border-left:4px solid var(--gold-primary); padding-left:1rem; margin-bottom:1rem; }
+    .card-header h2 { font-size:1.6rem; font-weight:700; background:linear-gradient(145deg,#ffffff,#e2ca86); background-clip:text; -webkit-background-clip:text; color:transparent;}
+    .product-details { margin:0.8rem 0 1rem 0; display:flex; flex-wrap:wrap; gap:0.8rem; align-items:baseline; }
+    .price-badge { background:rgba(0,255,100,0.15); padding:0.25rem 0.9rem; border-radius:40px; font-weight:700; color:#a0ffb0; font-size:1rem; border:1px solid #2eff7a30; }
+    .file-type { background:rgba(183,124,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; }
+    .os-badge { background:rgba(0,150,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; border:1px solid #2f9eff; color:#a0d0ff; display:inline-flex; align-items:center; gap:6px; }
+    .btn-download { background:linear-gradient(95deg,#2a6ef0,#174ac9); border:none; width:100%; padding:1rem 0; margin:1rem 0 0.8rem 0; border-radius:60px; font-weight:800; font-size:1.2rem; letter-spacing:1px; color:white; cursor:pointer; transition:0.2s; box-shadow:0 8px 18px rgba(0,80,255,0.3); display:flex; align-items:center; justify-content:center; gap:12px; font-family:inherit;}
+    .btn-download:hover { background:linear-gradient(95deg,#3f7eff,#2059e0); transform:scale(1.02); box-shadow:0 10px 24px rgba(0,100,255,0.5);}
+    .icon-group { display:flex; gap:0.8rem; justify-content:flex-end; margin-top:0.5rem; }
+    .icon-btn { background:rgba(25,25,45,0.8); border:1px solid rgba(183,124,255,0.5); border-radius:40px; padding:0.5rem 0.9rem; font-size:0.85rem; cursor:pointer; transition:0.2s; color:var(--text-light); display:inline-flex; align-items:center; gap:6px; font-weight:500;}
+    .icon-btn:hover { background:var(--purple-dark); border-color:var(--gold-primary);}
+    .community-links { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; margin-top:1rem; }
+    .community-btn { background:rgba(20,20,35,0.8); padding:0.9rem 1.8rem; border-radius:60px; font-weight:700; transition:0.2s; text-decoration:none; }
+    #tabsContent > div { display:none; }
+    #tabsContent > div.active { display:block; }
+    .toast-msg { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); background:#1a1a2ee6; backdrop-filter:blur(12px); padding:12px 24px; border-radius:60px; font-size:0.9rem; font-weight:500; border-left:4px solid var(--gold-primary); z-index:200; color:white; pointer-events:none; white-space:nowrap; }
+    /* License Card */
+    .license-card { margin-top: 3rem; background: rgba(10,10,20,0.6); backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.8rem; border: 1px solid rgba(212,160,23,0.3); }
+    .license-card h3 { font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; color: var(--gold-primary); }
+    .license-text { font-size: 0.9rem; color: #ccc; line-height: 1.6; margin-bottom: 1.5rem; }
+    .contact-btn { background: linear-gradient(95deg, #2a6ef0, #174ac9); border: none; padding: 0.7rem 1.8rem; border-radius: 60px; font-weight: 700; font-size: 1rem; color: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+    .contact-btn:hover { transform: scale(1.02); background: linear-gradient(95deg, #3f7eff, #2059e0); box-shadow: 0 0 12px #2a6ef0; }
+    @media (max-width:700px){ .wrapper{padding:1rem 1rem 3rem;} .auth-fixed{top:0.8rem;right:1rem;padding:0.3rem 0.9rem;} .user-name{display:none;} .btn-download{font-size:1rem;} .icon-btn span{display:none;} .icon-btn i{margin:0;} .icon-btn{padding:0.5rem 0.8rem;} .license-text{font-size:0.8rem;} }
   </style>
 </head>
 <body>
-  <div class="lightning-bg">
-    <div class="bolt bolt1"></div>
-    <div class="bolt bolt2"></div>
-    <div class="bolt bolt3"></div>
-  </div>
-
-  <!-- Fixed Auth Panel (top right) -->
-  <div class="auth-fixed" id="authFixed">
-    <div id="authStateContainer">
-      <button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> Login</button>
-    </div>
-    <div id="userInfoArea" style="display: none;" class="user-info">
-      <img id="userAvatarSmall" class="user-avatar-sm" src="" alt="avatar">
-      <span id="userNameSmall" class="user-name"></span>
-    </div>
-  </div>
-
+  <div class="lightning-bg"><div class="bolt bolt1"></div><div class="bolt bolt2"></div><div class="bolt bolt3"></div></div>
+  <div class="auth-fixed" id="authFixed"><div id="authStateContainer"><button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> Login</button></div><div id="userInfoArea" style="display:none;" class="user-info"><img id="userAvatarSmall" class="user-avatar-sm" src=""><span id="userNameSmall" class="user-name"></span></div></div>
   <div class="wrapper">
-    <!-- Hero Section -->
-    <div class="hero">
-      <img class="avatar" src="Nexusprofile.png" alt="NEXUS" onerror="this.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'">
-      <div class="brand">NΞXUS COLLECTIVE</div>
-      <h1>NΞXUS STORE</h1>
-      <div class="sub">Premium .exe releases • Direct GitHub</div>
-    </div>
-
-    <!-- Tabs: STORE + COMMUNITY (Library removed) -->
-    <div class="tabs">
-      <div class="tab active" data-tab="storeTab">STORE</div>
-      <div class="tab" data-tab="communityTab">COMMUNITY</div>
-    </div>
-
+    <div class="hero"><img class="avatar" src="Nexusprofile.png" alt="NEXUS" onerror="this.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'"><div class="brand">NΞXUS COLLECTIVE</div><h1>NΞXUS STORE</h1><div class="sub">Premium .exe releases • Direct GitHub</div></div>
+    <div class="tabs"><div class="tab active" data-tab="storeTab">STORE</div><div class="tab" data-tab="communityTab">COMMUNITY</div></div>
     <div id="tabsContent">
-      <!-- STORE TAB: dynamic product cards -->
-      <div id="storeTab" class="active">
-        <div class="grid-3" id="storeList"></div>
+      <div id="storeTab" class="active"><div class="grid-3" id="storeList"></div></div>
+      <div id="communityTab"><div class="community-links"><a class="icon-btn community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="icon-btn community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="icon-btn community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="icon-btn community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
+    </div>
+    <!-- LICENSE & CONTACT SECTION -->
+    <div class="license-card">
+      <h3><i class="fas fa-file-contract"></i> Software License & Disclaimer</h3>
+      <div class="license-text">
+        <strong>NEXUS Collective – Research & Development License</strong><br><br>
+        By downloading or using any executable file from this store, you agree to the following:<br><br>
+        1. <strong>Purpose</strong>: All software provided is intended solely for <strong>research, development, educational, and testing purposes</strong>. The files are not malicious, do not contain viruses, trojans, or any harmful code. Any antivirus warnings may be false positives due to the nature of the executable packers or code optimization.<br>
+        2. <strong>No Warranty</strong>: The software is provided "AS IS", without any warranty of merchantability or fitness for a particular purpose. The author assumes no liability for any damage or data loss arising from the use of these files.<br>
+        3. <strong>User Responsibility</strong>: You are responsible for complying with your local laws. The developer is not responsible for any misuse or illegal activity.<br>
+        4. <strong>Intellectual Property</strong>: These files are the property of NEXUS Collective. Redistribution or reverse engineering for commercial purposes is prohibited.<br>
+        5. <strong>Antivirus Disclaimer</strong>: Due to the nature of software development (packing, obfuscation, low-level access), some antivirus engines may flag executables as potentially unwanted. This is a common false positive. We guarantee the files are safe and have been tested in isolated environments.<br><br>
+		By using this software, you acknowledge that you understand and accept these terms.	
+		<br>SUPPORT: nexus.collective.contact@gmail.com</br>
       </div>
-
-      <!-- COMMUNITY TAB: social links -->
-      <div id="communityTab">
-        <div class="community-links">
-          <a class="icon-btn community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a>
-          <a class="icon-btn community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-          <a class="icon-btn community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-          <a class="icon-btn community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
-        </div>
-      </div>
+      <button class="contact-btn" id="contactEmailBtn"><i class="fas fa-envelope"></i> Contact Support</button>
     </div>
   </div>
-
   <script>
-    // ---------- FIREBASE AUTH (NEW CONFIGURATION) ----------
-    const firebaseConfig = {
-      apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY",
-      authDomain: "nexus-08.firebaseapp.com",
-      projectId: "nexus-08",
-      storageBucket: "nexus-08.firebasestorage.app",
-      messagingSenderId: "1066992373942",
-      appId: "1:1066992373942:web:cbc354f288a5c351e25617",
-      measurementId: "G-5E16CRZ0MF"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY", authDomain: "nexus-08.firebaseapp.com", projectId: "nexus-08", storageBucket: "nexus-08.firebasestorage.app", messagingSenderId: "1066992373942", appId: "1:1066992373942:web:cbc354f288a5c351e25617", measurementId: "G-5E16CRZ0MF" };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
-
-    // DOM elements
     const authBtn = document.getElementById('authActionBtn');
     const userInfoArea = document.getElementById('userInfoArea');
     const userAvatarSmall = document.getElementById('userAvatarSmall');
     const userNameSmall = document.getElementById('userNameSmall');
-
-    // ---------- STATIC EXE PRODUCTS (GitHub release links) ----------
     const products = [
-      {
-        id: "nexus_only_test",
-        name: "NEXUS store tester",
-        githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/TestExe.exe",
-        price: "Free",
-        fileType: ".exe"
-      },
+      { id: "nexus_only_test", name: "NEXUS store tester", githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/TestExe.exe", price: "Free", fileType: ".exe", os: "Win10/11" }
     ];
-
-    // Helper: show toast message
-    function showToast(message, isError = false) {
-      let toast = document.querySelector('.toast-msg');
-      if (toast) toast.remove();
-      const div = document.createElement('div');
-      div.className = 'toast-msg';
-      div.innerText = message;
-      div.style.background = isError ? '#7a2e3ecc' : '#1e2a3ecc';
-      div.style.borderLeftColor = isError ? '#ff7777' : '#e8b73b';
-      document.body.appendChild(div);
-      setTimeout(() => { div.style.opacity = '0'; setTimeout(() => div.remove(), 400); }, 2300);
+    function showToast(msg, isError=false){ let t=document.querySelector('.toast-msg'); if(t)t.remove(); let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#7a2e3ecc':'#1e2a3ecc'; d.style.borderLeftColor=isError?'#ff7777':'#e8b73b'; document.body.appendChild(d); setTimeout(()=>{d.style.opacity='0'; setTimeout(()=>d.remove(),400);},2300);}
+    async function copyToClipboard(url,name){ try{ await navigator.clipboard.writeText(url); showToast(`✅ ${name} download link copied!`); }catch(e){ showToast(`⚠️ Failed to copy link`,true); } }
+    async function shareLink(url,name){ if(navigator.share){ try{ await navigator.share({title:`${name} - NEXUS Store`, text:`Get ${name} for free!`, url}); showToast(`✨ Shared ${name}`); }catch(e){ if(e.name!=='AbortError') showToast(`⚠️ Sharing failed`,true); } } else { await navigator.clipboard.writeText(url); showToast(`🔗 Link copied (share fallback)`); } }
+    function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
+    function escapeAttr(str){ if(!str)return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function renderStore(){ const container=document.getElementById('storeList'); if(!container)return; container.innerHTML=''; products.forEach(prod=>{ const card=document.createElement('div'); card.className='glass-card'; card.innerHTML=`<div class="card-header"><h2>${escapeHtml(prod.name)}</h2></div><div class="product-details"><span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span><span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span><span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os)}</span></div><button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-download"></i> DOWNLOAD</button><div class="icon-group"><button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-copy"></i> <span>Copy link</span></button><button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-share-alt"></i> <span>Share</span></button></div>`; container.appendChild(card); });
+      document.querySelectorAll('.btn-download').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url){ window.open(url,'_blank','noopener,noreferrer'); showToast(`⬇️ Downloading ${name} ...`); } else showToast(`⚠️ Link missing`,true); }); });
+      document.querySelectorAll('.copy-link-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url) copyToClipboard(url,name); else showToast(`No link`,true); }); });
+      document.querySelectorAll('.share-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url) shareLink(url,name); else showToast(`No shareable link`,true); }); });
     }
-
-    // Copy link to clipboard
-    async function copyToClipboard(url, productName) {
-      try {
-        await navigator.clipboard.writeText(url);
-        showToast(`✅ ${productName} download link copied!`);
-      } catch (err) {
-        showToast(`⚠️ Failed to copy link`, true);
-      }
-    }
-
-    // Share via Web Share API or fallback
-    async function shareLink(url, productName) {
-      const shareData = {
-        title: `${productName} - NEXUS Store`,
-        text: `Get ${productName} for free!`,
-        url: url,
-      };
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          showToast(`✨ Shared ${productName}`);
-        } catch (err) {
-          if (err.name !== 'AbortError') showToast(`⚠️ Sharing canceled or failed`, true);
-        }
-      } else {
-        // fallback: copy to clipboard
-        await navigator.clipboard.writeText(url);
-        showToast(`🔗 Link copied to clipboard (share fallback)`);
-      }
-    }
-
-    // Render Store Cards (pure static data)
-    function renderStore() {
-      const storeContainer = document.getElementById('storeList');
-      if (!storeContainer) return;
-      storeContainer.innerHTML = '';
-      products.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'glass-card';
-        // Build HTML structure
-        card.innerHTML = `
-          <div class="card-header">
-            <h2>${escapeHtml(prod.name)}</h2>
-          </div>
-          <div class="product-details">
-            <span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span>
-            <span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span>
-          </div>
-          <button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-            <i class="fas fa-download"></i> DOWNLOAD
-          </button>
-          <div class="icon-group">
-            <button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-              <i class="fas fa-copy"></i> <span>Copy link</span>
-            </button>
-            <button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-              <i class="fas fa-share-alt"></i> <span>Share</span>
-            </button>
-          </div>
-        `;
-        storeContainer.appendChild(card);
-      });
-
-      // Attach event listeners to dynamic buttons
-      document.querySelectorAll('.btn-download').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const url = btn.getAttribute('data-url');
-          const name = btn.getAttribute('data-name');
-          if (url) {
-            window.open(url, '_blank', 'noopener,noreferrer');
-            showToast(`⬇️ Downloading ${name} ...`);
-          } else {
-            showToast(`⚠️ Download link not available`, true);
-          }
-        });
-      });
-
-      document.querySelectorAll('.copy-link-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const url = btn.getAttribute('data-url');
-          const name = btn.getAttribute('data-name');
-          if (url) copyToClipboard(url, name);
-          else showToast(`No link to copy`, true);
-        });
-      });
-
-      document.querySelectorAll('.share-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const url = btn.getAttribute('data-url');
-          const name = btn.getAttribute('data-name');
-          if (url) shareLink(url, name);
-          else showToast(`No shareable link`, true);
-        });
-      });
-    }
-
-    // Simple XSS helpers
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
-      });
-    }
-    function escapeAttr(str) {
-      if (!str) return '';
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    // ---------- AUTH UI LOGIC ----------
-    function updateAuthUI(user) {
-      if (user) {
-        // Logged in: show Logout button + user avatar & name
-        authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-        authBtn.onclick = () => auth.signOut();
-        // Show user info block
-        userInfoArea.style.display = 'flex';
-        if (user.photoURL) userAvatarSmall.src = user.photoURL;
-        else userAvatarSmall.src = 'https://placehold.co/40x40/3a2c6e/white?text=U';
-        userNameSmall.innerText = user.displayName || user.email?.split('@')[0] || 'User';
-      } else {
-        // Logged out: show Login button
-        authBtn.innerHTML = '<i class="fab fa-google"></i> Login';
-        authBtn.onclick = () => auth.signInWithPopup(provider).catch(err => {
-          console.error(err);
-          showToast(`Login failed: ${err.message}`, true);
-        });
-        userInfoArea.style.display = 'none';
-      }
-    }
-
-    // on auth state changed
-    auth.onAuthStateChanged(user => {
-      updateAuthUI(user);
-    });
-
-    // Initialize store rendering (static products)
+    function updateAuthUI(user){ if(user){ authBtn.innerHTML='<i class="fas fa-sign-out-alt"></i> Logout'; authBtn.onclick=()=>auth.signOut(); userInfoArea.style.display='flex'; userAvatarSmall.src=user.photoURL||'https://placehold.co/40x40/3a2c6e/white?text=U'; userNameSmall.innerText=user.displayName||user.email?.split('@')[0]||'User'; } else { authBtn.innerHTML='<i class="fab fa-google"></i> Login'; authBtn.onclick=()=>auth.signInWithPopup(provider).catch(err=>showToast(`Login failed: ${err.message}`,true)); userInfoArea.style.display='none'; } }
+    auth.onAuthStateChanged(user=>updateAuthUI(user));
     renderStore();
-
-    // Tab switching logic (no library tab)
-    const tabs = document.querySelectorAll('.tab');
-    const contents = document.querySelectorAll('#tabsContent > div');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const tabId = tab.getAttribute('data-tab');
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        contents.forEach(c => c.classList.remove('active'));
-        const activeContent = document.getElementById(tabId);
-        if (activeContent) activeContent.classList.add('active');
-      });
-    });
-
-    // Additional: fix avatar fallback if image missing
-    window.addEventListener('load', () => {
-      const avatarImg = document.querySelector('.avatar');
-      if (avatarImg && avatarImg.complete && avatarImg.naturalWidth === 0) {
-        avatarImg.src = 'https://placehold.co/120x120/1e1a2e/ffd966?text=NX';
-      }
-    });
+    // Tab switching
+    const tabs=document.querySelectorAll('.tab'); const contents=document.querySelectorAll('#tabsContent > div');
+    tabs.forEach(tab=>{ tab.addEventListener('click',()=>{ const tabId=tab.getAttribute('data-tab'); tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active'); contents.forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); }); });
+    // Contact button email
+    document.getElementById('contactEmailBtn').addEventListener('click',()=>{ window.location.href='mailto:nexus.collective.contact@gmail.com?subject=NEXUS%20Store%20Inquiry&body=Hello%20NEXUS%20Collective,'; });
+    // Fix avatar fallback
+    window.addEventListener('load',()=>{ const av=document.querySelector('.avatar'); if(av && av.complete && av.naturalWidth===0) av.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'; });
   </script>
 </body>
 </html>
