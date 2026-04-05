@@ -58,8 +58,27 @@
     .tab.active { background:var(--purple-dark); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.4); }
     .tab:hover { background:var(--purple-dark); border-color:var(--gold-primary); }
     .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2rem; }
-    .glass-card { background:var(--card-bg); backdrop-filter:blur(14px); border:1px solid var(--glass-border); border-radius:2rem; padding:1.6rem; transition:var(--transition); box-shadow:0 20px 35px -12px rgba(0,0,0,0.5); display:flex; flex-direction:column; }
+    .glass-card { 
+      background:var(--card-bg); 
+      backdrop-filter:blur(14px); 
+      border:1px solid var(--glass-border); 
+      border-radius:2rem; 
+      padding:1.6rem; 
+      transition:var(--transition); 
+      box-shadow:0 20px 35px -12px rgba(0,0,0,0.5); 
+      display:flex; 
+      flex-direction:column; 
+      position: relative;
+    }
     .glass-card:hover { transform:translateY(-6px); border-color:rgba(212,160,23,0.5); box-shadow:0 28px 40px -15px rgba(0,0,0,0.6);}
+    /* Kiemelt kártya stílus */
+    .glass-card.highlighted {
+      transform: scale(1.02);
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 30px rgba(232, 183, 59, 0.6);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
     .card-header { border-left:4px solid var(--gold-primary); padding-left:1rem; margin-bottom:1rem; }
     .card-header h2 { font-size:1.6rem; font-weight:700; background:linear-gradient(145deg,#ffffff,#e2ca86); background-clip:text; -webkit-background-clip:text; color:transparent;}
     .product-details { margin:0.8rem 0 1rem 0; display:flex; flex-wrap:wrap; gap:0.8rem; align-items:baseline; }
@@ -82,7 +101,88 @@
     .license-text { font-size: 0.9rem; color: #ccc; line-height: 1.6; margin-bottom: 1.5rem; }
     .contact-btn { background: linear-gradient(95deg, #2a6ef0, #174ac9); border: none; padding: 0.7rem 1.8rem; border-radius: 60px; font-weight: 700; font-size: 1rem; color: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
     .contact-btn:hover { transform: scale(1.02); background: linear-gradient(95deg, #3f7eff, #2059e0); box-shadow: 0 0 12px #2a6ef0; }
-    @media (max-width:700px){ .wrapper{padding:1rem 1rem 3rem;} .auth-fixed{top:0.8rem;right:1rem;padding:0.3rem 0.9rem;} .user-name{display:none;} .btn-download{font-size:1rem;} .icon-btn span{display:none;} .icon-btn i{margin:0;} .icon-btn{padding:0.5rem 0.8rem;} .license-text{font-size:0.8rem;} }
+    
+    /* Highlight button (info ikon a kártya jobb felső sarkában) */
+    .highlight-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(232,183,59,0.6);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      color: var(--gold-primary);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      backdrop-filter: blur(4px);
+      z-index: 5;
+    }
+    .highlight-btn:hover {
+      background: var(--gold-primary);
+      color: #0a0a1a;
+      transform: scale(1.1);
+      border-color: white;
+    }
+    /* Overlay (homályosítás) */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      z-index: 900;
+      display: none;
+      cursor: pointer;
+    }
+    /* Információs kártya (megjelenik a kiemelt kártya mellett) */
+    .info-card {
+      position: fixed;
+      background: linear-gradient(145deg, #1e1a3a, #0c0a1f);
+      border: 1px solid var(--gold-primary);
+      border-radius: 2rem;
+      padding: 1.5rem;
+      width: 280px;
+      box-shadow: 0 0 35px rgba(0,0,0,0.7);
+      z-index: 1001;
+      backdrop-filter: blur(16px);
+      color: white;
+      transition: 0.2s;
+      display: none;
+    }
+    .info-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: var(--gold-primary);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .info-card p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #ddd;
+    }
+    .info-card .close-info {
+      margin-top: 1rem;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .info-card .close-info:hover {
+      background: var(--gold-primary);
+      color: black;
+    }
+    @media (max-width:700px){ .wrapper{padding:1rem 1rem 3rem;} .auth-fixed{top:0.8rem;right:1rem;padding:0.3rem 0.9rem;} .user-name{display:none;} .btn-download{font-size:1rem;} .icon-btn span{display:none;} .icon-btn i{margin:0;} .icon-btn{padding:0.5rem 0.8rem;} .license-text{font-size:0.8rem;} .info-card { width: 260px; padding: 1rem; } }
   </style>
 </head>
 <body>
@@ -106,12 +206,23 @@
         3. <strong>User Responsibility</strong>: You are responsible for complying with your local laws. The developer is not responsible for any misuse or illegal activity.<br>
         4. <strong>Intellectual Property</strong>: These files are the property of NEXUS Collective. Redistribution or reverse engineering for commercial purposes is prohibited.<br>
         5. <strong>Antivirus Disclaimer</strong>: Due to the nature of software development (packing, obfuscation, low-level access), some antivirus engines may flag executables as potentially unwanted. This is a common false positive. We guarantee the files are safe and have been tested in isolated environments.<br><br>
-		By using this software, you acknowledge that you understand and accept these terms.	
-		<br>SUPPORT: nexus.collective.contact@gmail.com</br>
+        By using this software, you acknowledge that you understand and accept these terms.	
+        <br>SUPPORT: nexus.collective.contact@gmail.com<br>
       </div>
       <button class="contact-btn" id="contactEmailBtn"><i class="fas fa-envelope"></i> Contact Support</button>
     </div>
   </div>
+
+  <!-- Overlay és Info Card elemek (dinamikusan használva) -->
+  <div id="overlay" class="overlay"></div>
+  <div id="infoCard" class="info-card">
+    <h4><i class="fas fa-flask"></i> Test File Info</h4>
+    <p>This executable is a <strong>test-only file</strong> created for development and demonstration purposes.<br><br>
+    It does <strong>not perform any actions</strong>, contains no malicious code, and is completely safe.<br><br>
+    <i class="fas fa-shield-alt"></i> No system changes, no data collection, no background processes.</p>
+    <button class="close-info" id="closeInfoBtn">Got it</button>
+  </div>
+
   <script>
     const firebaseConfig = { apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY", authDomain: "nexus-08.firebaseapp.com", projectId: "nexus-08", storageBucket: "nexus-08.firebasestorage.app", messagingSenderId: "1066992373942", appId: "1:1066992373942:web:cbc354f288a5c351e25617", measurementId: "G-5E16CRZ0MF" };
     firebase.initializeApp(firebaseConfig);
@@ -124,25 +235,135 @@
     const products = [
       { id: "nexus_only_test", name: "NEXUS store tester", githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/TestExe.exe", price: "Free", fileType: ".exe", os: "Win10/11" }
     ];
+    
+    // Overlay és Info Card elemek
+    const overlay = document.getElementById('overlay');
+    const infoCard = document.getElementById('infoCard');
+    let activeCard = null;  // az aktuálisan kiemelt kártya referenciája
+
+    function showHighlight(cardElement) {
+      if (activeCard) {
+        // Ha már van kiemelt kártya, először állítsuk vissza
+        resetHighlight();
+      }
+      activeCard = cardElement;
+      // Kiemelt osztály hozzáadása
+      cardElement.classList.add('highlighted');
+      // Overlay megjelenítése
+      overlay.style.display = 'block';
+      // Info kártya megjelenítése a kiemelt kártya jobb oldalán (vagy alatta ha kicsi a képernyő)
+      const rect = cardElement.getBoundingClientRect();
+      const cardCenterX = rect.left + rect.width / 2;
+      const windowWidth = window.innerWidth;
+      let leftPos = rect.right + 20;
+      let topPos = rect.top;
+      // Ha nem fér el jobbra, akkor balra pozícionáljuk
+      if (leftPos + 300 > windowWidth) {
+        leftPos = rect.left - 320;
+      }
+      // Ha felülre se fér, igazítsuk
+      if (topPos + 250 > window.innerHeight) {
+        topPos = window.innerHeight - 270;
+      }
+      if (topPos < 10) topPos = 10;
+      infoCard.style.left = leftPos + 'px';
+      infoCard.style.top = topPos + 'px';
+      infoCard.style.display = 'block';
+      // Görgetés közben is tartsuk a pozíciót? Nem szükséges, de ha ablakot átméretezik, újra számolhatjuk
+      function repositionOnScroll() {
+        if (overlay.style.display === 'block' && activeCard) {
+          const newRect = activeCard.getBoundingClientRect();
+          let newLeft = newRect.right + 20;
+          let newTop = newRect.top;
+          if (newLeft + 300 > windowWidth) newLeft = newRect.left - 320;
+          if (newTop + 250 > window.innerHeight) newTop = window.innerHeight - 270;
+          if (newTop < 10) newTop = 10;
+          infoCard.style.left = newLeft + 'px';
+          infoCard.style.top = newTop + 'px';
+        }
+      }
+      window.addEventListener('scroll', repositionOnScroll);
+      window.addEventListener('resize', repositionOnScroll);
+      // Tároljuk el az eseménykezelőket a későbbi eltávolításhoz
+      cardElement._reposition = repositionOnScroll;
+    }
+
+    function resetHighlight() {
+      if (activeCard) {
+        activeCard.classList.remove('highlighted');
+        if (activeCard._reposition) {
+          window.removeEventListener('scroll', activeCard._reposition);
+          window.removeEventListener('resize', activeCard._reposition);
+          delete activeCard._reposition;
+        }
+        activeCard = null;
+      }
+      overlay.style.display = 'none';
+      infoCard.style.display = 'none';
+    }
+
+    // Overlay kattintásra mindent bezár
+    overlay.addEventListener('click', resetHighlight);
+    // Bezáró gomb az info kártyán
+    document.getElementById('closeInfoBtn').addEventListener('click', resetHighlight);
+
     function showToast(msg, isError=false){ let t=document.querySelector('.toast-msg'); if(t)t.remove(); let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#7a2e3ecc':'#1e2a3ecc'; d.style.borderLeftColor=isError?'#ff7777':'#e8b73b'; document.body.appendChild(d); setTimeout(()=>{d.style.opacity='0'; setTimeout(()=>d.remove(),400);},2300);}
     async function copyToClipboard(url,name){ try{ await navigator.clipboard.writeText(url); showToast(`✅ ${name} download link copied!`); }catch(e){ showToast(`⚠️ Failed to copy link`,true); } }
     async function shareLink(url,name){ if(navigator.share){ try{ await navigator.share({title:`${name} - NEXUS Store`, text:`Get ${name} for free!`, url}); showToast(`✨ Shared ${name}`); }catch(e){ if(e.name!=='AbortError') showToast(`⚠️ Sharing failed`,true); } } else { await navigator.clipboard.writeText(url); showToast(`🔗 Link copied (share fallback)`); } }
     function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
     function escapeAttr(str){ if(!str)return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    function renderStore(){ const container=document.getElementById('storeList'); if(!container)return; container.innerHTML=''; products.forEach(prod=>{ const card=document.createElement('div'); card.className='glass-card'; card.innerHTML=`<div class="card-header"><h2>${escapeHtml(prod.name)}</h2></div><div class="product-details"><span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span><span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span><span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os)}</span></div><button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-download"></i> DOWNLOAD</button><div class="icon-group"><button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-copy"></i> <span>Copy link</span></button><button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-share-alt"></i> <span>Share</span></button></div>`; container.appendChild(card); });
+    
+    function renderStore(){ 
+      const container=document.getElementById('storeList'); 
+      if(!container)return; 
+      container.innerHTML=''; 
+      products.forEach(prod=>{ 
+        const card=document.createElement('div'); 
+        card.className='glass-card'; 
+        card.innerHTML=`
+          <button class="highlight-btn" title="Show file info"><i class="fas fa-info-circle"></i></button>
+          <div class="card-header"><h2>${escapeHtml(prod.name)}</h2></div>
+          <div class="product-details">
+            <span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span>
+            <span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span>
+            <span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os)}</span>
+          </div>
+          <button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
+            <i class="fas fa-download"></i> DOWNLOAD
+          </button>
+          <div class="icon-group">
+            <button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
+              <i class="fas fa-copy"></i> <span>Copy link</span>
+            </button>
+            <button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
+              <i class="fas fa-share-alt"></i> <span>Share</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+        
+        // Highlight gomb eseménykezelő
+        const highlightBtn = card.querySelector('.highlight-btn');
+        highlightBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          showHighlight(card);
+        });
+      });
+      
       document.querySelectorAll('.btn-download').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url){ window.open(url,'_blank','noopener,noreferrer'); showToast(`⬇️ Downloading ${name} ...`); } else showToast(`⚠️ Link missing`,true); }); });
       document.querySelectorAll('.copy-link-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url) copyToClipboard(url,name); else showToast(`No link`,true); }); });
       document.querySelectorAll('.share-btn').forEach(btn=>{ btn.addEventListener('click',()=>{ const url=btn.getAttribute('data-url'); const name=btn.getAttribute('data-name'); if(url) shareLink(url,name); else showToast(`No shareable link`,true); }); });
     }
+    
     function updateAuthUI(user){ if(user){ authBtn.innerHTML='<i class="fas fa-sign-out-alt"></i> Logout'; authBtn.onclick=()=>auth.signOut(); userInfoArea.style.display='flex'; userAvatarSmall.src=user.photoURL||'https://placehold.co/40x40/3a2c6e/white?text=U'; userNameSmall.innerText=user.displayName||user.email?.split('@')[0]||'User'; } else { authBtn.innerHTML='<i class="fab fa-google"></i> Login'; authBtn.onclick=()=>auth.signInWithPopup(provider).catch(err=>showToast(`Login failed: ${err.message}`,true)); userInfoArea.style.display='none'; } }
     auth.onAuthStateChanged(user=>updateAuthUI(user));
     renderStore();
-    // Tab switching
+    
     const tabs=document.querySelectorAll('.tab'); const contents=document.querySelectorAll('#tabsContent > div');
     tabs.forEach(tab=>{ tab.addEventListener('click',()=>{ const tabId=tab.getAttribute('data-tab'); tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active'); contents.forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); }); });
-    // Contact button email
+    
     document.getElementById('contactEmailBtn').addEventListener('click',()=>{ window.location.href='mailto:nexus.collective.contact@gmail.com?subject=NEXUS%20Store%20Inquiry&body=Hello%20NEXUS%20Collective,'; });
-    // Fix avatar fallback
+    
     window.addEventListener('load',()=>{ const av=document.querySelector('.avatar'); if(av && av.complete && av.naturalWidth===0) av.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'; });
   </script>
 </body>
