@@ -1,503 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>NEXUS STORE | Digital Exe Hub</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='70' font-size='70' text-anchor='middle' fill='gold'>⚡</text></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    :root {
-      --bg-deep: #03030c;
-      --card-bg: rgba(18, 18, 30, 0.85);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --gold-primary: #e8b73b;
-      --purple-neon: #b77cff;
-      --purple-dark: #7c3aff;
-      --text-light: #f0f0ff;
-      --text-muted: #b0b0cc;
-      --transition: all 0.25s cubic-bezier(0.2,0.9,0.4,1.1);
-    }
-    body {
-      background: radial-gradient(ellipse at 30% 20%, #120c2a 0%, #020208 100%);
-      font-family: 'Inter', system-ui, sans-serif;
-      color: var(--text-light);
-      line-height: 1.5;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    .lightning-bg { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
-    .bolt { position:absolute; background:linear-gradient(135deg,#b77cff,#5f2eff); filter:blur(18px); opacity:0.4; animation:pulseGlow 6s infinite alternate; }
-    .bolt1 { top:5%; left:-5%; width:260px; height:460px; clip-path:polygon(40% 0%,60% 20%,35% 40%,55% 60%,30% 80%,50% 100%,20% 100%,0% 70%,25% 45%,10% 20%); opacity:0.3; animation:floatLightning 14s infinite alternate ease-in-out;}
-    .bolt2 { bottom:0; right:-2%; width:320px; height:520px; clip-path:polygon(70% 0%,85% 25%,65% 45%,90% 70%,60% 85%,80% 100%,40% 95%,30% 70%,55% 55%,40% 30%); background:linear-gradient(45deg,#a260ff,#4610b0); opacity:0.25; filter:blur(22px); animation:floatLightning2 18s infinite alternate;}
-    .bolt3 { top:40%; left:20%; width:180px; height:380px; background:linear-gradient(120deg,#c28aff,#672eff); clip-path:polygon(50% 0%,65% 30%,45% 45%,70% 65%,48% 80%,68% 100%,35% 95%,25% 70%,45% 55%,30% 30%); filter:blur(14px); opacity:0.35; animation:flicker 3.5s infinite alternate,drift 12s infinite alternate;}
-    @keyframes floatLightning{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(25px,-15px) rotate(3deg);opacity:0.45;}}
-    @keyframes floatLightning2{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(-20px,20px) rotate(-4deg);opacity:0.4;}}
-    @keyframes flicker{0%{opacity:0.2;filter:blur(16px);}100%{opacity:0.5;filter:blur(10px);}}
-    @keyframes drift{0%{transform:translate(0,0);}100%{transform:translate(30px,20px);}}
-    @keyframes pulseGlow{0%{filter:blur(18px);opacity:0.2;}100%{filter:blur(24px);opacity:0.45;}}
-    .wrapper { position:relative; z-index:2; max-width:1280px; margin:0 auto; padding:2rem 1.5rem 5rem; }
-    .hero { text-align:center; margin:1.5rem 0 2.5rem 0; }
-    .avatar { width:110px; height:110px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,215,120,0.7); box-shadow:0 0 25px rgba(212,160,23,0.4);}
-    .brand { margin-top:0.8rem; font-size:1.4rem; letter-spacing:6px; background:linear-gradient(135deg,#f5e3b0,#d4a017); background-clip:text; -webkit-background-clip:text; color:transparent; font-weight:600;}
-    h1 { font-size:clamp(2.8rem,10vw,5.2rem); font-weight:800; letter-spacing:6px; background:linear-gradient(130deg,#ffffff 20%,#f5cf7b 60%,#d4a017 90%); background-clip:text; -webkit-background-clip:text; color:transparent;}
-    .sub { color:var(--text-muted); border-bottom:1px dashed rgba(212,160,23,0.4); display:inline-block; padding-bottom:6px; font-weight:500;}
-    .auth-fixed { position:fixed; top:1.2rem; right:1.5rem; z-index:100; background:rgba(10,10,20,0.75); backdrop-filter:blur(12px); border-radius:60px; padding:0.5rem 1.2rem; border:1px solid rgba(183,124,255,0.5); display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.3);}
-    .auth-btn { background:linear-gradient(105deg,#3c2b6e,#201c42); border:none; padding:0.5rem 1.2rem; border-radius:40px; font-weight:700; font-size:0.9rem; color:white; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:8px; font-family:inherit; backdrop-filter:blur(4px); border:1px solid rgba(255,215,120,0.5);}
-    .auth-btn:hover { background:linear-gradient(105deg,#5a40b0,#2f2670); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.6); transform:scale(1.02);}
-    .user-info { display:flex; align-items:center; gap:10px; }
-    .user-avatar-sm { width:34px; height:34px; border-radius:50%; border:1px solid var(--gold-primary); object-fit:cover; }
-    .user-name { font-size:0.85rem; font-weight:500; max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .tabs { display:flex; gap:1.8rem; margin-bottom:2rem; justify-content:center; flex-wrap:wrap; }
-    .tab { padding:0.7rem 1.8rem; cursor:pointer; border-radius:40px; background:rgba(20,20,35,0.65); border:1px solid rgba(183,124,255,0.5); transition:var(--transition); font-weight:700; font-size:1rem; }
-    .tab.active { background:var(--purple-dark); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.4); }
-    .tab:hover { background:var(--purple-dark); border-color:var(--gold-primary); }
-    .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2rem; }
-    .glass-card { 
-      background:var(--card-bg); 
-      backdrop-filter:blur(14px); 
-      border:1px solid var(--glass-border); 
-      border-radius:2rem; 
-      padding:1.6rem; 
-      transition:var(--transition); 
-      box-shadow:0 20px 35px -12px rgba(0,0,0,0.5); 
-      display:flex; 
-      flex-direction:column; 
-      position: relative;
-    }
-    .glass-card:hover { transform:translateY(-6px); border-color:rgba(212,160,23,0.5); box-shadow:0 28px 40px -15px rgba(0,0,0,0.6);}
-    .glass-card.highlighted {
-      transform: scale(1.02);
-      border-color: var(--gold-primary);
-      box-shadow: 0 0 30px rgba(232, 183, 59, 0.6);
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
-    .locked-card {
-      position: relative;
-      filter: blur(2px);
-      opacity: 0.75;
-      pointer-events: auto;
-      overflow: hidden;
-    }
-    .locked-card::before {
-      content: "\f023";
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4rem;
-      color: var(--gold-primary);
-      text-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 10;
-      pointer-events: none;
-      opacity: 0.9;
-    }
-    .locked-card .btn-download,
-    .locked-card .pass-btn,
-    .locked-card .icon-btn {
-      filter: blur(0);
-    }
-    .locked-card .highlight-btn {
-      filter: blur(0);
-    }
-    .card-header { border-left:4px solid var(--gold-primary); padding-left:1rem; margin-bottom:1rem; }
-    .card-header h2 { font-size:1.6rem; font-weight:700; background:linear-gradient(145deg,#ffffff,#e2ca86); background-clip:text; -webkit-background-clip:text; color:transparent;}
-    .product-details { margin:0.8rem 0 1rem 0; display:flex; flex-wrap:wrap; gap:0.8rem; align-items:baseline; }
-    .price-badge { background:rgba(0,255,100,0.15); padding:0.25rem 0.9rem; border-radius:40px; font-weight:700; color:#a0ffb0; font-size:1rem; border:1px solid #2eff7a30; }
-    .file-type { background:rgba(183,124,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; }
-    .os-badge { background:rgba(0,150,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; border:1px solid #2f9eff; color:#a0d0ff; display:inline-flex; align-items:center; gap:6px; }
-    .btn-download { background:linear-gradient(95deg,#2a6ef0,#174ac9); border:none; width:100%; padding:1rem 0; margin:1rem 0 0.8rem 0; border-radius:60px; font-weight:800; font-size:1.2rem; letter-spacing:1px; color:white; cursor:pointer; transition:0.2s; box-shadow:0 8px 18px rgba(0,80,255,0.3); display:flex; align-items:center; justify-content:center; gap:12px; font-family:inherit;}
-    .btn-download:hover { background:linear-gradient(95deg,#3f7eff,#2059e0); transform:scale(1.02); box-shadow:0 10px 24px rgba(0,100,255,0.5);}
-    .icon-group { display:flex; gap:0.8rem; justify-content:flex-end; margin-top:0.5rem; }
-    .icon-btn { background:rgba(25,25,45,0.8); border:1px solid rgba(183,124,255,0.5); border-radius:40px; padding:0.5rem 0.9rem; font-size:0.85rem; cursor:pointer; transition:0.2s; color:var(--text-light); display:inline-flex; align-items:center; gap:6px; font-weight:500;}
-    .icon-btn:hover { background:var(--purple-dark); border-color:var(--gold-primary);}
-    .community-links { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; margin-top:1rem; }
-    .community-btn { background:rgba(20,20,35,0.8); padding:0.9rem 1.8rem; border-radius:60px; font-weight:700; transition:0.2s; text-decoration:none; }
-    #tabsContent > div { display:none; }
-    #tabsContent > div.active { display:block; }
-    .toast-msg { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); background:#1a1a2ee6; backdrop-filter:blur(12px); padding:12px 24px; border-radius:60px; font-size:0.9rem; font-weight:500; border-left:4px solid var(--gold-primary); z-index:200; color:white; pointer-events:none; white-space:nowrap; }
-    .license-card { margin-top: 3rem; background: rgba(10,10,20,0.6); backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.8rem; border: 1px solid rgba(212,160,23,0.3); }
-    .license-card h3 { font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; color: var(--gold-primary); }
-    .license-text { font-size: 0.9rem; color: #ccc; line-height: 1.6; margin-bottom: 1.5rem; }
-    .contact-btn { background: linear-gradient(95deg, #2a6ef0, #174ac9); border: none; padding: 0.7rem 1.8rem; border-radius: 60px; font-weight: 700; font-size: 1rem; color: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-    .contact-btn:hover { transform: scale(1.02); background: linear-gradient(95deg, #3f7eff, #2059e0); box-shadow: 0 0 12px #2a6ef0; }
-    .highlight-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(232,183,59,0.6);
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      color: var(--gold-primary);
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-      backdrop-filter: blur(4px);
-      z-index: 5;
-    }
-    .highlight-btn:hover {
-      background: var(--gold-primary);
-      color: #0a0a1a;
-      transform: scale(1.1);
-      border-color: white;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(6px);
-      z-index: 900;
-      display: none;
-      cursor: pointer;
-    }
-    .info-card {
-      position: fixed;
-      background: linear-gradient(145deg, #1e1a3a, #0c0a1f);
-      border: 1px solid var(--gold-primary);
-      border-radius: 2rem;
-      padding: 1.5rem;
-      width: 280px;
-      box-shadow: 0 0 35px rgba(0,0,0,0.7);
-      z-index: 1001;
-      backdrop-filter: blur(16px);
-      color: white;
-      transition: 0.2s;
-      display: none;
-    }
-    .info-card h4 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: var(--gold-primary);
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .info-card p {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: #ddd;
-    }
-    .info-card .close-info {
-      margin-top: 1rem;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 0.4rem 1rem;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .info-card .close-info:hover {
-      background: var(--gold-primary);
-      color: black;
-    }
-    .pass-btn {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(232,183,59,0.5);
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-      color: var(--gold-primary);
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-    }
-    .pass-btn:hover {
-      background: var(--gold-primary);
-      color: #0a0a1a;
-      transform: scale(1.05);
-    }
-    @media (max-width:700px){ .wrapper{padding:1rem 1rem 3rem;} .auth-fixed{top:0.8rem;right:1rem;padding:0.3rem 0.9rem;} .user-name{display:none;} .btn-download{font-size:1rem;} .icon-btn span{display:none;} .icon-btn i{margin:0;} .icon-btn{padding:0.5rem 0.8rem;} .license-text{font-size:0.8rem;} .info-card { width: 260px; padding: 1rem; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NEXUS STORE | Digital Exe Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='70' font-size='70' text-anchor='middle' fill='gold'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        /* --- Alap stílusok és változók (változatlanok) --- */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --bg-deep: #03030c;
+            --card-bg: rgba(18, 18, 30, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gold-primary: #e8b73b;
+            --purple-neon: #b77cff;
+            --purple-dark: #7c3aff;
+            --text-light: #f0f0ff;
+            --text-muted: #b0b0cc;
+            --transition: all 0.25s cubic-bezier(0.2,0.9,0.4,1.1);
+        }
+        body {
+            background: radial-gradient(ellipse at 30% 20%, #120c2a 0%, #020208 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text-light);
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* --- Villám háttér (változatlan) --- */
+        .lightning-bg { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+        .bolt { position:absolute; background:linear-gradient(135deg,#b77cff,#5f2eff); filter:blur(18px); opacity:0.4; animation:pulseGlow 6s infinite alternate; }
+        .bolt1 { top:5%; left:-5%; width:260px; height:460px; clip-path:polygon(40% 0%,60% 20%,35% 40%,55% 60%,30% 80%,50% 100%,20% 100%,0% 70%,25% 45%,10% 20%); opacity:0.3; animation:floatLightning 14s infinite alternate ease-in-out;}
+        .bolt2 { bottom:0; right:-2%; width:320px; height:520px; clip-path:polygon(70% 0%,85% 25%,65% 45%,90% 70%,60% 85%,80% 100%,40% 95%,30% 70%,55% 55%,40% 30%); background:linear-gradient(45deg,#a260ff,#4610b0); opacity:0.25; filter:blur(22px); animation:floatLightning2 18s infinite alternate;}
+        .bolt3 { top:40%; left:20%; width:180px; height:380px; background:linear-gradient(120deg,#c28aff,#672eff); clip-path:polygon(50% 0%,65% 30%,45% 45%,70% 65%,48% 80%,68% 100%,35% 95%,25% 70%,45% 55%,30% 30%); filter:blur(14px); opacity:0.35; animation:flicker 3.5s infinite alternate,drift 12s infinite alternate;}
+        @keyframes floatLightning{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(25px,-15px) rotate(3deg);opacity:0.45;}}
+        @keyframes floatLightning2{0%{transform:translate(0,0) rotate(0deg);opacity:0.2;}100%{transform:translate(-20px,20px) rotate(-4deg);opacity:0.4;}}
+        @keyframes flicker{0%{opacity:0.2;filter:blur(16px);}100%{opacity:0.5;filter:blur(10px);}}
+        @keyframes drift{0%{transform:translate(0,0);}100%{transform:translate(30px,20px);}}
+        @keyframes pulseGlow{0%{filter:blur(18px);opacity:0.2;}100%{filter:blur(24px);opacity:0.45;}}
+        .wrapper { position:relative; z-index:2; max-width:1280px; margin:0 auto; padding:2rem 1.5rem 5rem; }
+        .hero { text-align:center; margin:1.5rem 0 2.5rem 0; }
+        .avatar { width:110px; height:110px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,215,120,0.7); box-shadow:0 0 25px rgba(212,160,23,0.4);}
+        .brand { margin-top:0.8rem; font-size:1.4rem; letter-spacing:6px; background:linear-gradient(135deg,#f5e3b0,#d4a017); background-clip:text; -webkit-background-clip:text; color:transparent; font-weight:600;}
+        h1 { font-size:clamp(2.8rem,10vw,5.2rem); font-weight:800; letter-spacing:6px; background:linear-gradient(130deg,#ffffff 20%,#f5cf7b 60%,#d4a017 90%); background-clip:text; -webkit-background-clip:text; color:transparent;}
+        .sub { color:var(--text-muted); border-bottom:1px dashed rgba(212,160,23,0.4); display:inline-block; padding-bottom:6px; font-weight:500;}
+        .auth-fixed { position:fixed; top:1.2rem; right:1.5rem; z-index:100; background:rgba(10,10,20,0.75); backdrop-filter:blur(12px); border-radius:60px; padding:0.5rem 1.2rem; border:1px solid rgba(183,124,255,0.5); display:flex; align-items:center; gap:12px; box-shadow:0 8px 20px rgba(0,0,0,0.3);}
+        .auth-btn { background:linear-gradient(105deg,#3c2b6e,#201c42); border:none; padding:0.5rem 1.2rem; border-radius:40px; font-weight:700; font-size:0.9rem; color:white; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:8px; font-family:inherit; backdrop-filter:blur(4px); border:1px solid rgba(255,215,120,0.5);}
+        .auth-btn:hover { background:linear-gradient(105deg,#5a40b0,#2f2670); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.6); transform:scale(1.02);}
+        .user-info { display:flex; align-items:center; gap:10px; }
+        .user-avatar-sm { width:34px; height:34px; border-radius:50%; border:1px solid var(--gold-primary); object-fit:cover; }
+        .user-name { font-size:0.85rem; font-weight:500; max-width:130px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .tabs { display:flex; gap:1.8rem; margin-bottom:2rem; justify-content:center; flex-wrap:wrap; }
+        .tab { padding:0.7rem 1.8rem; cursor:pointer; border-radius:40px; background:rgba(20,20,35,0.65); border:1px solid rgba(183,124,255,0.5); transition:var(--transition); font-weight:700; font-size:1rem; }
+        .tab.active { background:var(--purple-dark); border-color:var(--gold-primary); box-shadow:0 0 12px rgba(124,58,255,0.4); }
+        .tab:hover { background:var(--purple-dark); border-color:var(--gold-primary); }
+        .grid-3 { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:2rem; }
+        .glass-card { 
+            background:var(--card-bg); 
+            backdrop-filter:blur(14px); 
+            border:1px solid var(--glass-border); 
+            border-radius:2rem; 
+            padding:1.6rem; 
+            transition:var(--transition); 
+            box-shadow:0 20px 35px -12px rgba(0,0,0,0.5); 
+            display:flex; 
+            flex-direction:column; 
+            position: relative;
+        }
+        .glass-card:hover { transform:translateY(-6px); border-color:rgba(212,160,23,0.5); box-shadow:0 28px 40px -15px rgba(0,0,0,0.6);}
+        .glass-card.highlighted {
+            transform: scale(1.02);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 30px rgba(232, 183, 59, 0.6);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .locked-card {
+            position: relative;
+            filter: blur(2px);
+            opacity: 0.75;
+            pointer-events: auto;
+            overflow: hidden;
+        }
+        .locked-card::before {
+            content: "\f023";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        .card-header { border-left:4px solid var(--gold-primary); padding-left:1rem; margin-bottom:1rem; }
+        .card-header h2 { font-size:1.6rem; font-weight:700; background:linear-gradient(145deg,#ffffff,#e2ca86); background-clip:text; -webkit-background-clip:text; color:transparent;}
+        .product-details { margin:0.8rem 0 1rem 0; display:flex; flex-wrap:wrap; gap:0.8rem; align-items:baseline; }
+        .price-badge { background:rgba(0,255,100,0.15); padding:0.25rem 0.9rem; border-radius:40px; font-weight:700; color:#a0ffb0; font-size:1rem; border:1px solid #2eff7a30; }
+        .file-type { background:rgba(183,124,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; }
+        .os-badge { background:rgba(0,150,255,0.2); padding:0.25rem 0.9rem; border-radius:40px; font-size:0.8rem; font-weight:500; border:1px solid #2f9eff; color:#a0d0ff; display:inline-flex; align-items:center; gap:6px; }
+        /* --- Gombok konténere és új stílusok --- */
+        .button-group {
+            display: flex;
+            gap: 0.8rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        .btn-download, .btn-requirements {
+            flex: 1;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+            border: none;
+            border-radius: 60px;
+            padding: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+        .btn-download {
+            background: linear-gradient(95deg, #2a6ef0, #174ac9);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,80,255,0.3);
+        }
+        .btn-download:hover {
+            background: linear-gradient(95deg, #3f7eff, #2059e0);
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0,100,255,0.5);
+        }
+        .btn-requirements {
+            background: rgba(25,25,45,0.8);
+            border: 1px solid rgba(183,124,255,0.5);
+            color: var(--text-light);
+        }
+        .btn-requirements:hover {
+            background: var(--purple-dark);
+            border-color: var(--gold-primary);
+        }
+        .download-count {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .download-count i {
+            font-size: 0.7rem;
+        }
+        .icon-group { display:flex; gap:0.8rem; justify-content:flex-end; margin-top:0.8rem; }
+        .icon-btn { background:rgba(25,25,45,0.8); border:1px solid rgba(183,124,255,0.5); border-radius:40px; padding:0.5rem 0.9rem; font-size:0.85rem; cursor:pointer; transition:0.2s; color:var(--text-light); display:inline-flex; align-items:center; gap:6px; font-weight:500;}
+        .icon-btn:hover { background:var(--purple-dark); border-color:var(--gold-primary);}
+        .community-links { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; margin-top:1rem; }
+        .community-btn { background:rgba(20,20,35,0.8); padding:0.9rem 1.8rem; border-radius:60px; font-weight:700; transition:0.2s; text-decoration:none; }
+        #tabsContent > div { display:none; }
+        #tabsContent > div.active { display:block; }
+        .toast-msg { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); background:#1a1a2ee6; backdrop-filter:blur(12px); padding:12px 24px; border-radius:60px; font-size:0.9rem; font-weight:500; border-left:4px solid var(--gold-primary); z-index:200; color:white; pointer-events:none; white-space:nowrap; }
+        .license-card { margin-top: 3rem; background: rgba(10,10,20,0.6); backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.8rem; border: 1px solid rgba(212,160,23,0.3); }
+        .license-card h3 { font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; color: var(--gold-primary); }
+        .license-text { font-size: 0.9rem; color: #ccc; line-height: 1.6; margin-bottom: 1.5rem; }
+        .contact-btn { background: linear-gradient(95deg, #2a6ef0, #174ac9); border: none; padding: 0.7rem 1.8rem; border-radius: 60px; font-weight: 700; font-size: 1rem; color: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .contact-btn:hover { transform: scale(1.02); background: linear-gradient(95deg, #3f7eff, #2059e0); box-shadow: 0 0 12px #2a6ef0; }
+        .highlight-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(232,183,59,0.6);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 5;
+        }
+        .highlight-btn:hover {
+            background: var(--gold-primary);
+            color: #0a0a1a;
+            transform: scale(1.1);
+            border-color: white;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 900;
+            display: none;
+            cursor: pointer;
+        }
+        .info-card {
+            position: fixed;
+            background: linear-gradient(145deg, #1e1a3a, #0c0a1f);
+            border: 1px solid var(--gold-primary);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            width: 280px;
+            box-shadow: 0 0 35px rgba(0,0,0,0.7);
+            z-index: 1001;
+            backdrop-filter: blur(16px);
+            color: white;
+            transition: 0.2s;
+            display: none;
+        }
+        .info-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--gold-primary);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .info-card p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ddd;
+        }
+        .info-card .close-info {
+            margin-top: 1rem;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .info-card .close-info:hover {
+            background: var(--gold-primary);
+            color: black;
+        }
+        .pass-btn {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(232,183,59,0.5);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            color: var(--gold-primary);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .pass-btn:hover {
+            background: var(--gold-primary);
+            color: #0a0a1a;
+            transform: scale(1.05);
+        }
+        @media (max-width:700px){ .wrapper{padding:1rem 1rem 3rem;} .auth-fixed{top:0.8rem;right:1rem;padding:0.3rem 0.9rem;} .user-name{display:none;} .btn-download{font-size:1rem;} .icon-btn span{display:none;} .icon-btn i{margin:0;} .icon-btn{padding:0.5rem 0.8rem;} .license-text{font-size:0.8rem;} .info-card { width: 260px; padding: 1rem; } .button-group { flex-direction: column; gap: 0.6rem; } }
+    </style>
 </head>
 <body>
-  <div class="lightning-bg"><div class="bolt bolt1"></div><div class="bolt bolt2"></div><div class="bolt bolt3"></div></div>
-  <div class="auth-fixed" id="authFixed"><div id="authStateContainer"><button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> Login</button></div><div id="userInfoArea" style="display:none;" class="user-info"><img id="userAvatarSmall" class="user-avatar-sm" src=""><span id="userNameSmall" class="user-name"></span></div></div>
-  <div class="wrapper">
-    <div class="hero"><img class="avatar" src="Nexusprofile.png" alt="NEXUS" onerror="this.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'"><div class="brand">NΞXUS COLLECTIVE</div><h1>NΞXUS STORE</h1><div class="sub">Premium .exe releases • Direct GitHub</div></div>
-    <div class="tabs"><div class="tab active" data-tab="storeTab">STORE</div><div class="tab" data-tab="communityTab">COMMUNITY</div></div>
-    <div id="tabsContent">
-      <div id="storeTab" class="active"><div class="grid-3" id="storeList"></div></div>
-      <div id="communityTab"><div class="community-links"><a class="icon-btn community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="icon-btn community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="icon-btn community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="icon-btn community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
+    <div class="lightning-bg"><div class="bolt bolt1"></div><div class="bolt bolt2"></div><div class="bolt bolt3"></div></div>
+    <div class="auth-fixed" id="authFixed"><div id="authStateContainer"><button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> Login</button></div><div id="userInfoArea" style="display:none;" class="user-info"><img id="userAvatarSmall" class="user-avatar-sm" src=""><span id="userNameSmall" class="user-name"></span></div></div>
+    <div class="wrapper">
+        <div class="hero"><img class="avatar" src="Nexusprofile.png" alt="NEXUS" onerror="this.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'"><div class="brand">NΞXUS COLLECTIVE</div><h1>NΞXUS STORE</h1><div class="sub">Premium .exe releases • Direct GitHub</div></div>
+        <div class="tabs"><div class="tab active" data-tab="storeTab">STORE</div><div class="tab" data-tab="communityTab">COMMUNITY</div></div>
+        <div id="tabsContent">
+            <div id="storeTab" class="active"><div class="grid-3" id="storeList"></div></div>
+            <div id="communityTab"><div class="community-links"><a class="icon-btn community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="icon-btn community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="icon-btn community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="icon-btn community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
+        </div>
+        <div class="license-card">
+            <h3><i class="fas fa-file-contract"></i> Software License & Disclaimer</h3>
+            <div class="license-text">
+                <strong>NEXUS Collective – Research & Development License</strong><br><br>
+                By downloading or using any executable file from this store, you agree to the following:<br><br>
+                1. <strong>Purpose</strong>: All software provided is intended solely for <strong>research, development, educational, and testing purposes</strong>. The files are not malicious, do not contain viruses, trojans, or any harmful code. Any antivirus warnings may be false positives due to the nature of the executable packers or code optimization.<br>
+                2. <strong>No Warranty</strong>: The software is provided "AS IS", without any warranty of merchantability or fitness for a particular purpose. The author assumes no liability for any damage or data loss arising from the use of these files.<br>
+                3. <strong>User Responsibility</strong>: You are responsible for complying with your local laws. The developer is not responsible for any misuse or illegal activity.<br>
+                4. <strong>Intellectual Property</strong>: These files are the property of NEXUS Collective. Redistribution or reverse engineering for commercial purposes is prohibited.<br>
+                5. <strong>Antivirus Disclaimer</strong>: Due to the nature of software development (packing, obfuscation, low-level access), some antivirus engines may flag executables as potentially unwanted. This is a common false positive. We guarantee the files are safe and have been tested in isolated environments.<br><br>
+                By using this software, you acknowledge that you understand and accept these terms.	
+                <br>SUPPORT: nexus.collective.contact@gmail.com<br>
+            </div>
+            <button class="contact-btn" id="contactEmailBtn"><i class="fas fa-envelope"></i> Contact Support</button>
+        </div>
     </div>
-    <div class="license-card">
-      <h3><i class="fas fa-file-contract"></i> Software License & Disclaimer</h3>
-      <div class="license-text">
-        <strong>NEXUS Collective – Research & Development License</strong><br><br>
-        By downloading or using any executable file from this store, you agree to the following:<br><br>
-        1. <strong>Purpose</strong>: All software provided is intended solely for <strong>research, development, educational, and testing purposes</strong>. The files are not malicious, do not contain viruses, trojans, or any harmful code. Any antivirus warnings may be false positives due to the nature of the executable packers or code optimization.<br>
-        2. <strong>No Warranty</strong>: The software is provided "AS IS", without any warranty of merchantability or fitness for a particular purpose. The author assumes no liability for any damage or data loss arising from the use of these files.<br>
-        3. <strong>User Responsibility</strong>: You are responsible for complying with your local laws. The developer is not responsible for any misuse or illegal activity.<br>
-        4. <strong>Intellectual Property</strong>: These files are the property of NEXUS Collective. Redistribution or reverse engineering for commercial purposes is prohibited.<br>
-        5. <strong>Antivirus Disclaimer</strong>: Due to the nature of software development (packing, obfuscation, low-level access), some antivirus engines may flag executables as potentially unwanted. This is a common false positive. We guarantee the files are safe and have been tested in isolated environments.<br><br>
-        By using this software, you acknowledge that you understand and accept these terms.	
-        <br>SUPPORT: nexus.collective.contact@gmail.com<br>
-      </div>
-      <button class="contact-btn" id="contactEmailBtn"><i class="fas fa-envelope"></i> Contact Support</button>
+
+    <!-- --- MODAL (Requirements) --- -->
+    <div id="requirementsModal" class="overlay" style="display: none; align-items: center; justify-content: center; z-index: 1100; background: rgba(0,0,0,0.85);">
+        <div class="info-card" style="display: block; position: static; width: 350px; max-width: 90%; margin: 0; background: linear-gradient(145deg, #1e1a3a, #0c0a1f);">
+            <h4><i class="fas fa-info-circle"></i> System Requirements</h4>
+            <p id="requirementsText" style="margin-bottom: 1rem;">Loading...</p>
+            <button class="close-info" id="closeModalBtn">Close</button>
+        </div>
     </div>
-  </div>
 
-  <div id="overlay" class="overlay"></div>
-  <div id="infoCard" class="info-card">
-    <h4><i class="fas fa-info-circle"></i> About this tool</h4>
-    <p>Loading information...</p>
-    <button class="close-info" id="closeInfoBtn">Got it</button>
-  </div>
+    <div id="overlay" class="overlay"></div>
+    <div id="infoCard" class="info-card">
+        <h4><i class="fas fa-flask"></i> File Info</h4>
+        <p>Loading information...</p>
+        <button class="close-info" id="closeInfoBtn">Got it</button>
+    </div>
 
-  <script>
-    const firebaseConfig = { apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY", authDomain: "nexus-08.firebaseapp.com", projectId: "nexus-08", storageBucket: "nexus-08.firebasestorage.app", messagingSenderId: "1066992373942", appId: "1:1066992373942:web:cbc354f288a5c351e25617", measurementId: "G-5E16CRZ0MF" };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
-    const authBtn = document.getElementById('authActionBtn');
-    const userInfoArea = document.getElementById('userInfoArea');
-    const userAvatarSmall = document.getElementById('userAvatarSmall');
-    const userNameSmall = document.getElementById('userNameSmall');
-    
-    // Products with individual infoText
-    const products = [
-      { 
-        id: "nexus_utility_tool", 
-        name: "Windows utility tool", 
-        githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/NexusHelper-V1.exe", 
-        price: "Free", 
-        fileType: ".exe", 
-        os: "Win10/11", 
-        pass: "nexus", 
-        locked: false,
-        infoText: "🔧 <strong>Windows Utility Tool</strong><br><br>This lightweight system helper cleans temporary files, optimizes RAM, and provides basic system information. No background processes, no data collection. Completely safe for daily use."
-      },
-      { 
-        id: "nexus_art_generator", 
-        name: "Ascii Art Generator", 
-        githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/AsciiArtGenerator_Setup_V1.exe", 
-        price: "Free", 
-        fileType: ".exe", 
-        os: "Win10/11", 
-        pass: "nexus", 
-        locked: false,
-        infoText: "🎨 <strong>ASCII Art Generator</strong><br><br>Convert any image (JPG, PNG, BMP) into ASCII characters. Adjustable width, invert colors, copy result to clipboard or save as TXT file. Perfect for developers, artists, and terminal lovers."
-      },
-      { 
-        id: "nexus_comming", 
-        name: "NEXUS", 
-        githubUrl: "#", 
-        price: "Free", 
-        fileType: ".exe", 
-        os: "Win10/11", 
-        pass: "nexus", 
-        locked: true,
-        infoText: "🔒 <strong>Coming Soon</strong><br><br>This tool is currently under development. Stay tuned for exciting new features from NEXUS Collective. Follow our Discord and social media for updates!"
-      }
-    ];
-    
-    const overlay = document.getElementById('overlay');
-    const infoCard = document.getElementById('infoCard');
-    let activeCard = null;
-
-    function showHighlight(cardElement) {
-      if (activeCard) resetHighlight();
-      activeCard = cardElement;
-      cardElement.classList.add('highlighted');
-      overlay.style.display = 'block';
-      
-      // Set custom info text from data-info attribute
-      const customInfo = cardElement.getAttribute('data-info');
-      const infoParagraph = infoCard.querySelector('p');
-      if (infoParagraph && customInfo) {
-        infoParagraph.innerHTML = customInfo;
-      } else if (infoParagraph) {
-        infoParagraph.innerHTML = "No additional information available for this tool.";
-      }
-      
-      const rect = cardElement.getBoundingClientRect();
-      const windowWidth = window.innerWidth;
-      let leftPos = rect.right + 20;
-      let topPos = rect.top;
-      if (leftPos + 300 > windowWidth) leftPos = rect.left - 320;
-      if (topPos + 250 > window.innerHeight) topPos = window.innerHeight - 270;
-      if (topPos < 10) topPos = 10;
-      infoCard.style.left = leftPos + 'px';
-      infoCard.style.top = topPos + 'px';
-      infoCard.style.display = 'block';
-      
-      function repositionOnScroll() {
-        if (overlay.style.display === 'block' && activeCard) {
-          const newRect = activeCard.getBoundingClientRect();
-          let newLeft = newRect.right + 20;
-          let newTop = newRect.top;
-          if (newLeft + 300 > windowWidth) newLeft = newRect.left - 320;
-          if (newTop + 250 > window.innerHeight) newTop = window.innerHeight - 270;
-          if (newTop < 10) newTop = 10;
-          infoCard.style.left = newLeft + 'px';
-          infoCard.style.top = newTop + 'px';
-        }
-      }
-      window.addEventListener('scroll', repositionOnScroll);
-      window.addEventListener('resize', repositionOnScroll);
-      cardElement._reposition = repositionOnScroll;
-    }
-
-    function resetHighlight() {
-      if (activeCard) {
-        activeCard.classList.remove('highlighted');
-        if (activeCard._reposition) {
-          window.removeEventListener('scroll', activeCard._reposition);
-          window.removeEventListener('resize', activeCard._reposition);
-          delete activeCard._reposition;
-        }
-        activeCard = null;
-      }
-      overlay.style.display = 'none';
-      infoCard.style.display = 'none';
-      // Reset info text to default placeholder (optional)
-      const infoParagraph = infoCard.querySelector('p');
-      if (infoParagraph) {
-        infoParagraph.innerHTML = "Loading information...";
-      }
-    }
-
-    overlay.addEventListener('click', resetHighlight);
-    document.getElementById('closeInfoBtn').addEventListener('click', resetHighlight);
-
-    function showToast(msg, isError=false){ let t=document.querySelector('.toast-msg'); if(t)t.remove(); let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#7a2e3ecc':'#1e2a3ecc'; d.style.borderLeftColor=isError?'#ff7777':'#e8b73b'; document.body.appendChild(d); setTimeout(()=>{d.style.opacity='0'; setTimeout(()=>d.remove(),400);},2300);}
-    async function copyToClipboard(url,name){ try{ await navigator.clipboard.writeText(url); showToast(`✅ ${name} download link copied!`); }catch(e){ showToast(`⚠️ Failed to copy link`,true); } }
-    async function shareLink(url,name){ if(navigator.share){ try{ await navigator.share({title:`${name} - NEXUS Store`, text:`Get ${name} for free!`, url}); showToast(`✨ Shared ${name}`); }catch(e){ if(e.name!=='AbortError') showToast(`⚠️ Sharing failed`,true); } } else { await navigator.clipboard.writeText(url); showToast(`🔗 Link copied (share fallback)`); } }
-    function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
-    function escapeAttr(str){ if(!str)return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    
-    function renderStore(){ 
-      const container = document.getElementById('storeList'); 
-      if(!container) return; 
-      container.innerHTML = ''; 
-      products.forEach(prod => { 
-        const card = document.createElement('div'); 
-        card.className = 'glass-card';
-        if (prod.locked) card.classList.add('locked-card');
+    <script>
+        // Firebase Configuration (unchanged)
+        const firebaseConfig = { apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY", authDomain: "nexus-08.firebaseapp.com", projectId: "nexus-08", storageBucket: "nexus-08.firebasestorage.app", messagingSenderId: "1066992373942", appId: "1:1066992373942:web:cbc354f288a5c351e25617", measurementId: "G-5E16CRZ0MF" };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const authBtn = document.getElementById('authActionBtn');
+        const userInfoArea = document.getElementById('userInfoArea');
+        const userAvatarSmall = document.getElementById('userAvatarSmall');
+        const userNameSmall = document.getElementById('userNameSmall');
         
-        // Store individual info text as data attribute
-        card.setAttribute('data-info', prod.infoText || "No additional information available.");
+        // --- Termék lista (bővítve requirements-szel) ---
+        const products = [
+            { 
+                id: "nexus_utility_tool", 
+                name: "Windows utility tool", 
+                githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/NexusHelper-V1.exe", 
+                price: "Free", 
+                fileType: ".exe", 
+                os: "Win10/11", 
+                pass: "nexus", 
+                locked: false,
+                // Új mező: requirements (követelmények)
+                requirements: "🔧 No additional dependencies required. Runs on any Windows 10/11 system.",
+                infoText: "This lightweight system utility helps clean temporary files, optimize RAM, and remove empty folders. No background processes, completely safe. Developed for Windows 10/11."
+            },
+            { 
+                id: "nexus_art_generator", 
+                name: "Ascii Art Generator", 
+                githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/AsciiArtGenerator_Setup_V1.exe", 
+                price: "Free", 
+                fileType: ".exe", 
+                os: "Win10/11", 
+                pass: "nexus", 
+                locked: false,
+                // Ez az alkalmazás például igényelhet .NET Runtime-ot
+                requirements: "⚠️ Requires .NET Desktop Runtime 8.0 or later.\n📥 Download from: https://dotnet.microsoft.com/en-us/download/dotnet/8.0",
+                infoText: "Convert any image (JPG, PNG, BMP) into ASCII characters. Choose output width, invert colors, copy result to clipboard or save as TXT. Perfect for developers and terminal art lovers."
+            },
+            { 
+                id: "nexus_comming", 
+                name: "NEXUS", 
+                githubUrl: "#", 
+                price: "Free", 
+                fileType: ".exe", 
+                os: "Win10/11", 
+                pass: "nexus", 
+                locked: true,
+                requirements: "🔒 This tool is not yet available.",
+                infoText: "Coming soon – a mysterious new tool from NEXUS Collective. Stay tuned for updates on Discord and social media!"
+            }
+        ];
         
-        let passButtonHtml = '';
-        if (!prod.locked) {
-          passButtonHtml = `<button class="pass-btn" data-pass="${escapeAttr(prod.pass)}" title="Show password"><i class="fas fa-lock"></i></button>`;
-        } else {
-          passButtonHtml = `<button class="pass-btn" disabled style="opacity:0.5; cursor:not-allowed;" title="Coming soon"><i class="fas fa-hourglass-half"></i></button>`;
+        // --- Segédfüggvények (toast, copy, share, escape) ---
+        function showToast(msg, isError=false){ let t=document.querySelector('.toast-msg'); if(t)t.remove(); let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#7a2e3ecc':'#1e2a3ecc'; d.style.borderLeftColor=isError?'#ff7777':'#e8b73b'; document.body.appendChild(d); setTimeout(()=>{d.style.opacity='0'; setTimeout(()=>d.remove(),400);},2300);}
+        async function copyToClipboard(url,name){ try{ await navigator.clipboard.writeText(url); showToast(`✅ ${name} download link copied!`); }catch(e){ showToast(`⚠️ Failed to copy link`,true); } }
+        async function shareLink(url,name){ if(navigator.share){ try{ await navigator.share({title:`${name} - NEXUS Store`, text:`Get ${name} for free!`, url}); showToast(`✨ Shared ${name}`); }catch(e){ if(e.name!=='AbortError') showToast(`⚠️ Sharing failed`,true); } } else { await navigator.clipboard.writeText(url); showToast(`🔗 Link copied (share fallback)`); } }
+        function escapeHtml(str){ if(!str)return ''; return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
+        function escapeAttr(str){ if(!str)return ''; return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+        
+        // --- Letöltésszámláló lekérése GitHub API segítségével ---
+        async function fetchDownloadCount(githubUrl) {
+            // A githubUrl-ból kiszedjük a release asset URL-jét
+            // Feltételezzük, hogy a githubUrl közvetlen letöltési link (.exe fájl)
+            // Pl.: https://github.com/.../releases/download/exe/NexusHelper-V1.exe
+            try {
+                // A release API URL lekérése: /repos/{owner}/{repo}/releases
+                const urlObj = new URL(githubUrl);
+                const pathParts = urlObj.pathname.split('/');
+                // Általános minta: /:owner/:repo/releases/download/:tag/:filename
+                const owner = pathParts[1];
+                const repo = pathParts[2];
+                const filename = pathParts[pathParts.length - 1];
+                // Lekérjük a release-ek listáját
+                const apiUrl = `https://api.github.com/repos/${owner}/${repo}/releases`;
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error(`API error: ${response.status}`);
+                const releases = await response.json();
+                // Megkeressük azt a release-t, amelyik tartalmazza a fájlunkat
+                for (const release of releases) {
+                    const asset = release.assets.find(a => a.name === filename);
+                    if (asset) {
+                        return asset.download_count;
+                    }
+                }
+                return 0;
+            } catch (error) {
+                console.error("Download count fetch error:", error);
+                return null;
+            }
         }
         
-        let downloadButtonHtml = '';
-        if (!prod.locked) {
-          downloadButtonHtml = `<button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-                                  <i class="fas fa-download"></i> DOWNLOAD
-                                </button>`;
-        } else {
-          downloadButtonHtml = `<button class="btn-download" disabled style="background:#555; cursor:not-allowed; box-shadow:none;">
-                                  <i class="fas fa-lock"></i> LOCKED
-                                </button>`;
+        // --- Kártya renderelés (új gombokkal és letöltésszámlálóval) ---
+        async function renderStore() {
+            const container = document.getElementById('storeList');
+            if (!container) return;
+            container.innerHTML = '';
+            for (const prod of products) {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                if (prod.locked) card.classList.add('locked-card');
+                
+                // Egyedi infó szöveg tárolása
+                card.setAttribute('data-info', prod.infoText || "No additional information available.");
+                
+                // Letöltésszámláló lekérése (ha nem locked)
+                let downloadCount = null;
+                if (!prod.locked && prod.githubUrl && prod.githubUrl !== '#') {
+                    downloadCount = await fetchDownloadCount(prod.githubUrl);
+                }
+                
+                const passButtonHtml = !prod.locked ? `<button class="pass-btn" data-pass="${escapeAttr(prod.pass)}" title="Show password"><i class="fas fa-lock"></i></button>` : `<button class="pass-btn" disabled style="opacity:0.5; cursor:not-allowed;" title="Coming soon"><i class="fas fa-hourglass-half"></i></button>`;
+                
+                const downloadButtonHtml = !prod.locked ? `<button class="btn-download" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}"><i class="fas fa-download"></i> DOWNLOAD</button>` : `<button class="btn-download" disabled style="background:#555; cursor:not-allowed; box-shadow:none;"><i class="fas fa-lock"></i> LOCKED</button>`;
+                
+                const requirementsButtonHtml = !prod.locked ? `<button class="btn-requirements requirements-btn" data-req="${escapeAttr(prod.requirements)}"><i class="fas fa-info-circle"></i> Requirements</button>` : '';
+                
+                const downloadCountHtml = (downloadCount !== null && !prod.locked) ? `<div class="download-count"><i class="fas fa-download"></i> ${downloadCount} downloads</div>` : '';
+                
+                card.innerHTML = `
+                    <button class="highlight-btn" title="Show file info"><i class="fas fa-info-circle"></i></button>
+                    <div class="card-header"><h2>${escapeHtml(prod.name)}</h2></div>
+                    <div class="product-details">
+                        <span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span>
+                        <span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span>
+                        <span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os)}</span>
+                        ${passButtonHtml}
+                    </div>
+                    <div class="button-group">
+                        ${downloadButtonHtml}
+                        ${requirementsButtonHtml}
+                    </div>
+                    ${downloadCountHtml}
+                    <div class="icon-group">
+                        <button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
+                            <i class="fas fa-copy"></i> <span>Copy link</span>
+                        </button>
+                        <button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
+                            <i class="fas fa-share-alt"></i> <span>Share</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+                
+                // Highlight gomb
+                const highlightBtn = card.querySelector('.highlight-btn');
+                highlightBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (prod.locked) {
+                        alert(`🔒 ${prod.name} is not yet available. Coming soon!`);
+                        return;
+                    }
+                    showHighlight(card);
+                });
+                
+                // Pass gomb
+                if (!prod.locked) {
+                    const passBtn = card.querySelector('.pass-btn');
+                    if(passBtn) {
+                        passBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const password = passBtn.getAttribute('data-pass');
+                            alert(`If Windows blocks the app, you may need to disable Smart App Control in Windows Security. Password: ${password}`);
+                        });
+                    }
+                }
+                
+                // Requirements gomb eseménykezelő
+                const reqBtn = card.querySelector('.requirements-btn');
+                if (reqBtn) {
+                    reqBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const requirements = reqBtn.getAttribute('data-req');
+                        const modal = document.getElementById('requirementsModal');
+                        const reqText = document.getElementById('requirementsText');
+                        reqText.innerHTML = requirements.replace(/\n/g, '<br>');
+                        modal.style.display = 'flex';
+                    });
+                }
+            }
+            
+            // Események a dinamikus gombokhoz
+            document.querySelectorAll('.btn-download:not([disabled])').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    const url = btn.getAttribute('data-url'); 
+                    const name = btn.getAttribute('data-name'); 
+                    if(url && url !== '#'){ 
+                        window.open(url, '_blank', 'noopener,noreferrer'); 
+                        showToast(`⬇️ Downloading ${name} ...`); 
+                    } else { 
+                        showToast(`⚠️ This tool is locked (coming soon)`, true); 
+                    } 
+                }); 
+            });
+            
+            document.querySelectorAll('.copy-link-btn').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    const url = btn.getAttribute('data-url'); 
+                    const name = btn.getAttribute('data-name'); 
+                    if(url && url !== '#') copyToClipboard(url, name); 
+                    else showToast(`🔒 Locked item – no link yet`, true); 
+                }); 
+            });
+            
+            document.querySelectorAll('.share-btn').forEach(btn => { 
+                btn.addEventListener('click', () => { 
+                    const url = btn.getAttribute('data-url'); 
+                    const name = btn.getAttribute('data-name'); 
+                    if(url && url !== '#') shareLink(url, name); 
+                    else showToast(`🔒 Locked item – cannot share`, true); 
+                }); 
+            });
         }
         
-        card.innerHTML = `
-          <button class="highlight-btn" title="Show file info"><i class="fas fa-info-circle"></i></button>
-          <div class="card-header"><h2>${escapeHtml(prod.name)}</h2></div>
-          <div class="product-details">
-            <span class="price-badge"><i class="fas fa-tag"></i> Price: Free</span>
-            <span class="file-type"><i class="fas fa-file"></i> files: ${escapeHtml(prod.fileType)}</span>
-            <span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os)}</span>
-            ${passButtonHtml}
-          </div>
-          ${downloadButtonHtml}
-          <div class="icon-group">
-            <button class="icon-btn copy-link-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-              <i class="fas fa-copy"></i> <span>Copy link</span>
-            </button>
-            <button class="icon-btn share-btn" data-url="${escapeAttr(prod.githubUrl)}" data-name="${escapeAttr(prod.name)}">
-              <i class="fas fa-share-alt"></i> <span>Share</span>
-            </button>
-          </div>
-        `;
-        container.appendChild(card);
+        // --- Highlight és Overlay kezelés (változatlan) ---
+        const overlay = document.getElementById('overlay');
+        const infoCard = document.getElementById('infoCard');
+        let activeCard = null;
         
-        const highlightBtn = card.querySelector('.highlight-btn');
-        highlightBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          if (prod.locked) {
-            alert(`🔒 ${prod.name} is not yet available. Coming soon!`);
-            return;
-          }
-          showHighlight(card);
+        function showHighlight(cardElement) {
+            if (activeCard) resetHighlight();
+            activeCard = cardElement;
+            cardElement.classList.add('highlighted');
+            overlay.style.display = 'block';
+            const customInfo = cardElement.getAttribute('data-info');
+            const infoParagraph = infoCard.querySelector('p');
+            if (infoParagraph && customInfo) {
+                infoParagraph.innerHTML = customInfo;
+            } else {
+                infoParagraph.innerHTML = "This executable is a Win helper file created for development and demonstration purposes.<br><br>It does not perform any actions, contains no malicious code, and is completely safe.<br><br><i class='fas fa-shield-alt'></i> No system changes, no data collection, no background processes.";
+            }
+            const rect = cardElement.getBoundingClientRect();
+            const windowWidth = window.innerWidth;
+            let leftPos = rect.right + 20;
+            let topPos = rect.top;
+            if (leftPos + 300 > windowWidth) leftPos = rect.left - 320;
+            if (topPos + 250 > window.innerHeight) topPos = window.innerHeight - 270;
+            if (topPos < 10) topPos = 10;
+            infoCard.style.left = leftPos + 'px';
+            infoCard.style.top = topPos + 'px';
+            infoCard.style.display = 'block';
+            function repositionOnScroll() {
+                if (overlay.style.display === 'block' && activeCard) {
+                    const newRect = activeCard.getBoundingClientRect();
+                    let newLeft = newRect.right + 20;
+                    let newTop = newRect.top;
+                    if (newLeft + 300 > windowWidth) newLeft = newRect.left - 320;
+                    if (newTop + 250 > window.innerHeight) newTop = window.innerHeight - 270;
+                    if (newTop < 10) newTop = 10;
+                    infoCard.style.left = newLeft + 'px';
+                    infoCard.style.top = newTop + 'px';
+                }
+            }
+            window.addEventListener('scroll', repositionOnScroll);
+            window.addEventListener('resize', repositionOnScroll);
+            cardElement._reposition = repositionOnScroll;
+        }
+        
+        function resetHighlight() {
+            if (activeCard) {
+                activeCard.classList.remove('highlighted');
+                if (activeCard._reposition) {
+                    window.removeEventListener('scroll', activeCard._reposition);
+                    window.removeEventListener('resize', activeCard._reposition);
+                    delete activeCard._reposition;
+                }
+                activeCard = null;
+            }
+            overlay.style.display = 'none';
+            infoCard.style.display = 'none';
+        }
+        
+        overlay.addEventListener('click', resetHighlight);
+        document.getElementById('closeInfoBtn').addEventListener('click', resetHighlight);
+        
+        // --- Modal bezárása ---
+        const modal = document.getElementById('requirementsModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
         });
         
-        if (!prod.locked) {
-          const passBtn = card.querySelector('.pass-btn');
-          if(passBtn) {
-            passBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              const password = passBtn.getAttribute('data-pass');
-              alert(`If Windows blocks the app, you may need to disable Smart App Control in Windows Security. Password: ${password}`);
-            });
-          }
-        }
-      });
-      
-      document.querySelectorAll('.btn-download:not([disabled])').forEach(btn => { 
-        btn.addEventListener('click', () => { 
-          const url = btn.getAttribute('data-url'); 
-          const name = btn.getAttribute('data-name'); 
-          if(url && url !== '#'){ 
-            window.open(url, '_blank', 'noopener,noreferrer'); 
-            showToast(`⬇️ Downloading ${name} ...`); 
-          } else { 
-            showToast(`⚠️ This tool is locked (coming soon)`, true); 
-          } 
-        }); 
-      });
-      
-      document.querySelectorAll('.copy-link-btn').forEach(btn => { 
-        btn.addEventListener('click', () => { 
-          const url = btn.getAttribute('data-url'); 
-          const name = btn.getAttribute('data-name'); 
-          if(url && url !== '#') copyToClipboard(url, name); 
-          else showToast(`🔒 Locked item – no link yet`, true); 
-        }); 
-      });
-      
-      document.querySelectorAll('.share-btn').forEach(btn => { 
-        btn.addEventListener('click', () => { 
-          const url = btn.getAttribute('data-url'); 
-          const name = btn.getAttribute('data-name'); 
-          if(url && url !== '#') shareLink(url, name); 
-          else showToast(`🔒 Locked item – cannot share`, true); 
-        }); 
-      });
-    }
-    
-    function updateAuthUI(user){ if(user){ authBtn.innerHTML='<i class="fas fa-sign-out-alt"></i> Logout'; authBtn.onclick=()=>auth.signOut(); userInfoArea.style.display='flex'; userAvatarSmall.src=user.photoURL||'https://placehold.co/40x40/3a2c6e/white?text=U'; userNameSmall.innerText=user.displayName||user.email?.split('@')[0]||'User'; } else { authBtn.innerHTML='<i class="fab fa-google"></i> Login'; authBtn.onclick=()=>auth.signInWithPopup(provider).catch(err=>showToast(`Login failed: ${err.message}`,true)); userInfoArea.style.display='none'; } }
-    auth.onAuthStateChanged(user=>updateAuthUI(user));
-    renderStore();
-    
-    const tabs=document.querySelectorAll('.tab'); const contents=document.querySelectorAll('#tabsContent > div');
-    tabs.forEach(tab=>{ tab.addEventListener('click',()=>{ const tabId=tab.getAttribute('data-tab'); tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active'); contents.forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); }); });
-    
-    document.getElementById('contactEmailBtn').addEventListener('click',()=>{ window.location.href='mailto:nexus.collective.contact@gmail.com?subject=NEXUS%20Store%20Inquiry&body=Hello%20NEXUS%20Collective,'; });
-    
-    window.addEventListener('load',()=>{ const av=document.querySelector('.avatar'); if(av && av.complete && av.naturalWidth===0) av.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'; });
-  </script>
+        // --- Firebase Auth és egyéb események ---
+        function updateAuthUI(user){ if(user){ authBtn.innerHTML='<i class="fas fa-sign-out-alt"></i> Logout'; authBtn.onclick=()=>auth.signOut(); userInfoArea.style.display='flex'; userAvatarSmall.src=user.photoURL||'https://placehold.co/40x40/3a2c6e/white?text=U'; userNameSmall.innerText=user.displayName||user.email?.split('@')[0]||'User'; } else { authBtn.innerHTML='<i class="fab fa-google"></i> Login'; authBtn.onclick=()=>auth.signInWithPopup(provider).catch(err=>showToast(`Login failed: ${err.message}`,true)); userInfoArea.style.display='none'; } }
+        auth.onAuthStateChanged(user=>updateAuthUI(user));
+        
+        renderStore();
+        
+        const tabs=document.querySelectorAll('.tab'); const contents=document.querySelectorAll('#tabsContent > div');
+        tabs.forEach(tab=>{ tab.addEventListener('click',()=>{ const tabId=tab.getAttribute('data-tab'); tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active'); contents.forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); }); });
+        
+        document.getElementById('contactEmailBtn').addEventListener('click',()=>{ window.location.href='mailto:nexus.collective.contact@gmail.com?subject=NEXUS%20Store%20Inquiry&body=Hello%20NEXUS%20Collective,'; });
+        
+        window.addEventListener('load',()=>{ const av=document.querySelector('.avatar'); if(av && av.complete && av.naturalWidth===0) av.src='https://placehold.co/120x120/1e1a2e/ffd966?text=NX'; });
+    </script>
 </body>
 </html>
