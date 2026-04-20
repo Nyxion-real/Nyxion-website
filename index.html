@@ -48,9 +48,9 @@
         .search-box { flex: 2; min-width: 200px; display: flex; align-items: center; background: rgba(0, 0, 0, 0.4); border-radius: 60px; padding: 0.4rem 1rem; border: 1px solid var(--primary); }
         .search-box i { color: var(--primary); margin-right: 10px; }
         .search-box input { background: transparent; border: none; outline: none; color: var(--text-main); width: 100%; font-size: 0.9rem; font-family: inherit; }
+        .warning-btn { background: rgba(255, 100, 50, 0.2); border: 1px solid #ff6644; border-radius: 60px; padding: 0.4rem 1.2rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; color: #ffaa88; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .warning-btn:hover { background: rgba(255, 100, 50, 0.4); border-color: #ff6644; color: #ffccaa; transform: scale(1.02); }
         .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .filter-chip { background: rgba(20, 30, 50, 0.7); border-radius: 40px; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: 0.2s; border: 1px solid transparent; color: var(--text-dim); }
-        .filter-chip.active { background: var(--primary); color: #03050b; border-color: white; box-shadow: 0 0 8px var(--primary-glow); }
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
         .glass-card { background: var(--bg-surface); backdrop-filter: blur(14px); border: 1px solid var(--glass-edge); border-radius: var(--card-radius); padding: 1.6rem; transition: var(--transition); position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5); }
         .glass-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 28px 40px -15px rgba(0, 166, 255, 0.2); }
@@ -78,8 +78,9 @@
         .license-btn { display: block; margin: 3rem auto 0; background: rgba(0, 80, 150, 0.2); backdrop-filter: blur(12px); border: 1px solid var(--primary); border-radius: 60px; padding: 0.9rem 2rem; font-weight: 700; font-size: 0.9rem; color: var(--primary); cursor: pointer; text-align: center; width: fit-content; min-width: 250px; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 12, 0.92); backdrop-filter: blur(12px); z-index: 1000; display: none; align-items: center; justify-content: center; }
         .modal-card { background: linear-gradient(145deg, #0c1225, #050811); border: 1px solid var(--primary); border-radius: 2rem; padding: 2rem; width: 500px; max-width: 90%; color: var(--text-main); box-shadow: 0 30px 50px rgba(0,0,0,0.6); }
-        .modal-card-large { width: 800px; max-width: 95%; }
-        .modal-card h4 { color: var(--primary); font-size: 1.6rem; margin-bottom: 1rem; border-bottom: 1px solid var(--primary); padding-bottom: 0.6rem; }
+        .modal-card-large { width: 600px; max-width: 95%; }
+        .modal-card h4 { color: var(--primary); font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--primary); padding-bottom: 0.6rem; }
+        .warning-text { font-size: 0.95rem; line-height: 1.6; color: #ffaa88; }
         .license-text { font-size: 0.9rem; line-height: 1.5; max-height: 70vh; overflow-y: auto; }
         .close-modal { background: rgba(255,255,255,0.1); border: none; padding: 0.5rem 1.5rem; border-radius: 40px; cursor: pointer; margin-top: 1.5rem; color: white; transition: 0.2s; font-weight: 600; }
         .close-modal:hover { background: var(--primary); color: #03050b; }
@@ -100,7 +101,6 @@
         .admin-btn { background: var(--primary); border: none; padding: 0.7rem 1.5rem; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 1rem; color: #03050b; transition: 0.2s; }
         .admin-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px var(--primary-glow); }
         .admin-btn-danger { background: #cc3366; color: white; }
-        .admin-btn-warning { background: #ffaa33; color: #1a1a2e; }
         .category-row { display: flex; gap: 0.5rem; align-items: center; }
         .category-row select { flex: 1; }
         .category-row button { background: var(--primary); border: none; border-radius: 40px; padding: 0.7rem 1rem; cursor: pointer; color: #03050b; }
@@ -115,7 +115,7 @@
         .admin-product-item { background: rgba(0,0,0,0.4); border-radius: 1rem; padding: 0.8rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
         .loading-spinner { text-align: center; padding: 2rem; color: var(--primary); }
         .realtime-badge { position: fixed; bottom: 10px; left: 10px; background: rgba(0,166,255,0.2); border-radius: 20px; padding: 4px 10px; font-size: 0.7rem; color: #00ffaa; z-index: 100; }
-        @media (max-width: 900px) { .admin-two-columns { grid-template-columns: 1fr; } .wrapper { padding: 1rem; } .top-bar { right: 0.8rem; top: 0.8rem; gap: 6px; } }
+        @media (max-width: 900px) { .admin-two-columns { grid-template-columns: 1fr; } .wrapper { padding: 1rem; } .top-bar { right: 0.8rem; top: 0.8rem; gap: 6px; } .warning-btn span { display: none; } .warning-btn i { margin: 0; } .warning-btn { padding: 0.4rem 0.8rem; } }
     </style>
 </head>
 <body>
@@ -123,7 +123,7 @@
 <div class="top-bar"><div class="lang-switch" id="langSwitch"><button class="lang-btn" data-lang="hu">HU</button><button class="lang-btn" data-lang="en">EN</button></div><div class="auth-panel" id="authFixed"><div id="authStateContainer"><button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> <span id="loginText">Belépés</span></button></div><div id="userInfoArea" style="display:none;" class="user-info"><img id="userAvatarSmall" class="user-avatar-sm" src=""><span id="userNameSmall" class="user-name"></span></div></div></div>
 <div class="wrapper"><div class="hero"><div class="logo-ring"><i class="fas fa-cube"></i></div><div class="brand">NΞXUS COLLECTIVE</div><h1>NΞXUS STORE</h1><div class="sub" id="subText">premium .exe releases • direct GitHub</div></div>
 <div class="tabs" id="mainTabs"><div class="tab active" data-tab="storeTab" id="tabStore">⟡ TERMÉKEK</div><div class="tab" data-tab="communityTab" id="tabCommunity">⟡ KÖZÖSSÉG</div><div class="tab" id="adminTabBtn" data-tab="adminTab" style="display:none;">⟡ ADMIN PANEL</div></div>
-<div id="tabsContent"><div id="storeTab" class="active"><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Keresés név szerint..."></div><div class="filter-group" id="categoryFilters"></div></div><div id="storeList" class="grid-3"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Betöltés...</div></div></div>
+<div id="tabsContent"><div id="storeTab" class="active"><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Keresés név szerint..."></div><button id="warningBtn" class="warning-btn"><i class="fas fa-shield-alt"></i> <span id="warningBtnText">⚠️ Vírusfigyelmeztetés</span></button><div class="filter-group" id="categoryFilters"></div></div><div id="storeList" class="grid-3"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Betöltés...</div></div></div>
 <div id="communityTab"><div class="community-links"><a class="community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
 <div id="adminTab"><div class="admin-panel"><h3 style="color:var(--primary); margin-bottom:1rem;"><i class="fas fa-shield-alt"></i> <span id="adminPanelTitle">Adminisztrátori felület</span></h3>
 <div class="admin-two-columns"><div class="admin-col"><h4><i class="fas fa-language"></i> <span id="huTitle">Magyar (HU)</span></h4><div class="admin-field"><label id="labelNameHu">Név</label><input type="text" id="prodNameHu" placeholder="Pl. Windows segédprogram"></div><div class="admin-field"><label id="labelCatHu">Kategória</label><div class="category-row"><select id="prodCatHuSelect"><option value="">-- Válassz --</option></select><button id="newCatHuBtn" title="Új kategória"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatHuNew" placeholder="Új kategória neve" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqHu">Követelmény</label><div class="clickable-textarea" data-field="reqHu" data-lang="hu">📝 Kattints ide a szerkesztéshez</div></div><div class="admin-field"><label id="labelInfoHu">Info szöveg</label><div class="clickable-textarea" data-field="infoHu" data-lang="hu">📝 Kattints ide a szerkesztéshez</div></div></div>
@@ -135,29 +135,36 @@
 <button id="licenseBtn" class="license-btn"><i class="fas fa-file-contract"></i> <span id="licenseBtnText">⚖️ LICENC & JOGI NYILATKOZAT</span></button></div>
 <div class="realtime-badge"><i class="fas fa-sync-alt"></i> <span id="realtimeStatus">Valós idejű frissítés aktív</span></div>
 <div id="licenseModal" class="overlay"><div class="modal-card modal-card-large"><h4><i class="fas fa-file-contract"></i> <span id="licenseTitle">Szoftverlicenc és Jogi nyilatkozat</span></h4><div class="license-text" id="licenseContent"></div><button class="close-modal" id="closeLicenseModalBtn"><span id="closeBtnText">Bezárás</span></button></div></div>
+<div id="warningModal" class="overlay"><div class="modal-card modal-card-large"><h4><i class="fas fa-exclamation-triangle"></i> <span id="warningTitle">⚠️ Vírusfigyelmeztetés</span></h4><div class="warning-text" id="warningContent"></div><button class="close-modal" id="closeWarningModalBtn"><span id="warningCloseBtn">Bezárás</span></button></div></div>
 <div id="requirementsModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-microchip"></i> <span id="reqTitle">Rendszerkövetelmény</span></h4><p id="requirementsText"></p><button class="close-modal" id="closeModalBtn"><span id="closeReqBtnText">Bezárás</span></button></div></div>
 <div id="textEditModal" class="overlay"><div class="modal-card"><h4 id="editModalTitle">Szerkesztés</h4><textarea id="editTextarea" rows="6" style="width:100%; background:#0a1022; border:1px solid var(--primary); border-radius:1rem; padding:1rem; color:white; font-family:inherit;"></textarea><div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;"><button id="saveEditBtn" class="admin-btn">Mentés</button><button id="cancelEditBtn" class="admin-btn admin-btn-danger">Mégse</button></div></div></div>
 <div id="highlightTooltip" class="highlight-tooltip"><h4><i class="fas fa-flask"></i> <span id="tooltipTitle">Termék infó</span></h4><p id="tooltipText"></p><button id="closeTooltipBtn" style="margin-top:12px; background:none; border:1px solid var(--primary); border-radius:30px; padding:4px 12px;"><span id="gotItText">Rendben</span></button></div>
 
 <script>
+    // ============================================================
+    // FIREBASE FIRESTORE - VALÓS IDEJŰ FRISSÍTÉSSEL
+    // ============================================================
     const firebaseConfig = { apiKey: "AIzaSyANzkn08nF3-_Dsg19wscz67dYRPk8pMgY", authDomain: "nexus-08.firebaseapp.com", projectId: "nexus-08", storageBucket: "nexus-08.firebasestorage.app", messagingSenderId: "1066992373942", appId: "1:1066992373942:web:cbc354f288a5c351e25617", measurementId: "G-5E16CRZ0MF" };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
     const db = firebase.firestore();
     
+    // TITKOSÍTOTT ADMIN HITELESÍTÉS
     const _emailHash = "a39e125749a51c569ac9cfdb12b1de8393df63b0ad3c7b82eb52d1a861185a04";
     const _passHash = "ca68c377a947f72f3879fdd96a3e99f40392abf99b6f4fc6042f51335bd70506";
     
     async function hashEmail(text) { const encoder = new TextEncoder(); const data = encoder.encode(text.trim().toLowerCase()); const hashBuffer = await crypto.subtle.digest('SHA-256', data); return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join(''); }
     async function hashPassword(text) { const encoder = new TextEncoder(); const data = encoder.encode(text); const hashBuffer = await crypto.subtle.digest('SHA-256', data); return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join(''); }
     
+    // Alapértelmezett termékek
     const defaultProducts = [
         { id: "nexus_utility_tool", githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/NexusHelper-V1.exe", price: "Free", fileType: ".exe", os: "Win10/11", pass: "nexus", locked: false, deleted: false, category: {hu:"Rendszereszköz", en:"Utility"}, name: {hu:"Windows segédprogram", en:"Windows Utility Tool"}, requirements: {hu:"🔧 Nincs szükség külső függőségre. Windows 10/11 rendszeren fut.", en:"🔧 No additional dependencies required. Runs on Windows 10/11."}, infoText: {hu:"Könnyű rendszersegéd: temp fájlok tisztítása, RAM optimalizálás, üres mappák törlése.", en:"Lightweight system helper: temp file cleanup, RAM optimization, empty folder removal."} },
         { id: "nexus_art_generator", githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/AsciiArtGenerator_Setup_V1.exe", price: "Free", fileType: ".exe", os: "Win10/11", pass: "nexus", locked: false, deleted: false, category: {hu:"Grafika", en:"Graphics"}, name: {hu:"ASCII Art generátor", en:"ASCII Art Generator"}, requirements: {hu:"⚠️ .NET Desktop Runtime 10.0 szükséges.<br>📥 https://dotnet.microsoft.com/download/dotnet/10.0", en:"⚠️ .NET Desktop Runtime 10.0 required.<br>📥 https://dotnet.microsoft.com/download/dotnet/10.0"}, infoText: {hu:"Képek (JPG, PNG) átalakítása ASCII karakterekké. Állítható szélesség, invertálás.", en:"Convert images (JPG, PNG) to ASCII characters. Adjustable width, invert, copy to clipboard."} },
         { id: "nexus_password_generator", githubUrl: "https://github.com/nexus-the-power/nexus-exe-store/releases/download/exe/NexusPasswordGeneratorSETUP.exe", price: "Free", fileType: ".exe", os: "Win10/11", pass: "nexus", locked: false, deleted: false, category: {hu:"Jelszó", en:"Password"}, name: {hu:"Jelszó generátor", en:"Password generator"}, requirements: {hu:"⚠️ .NET Desktop Runtime 10.0 szükséges.<br>📥 https://dotnet.microsoft.com/download/dotnet/10.0", en:"⚠️ .NET Desktop Runtime 10.0 required.<br>📥 https://dotnet.microsoft.com/download/dotnet/10.0"}, infoText: {hu:"Biztonságos, egyedi jelszavak generálása (6-48 karakter, speciális jelekkel), valós idejű erősségjelzővel.", en:"Generate secure, unique passwords (6-48 characters, including special characters) with real-time strength indicator."} },
     ];
     
+    // Globális változók
     let products = [];
     let trash = [];
     let currentLang = localStorage.getItem('nexusLang') || 'hu';
@@ -168,24 +175,34 @@
     let productsUnsubscribe = null;
     let trashUnsubscribe = null;
     
+    // License szövegek
     const licenseTexts = {
         hu: `<p><strong>Version 2.0 – Kutatási és Fejlesztési Licenc</strong><br>Utolsó frissítés: 2025. április</p><p><strong>1. Cél</strong><br>Kizárólag oktatási, tesztelési és kutatási célokra. Nem tartalmaz rosszindulatú kódot.</p><p><strong>2. Felelősség kizárása</strong><br>A szoftvert „AHOGY VAN” biztosítjuk, minden garancia nélkül.</p><p><strong>3. Felhasználói felelősség</strong><br>A felhasználó köteles betartani a helyi törvényeket, és megfelelő biztonsági környezetben tesztelni.</p><p><strong>4. Szellemi tulajdon</strong><br>A „NEXUS Collective” védjegy és a szoftver szerzői jogvédelem alatt áll.</p><p><strong>5. Téves pozitív riasztások</strong><br>Az alkalmazás fejlesztői eszközök miatt egyes antivírusok gyanúsíthatják. Ellenőrzött, nem tartalmaz fenyegetést.</p><p><strong>6. Adatvédelem</strong><br>A szoftver NEM gyűjt személyes adatot. Nincs telemetria.</p><p><strong>7. Licenc elfogadása</strong><br>Letöltéssel és használattal elfogadja a feltételeket. © 2025 NEXUS Collective.<br>Kapcsolat: nexus.collective.contact@gmail.com</p>`,
         en: `<p><strong>Version 2.0 – Research & Development License</strong><br>Last updated: April 2025</p><p><strong>1. Purpose</strong><br>For educational, testing and research purposes only. Contains no malicious code.</p><p><strong>2. Disclaimer</strong><br>The Software is provided "AS IS", without any warranty.</p><p><strong>3. User Responsibility</strong><br>User must comply with local laws and test in a secure environment.</p><p><strong>4. Intellectual Property</strong><br>"NEXUS Collective" trademark and software are copyrighted.</p><p><strong>5. False Positives</strong><br>Due to development tools, some antivirus may flag the file. It is verified and threat-free.</p><p><strong>6. Privacy</strong><br>The Software does NOT collect personal data. No telemetry.</p><p><strong>7. Acceptance</strong><br>By downloading and using, you accept the terms. © 2025 NEXUS Collective.<br>Contact: nexus.collective.contact@gmail.com</p>`
     };
     
+    // Figyelmeztető szövegek
+    const warningTexts = {
+        hu: `⚠️ FIGYELEM! ⚠️\n\nA Windows automatikusan vírusként észlelheti a fájlokat, mivel azok fejlesztői környezetben készültek és nem rendelkeznek hivatalos digitális aláírással.\n\n✅ GARANTÁLJUK, hogy a programok rendeltetésszerű használat mellett NEM tartalmaznak adatlopó kódot, kártékony szoftvert vagy szándékos rosszindulatú funkciót.\n\n📌 Javaslat: A letöltött fájlokat használat előtt ellenőrizd a saját biztonsági szoftvereddel, és ha bizonytalan vagy, futtasd őket szeparált környezetben (sandbox).\n\n🔐 A NEXUS Collective nem vállal felelősséget a nem rendeltetésszerű használatból eredő károkért.`,
+        en: `⚠️ WARNING! ⚠️\n\nWindows may automatically detect these files as viruses because they were created in a development environment and do not have an official digital signature.\n\n✅ WE GUARANTEE that when used as intended, the programs do NOT contain data-stealing code, malicious software, or intentionally harmful functions.\n\n📌 Recommendation: Before using downloaded files, check them with your own security software, and if in doubt, run them in a separate environment (sandbox).\n\n🔐 NEXUS Collective assumes no responsibility for damages resulting from unintended use.`
+    };
+    
+    // Fordítások
     const translations = {
-        hu: { login:"Belépés", logout:"Kilépés", loginGoogle:"Belépés Google-lel", filterAll:"Összes", download:"LETÖLTÉS", locked:"ZÁROLT", reqBtn:"Köv.", copy:"Másol", share:"Megoszt", info:"Info", noResults:"Nincs találat.", passwordAlert:(p)=>`Jelszó: ${p}`, toastCopied:" link másolva", toastDownload:" letöltés indítása", toastLocked:"🔒 Zárt tartalom", toastNoLink:"🔒 Nincs elérhető link", toastShare:"✨ Megosztva", toastShareFail:"⚠️ Megosztás sikertelen", toastCopyFail:"❌ Másolás sikertelen", close:"Bezárás", reqTitle:"Rendszerkövetelmény", tooltipTitle:"Termék infó", gotIt:"Rendben", licenseTitle:"Szoftverlicenc és Jogi nyilatkozat", licenseBtn:"⚖️ LICENC & JOGI NYILATKOZAT", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Keresés név szerint...", tabStore:"⟡ TERMÉKEK", tabCommunity:"⟡ KÖZÖSSÉG", adminPanelTitle:"Adminisztrátori felület", addBtnText:"Új kártya hozzáadása", manageTitle:"Meglévő kártyák", trashTitle:"🗑️ Lomtár", huTitle:"Magyar (HU)", enTitle:"Angol (EN)", labelNameHu:"Név", labelNameEn:"Name", labelCatHu:"Kategória", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File típus", labelOs:"OS", labelPass:"Jelszó (lakat)", labelReqHu:"Követelmény", labelReqEn:"Requirements", labelInfoHu:"Info szöveg", labelInfoEn:"Info text", labelLocked:"Zárolt (Locked)", adminPasswordPrompt:"🔐 ADMINISZTRÁTORI HITELESÍTÉS\n\nA folytatáshoz add meg a jelszót:", adminPasswordWrong:"Hibás jelszó! Nincs hozzáférés.", adminAuthSuccess:"Admin hitelesítés sikeres!", noAdminRights:"Nincs jogosultság az admin panelhez!", editModalTitle:"Szerkesztés", save:"Mentés", cancel:"Mégse", restore:"Visszaállítás", permanentDelete:"Végleges törlés", edit:"Szerkeszt", lockUnlock:"Zárolás/Ki", delete:"Törlés", loading:"Betöltés...", realtimeActive:"Valós idejű frissítés aktív" },
-        en: { login:"Login", logout:"Logout", loginGoogle:"Login with Google", filterAll:"All", download:"DOWNLOAD", locked:"LOCKED", reqBtn:"Req.", copy:"Copy", share:"Share", info:"Info", noResults:"No results.", passwordAlert:(p)=>`Password: ${p}`, toastCopied:" link copied", toastDownload:" download started", toastLocked:"🔒 Locked content", toastNoLink:"🔒 No link available", toastShare:"✨ Shared", toastShareFail:"⚠️ Sharing failed", toastCopyFail:"❌ Copy failed", close:"Close", reqTitle:"System Requirements", tooltipTitle:"Product Info", gotIt:"Got it", licenseTitle:"Software License & Disclaimer", licenseBtn:"⚖️ LICENSE & DISCLAIMER", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Search by name...", tabStore:"⟡ PRODUCTS", tabCommunity:"⟡ COMMUNITY", adminPanelTitle:"Administrator Panel", addBtnText:"Add new card", manageTitle:"Existing cards", trashTitle:"🗑️ Trash", huTitle:"Hungarian (HU)", enTitle:"English (EN)", labelNameHu:"Name", labelNameEn:"Name", labelCatHu:"Category", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File type", labelOs:"OS", labelPass:"Password (lock)", labelReqHu:"Requirements", labelReqEn:"Requirements", labelInfoHu:"Info text", labelInfoEn:"Info text", labelLocked:"Locked", adminPasswordPrompt:"🔐 ADMIN AUTHENTICATION\n\nEnter password to continue:", adminPasswordWrong:"Wrong password! Access denied.", adminAuthSuccess:"Admin authentication successful!", noAdminRights:"Access denied!", editModalTitle:"Edit", save:"Save", cancel:"Cancel", restore:"Restore", permanentDelete:"Permanent delete", edit:"Edit", lockUnlock:"Lock/Unlock", delete:"Delete", loading:"Loading...", realtimeActive:"Real-time updates active" }
+        hu: { login:"Belépés", logout:"Kilépés", loginGoogle:"Belépés Google-lel", filterAll:"Összes", download:"LETÖLTÉS", locked:"ZÁROLT", reqBtn:"Köv.", copy:"Másol", share:"Megoszt", info:"Info", noResults:"Nincs találat.", passwordAlert:(p)=>`Jelszó: ${p}`, toastCopied:" link másolva", toastDownload:" letöltés indítása", toastLocked:"🔒 Zárt tartalom", toastNoLink:"🔒 Nincs elérhető link", toastShare:"✨ Megosztva", toastShareFail:"⚠️ Megosztás sikertelen", toastCopyFail:"❌ Másolás sikertelen", close:"Bezárás", reqTitle:"Rendszerkövetelmény", tooltipTitle:"Termék infó", gotIt:"Rendben", licenseTitle:"Szoftverlicenc és Jogi nyilatkozat", licenseBtn:"⚖️ LICENC & JOGI NYILATKOZAT", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Keresés név szerint...", tabStore:"⟡ TERMÉKEK", tabCommunity:"⟡ KÖZÖSSÉG", adminPanelTitle:"Adminisztrátori felület", addBtnText:"Új kártya hozzáadása", manageTitle:"Meglévő kártyák", trashTitle:"🗑️ Lomtár", huTitle:"Magyar (HU)", enTitle:"Angol (EN)", labelNameHu:"Név", labelNameEn:"Name", labelCatHu:"Kategória", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File típus", labelOs:"OS", labelPass:"Jelszó (lakat)", labelReqHu:"Követelmény", labelReqEn:"Requirements", labelInfoHu:"Info szöveg", labelInfoEn:"Info text", labelLocked:"Zárolt (Locked)", adminPasswordPrompt:"🔐 ADMINISZTRÁTORI HITELESÍTÉS\n\nA folytatáshoz add meg a jelszót:", adminPasswordWrong:"Hibás jelszó! Nincs hozzáférés.", adminAuthSuccess:"Admin hitelesítés sikeres!", noAdminRights:"Nincs jogosultság az admin panelhez!", editModalTitle:"Szerkesztés", save:"Mentés", cancel:"Mégse", restore:"Visszaállítás", permanentDelete:"Végleges törlés", edit:"Szerkeszt", lockUnlock:"Zárolás/Ki", delete:"Törlés", loading:"Betöltés...", realtimeActive:"Valós idejű frissítés aktív", warningBtn:"⚠️ Vírusfigyelmeztetés", warningTitle:"⚠️ Vírusfigyelmeztetés", warningClose:"Bezárás" },
+        en: { login:"Login", logout:"Logout", loginGoogle:"Login with Google", filterAll:"All", download:"DOWNLOAD", locked:"LOCKED", reqBtn:"Req.", copy:"Copy", share:"Share", info:"Info", noResults:"No results.", passwordAlert:(p)=>`Password: ${p}`, toastCopied:" link copied", toastDownload:" download started", toastLocked:"🔒 Locked content", toastNoLink:"🔒 No link available", toastShare:"✨ Shared", toastShareFail:"⚠️ Sharing failed", toastCopyFail:"❌ Copy failed", close:"Close", reqTitle:"System Requirements", tooltipTitle:"Product Info", gotIt:"Got it", licenseTitle:"Software License & Disclaimer", licenseBtn:"⚖️ LICENSE & DISCLAIMER", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Search by name...", tabStore:"⟡ PRODUCTS", tabCommunity:"⟡ COMMUNITY", adminPanelTitle:"Administrator Panel", addBtnText:"Add new card", manageTitle:"Existing cards", trashTitle:"🗑️ Trash", huTitle:"Hungarian (HU)", enTitle:"English (EN)", labelNameHu:"Name", labelNameEn:"Name", labelCatHu:"Category", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File type", labelOs:"OS", labelPass:"Password (lock)", labelReqHu:"Requirements", labelReqEn:"Requirements", labelInfoHu:"Info text", labelInfoEn:"Info text", labelLocked:"Locked", adminPasswordPrompt:"🔐 ADMIN AUTHENTICATION\n\nEnter password to continue:", adminPasswordWrong:"Wrong password! Access denied.", adminAuthSuccess:"Admin authentication successful!", noAdminRights:"Access denied!", editModalTitle:"Edit", save:"Save", cancel:"Cancel", restore:"Restore", permanentDelete:"Permanent delete", edit:"Edit", lockUnlock:"Lock/Unlock", delete:"Delete", loading:"Loading...", realtimeActive:"Real-time updates active", warningBtn:"⚠️ Virus Warning", warningTitle:"⚠️ Virus Warning", warningClose:"Close" }
     };
     function t(key, p=null){ let txt=translations[currentLang][key]; if(p && typeof txt==='function') return txt(p); return txt || key; }
     
     function showToast(msg, isError=false){ let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#6a1e3ccc':'#0f2a3ecc'; document.body.appendChild(d); setTimeout(()=>{ d.style.opacity='0'; setTimeout(()=>d.remove(),400); },2300); }
     function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>]/g,function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     
+    // VALÓS IDEJŰ FIGYELŐK BEÁLLÍTÁSA
     function setupRealtimeListeners() {
         if (productsUnsubscribe) productsUnsubscribe();
         if (trashUnsubscribe) trashUnsubscribe();
         
+        // Termékek figyelése
         productsUnsubscribe = db.collection('products').onSnapshot((snapshot) => {
             products = [];
             snapshot.forEach(doc => {
@@ -203,6 +220,7 @@
             showToast("Adatbázis hiba!", true);
         });
         
+        // Lomtár figyelése
         trashUnsubscribe = db.collection('trash').onSnapshot((snapshot) => {
             trash = [];
             snapshot.forEach(doc => {
@@ -214,6 +232,7 @@
         });
     }
     
+    // RENDER FUNKCIÓK
     async function renderStore(){
         const container=document.getElementById('storeList'); if(!container) return;
         let filtered=products.filter(p=>!p.deleted && p.name[currentLang].toLowerCase().includes(searchQuery) && (activeCategory==='all' || p.category[currentLang]===activeCategory));
@@ -253,6 +272,7 @@
     }
     document.getElementById('searchInput').addEventListener('input',e=>{ searchQuery=e.target.value.toLowerCase(); renderStore(); });
     
+    // ADMIN FUNKCIÓK
     async function checkAdminAccess(user) {
         if(user && user.email){ const emailHash=await hashEmail(user.email); if(emailHash===_emailHash){ adminEmailMatched=true; document.getElementById('adminTabBtn').style.display='block'; return; } }
         adminEmailMatched=false; adminAuthorized=false; document.getElementById('adminTabBtn').style.display='none';
@@ -287,14 +307,14 @@
         const container=document.getElementById('trashItems');
         if(!container) return;
         if(trash.length===0){ container.innerHTML='<div style="padding:1rem; text-align:center; color:var(--text-dim);"><i class="fas fa-trash-alt"></i> '+(currentLang==='hu'?'A lomtár üres':'Trash is empty')+'</div>'; return; }
-        container.innerHTML=trash.map((item,idx)=>`<div class="trash-item"><div><strong>${escapeHtml(item.product.name.hu)}</strong> / ${escapeHtml(item.product.name.en)} <span style="font-size:0.7rem;color:#ffaa33;">(zárolt állapotban)</span></div><div><button class="restore-btn" onclick="restoreFromTrash('${item.id}')"><i class="fas fa-recycle"></i> ${t('restore')}</button><button class="permanent-delete-btn" onclick="permanentDelete('${item.id}')"><i class="fas fa-trash-alt"></i> ${t('permanentDelete')}</button></div></div>`).join('');
+        container.innerHTML=trash.map((item)=>`<div class="trash-item"><div><strong>${escapeHtml(item.product.name.hu)}</strong> / ${escapeHtml(item.product.name.en)} <span style="font-size:0.7rem;color:#ffaa33;">(zárolt állapotban)</span></div><div><button class="restore-btn" onclick="restoreFromTrash('${item.id}')"><i class="fas fa-recycle"></i> ${t('restore')}</button><button class="permanent-delete-btn" onclick="permanentDelete('${item.id}')"><i class="fas fa-trash-alt"></i> ${t('permanentDelete')}</button></div></div>`).join('');
     }
     
     window.moveToTrash = async function(id){
         if(!adminAuthorized){ requestAdminPassword((s)=>{ if(s) moveToTrash(id); }); return; }
-        const index = products.findIndex(p=>p.id===id);
-        if(index!==-1){
-            const deletedProduct = {...products[index], locked: true, deleted: true};
+        const product = products.find(p=>p.id===id);
+        if(product){
+            const deletedProduct = {...product, locked: true, deleted: true};
             const trashId = "trash_"+Date.now()+"_"+Math.random().toString(36).substr(2, 6);
             await db.collection('trash').doc(trashId).set({ id: trashId, product: deletedProduct, deletedAt: Date.now() });
             await db.collection('products').doc(id).delete();
@@ -340,15 +360,11 @@
                 else if(currentEditField.field === 'infoHu') product.infoText.hu = newValue;
                 else if(currentEditField.field === 'infoEn') product.infoText.en = newValue;
                 await productRef.set(product);
-                renderStore();
-                if(adminAuthorized) renderAdminList();
-                const displayDiv = document.querySelector(`.clickable-textarea[data-field="${currentEditField.field}"]`);
-                if(displayDiv) displayDiv.innerHTML = newValue.substring(0,100) + (newValue.length>100?'...':'') || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
+                showToast(currentLang==='hu'?'Mentve!':'Saved!');
             }
         }
         document.getElementById('textEditModal').style.display = 'none';
         currentEditField = null;
-        showToast(currentLang==='hu'?'Mentve!':'Saved!');
     };
     document.getElementById('cancelEditBtn').onclick = () => { document.getElementById('textEditModal').style.display = 'none'; currentEditField = null; };
     
@@ -375,7 +391,6 @@
         const addBtn = document.getElementById('addProductBtn');
         addBtn.innerHTML = `<i class="fas fa-save"></i> ${currentLang==='hu'?'Módosítás mentése':'Save changes'}`;
         addBtn.onclick = async () => {
-            const productRef = db.collection('products').doc(id);
             const updatedProduct = {
                 ...p,
                 name: { hu: document.getElementById('prodNameHu').value, en: document.getElementById('prodNameEn').value },
@@ -389,7 +404,7 @@
                 pass: document.getElementById('prodPass').value,
                 locked: document.getElementById('prodLocked').value === 'true'
             };
-            await productRef.set(updatedProduct);
+            await db.collection('products').doc(id).set(updatedProduct);
             addBtn.innerHTML = `<i class="fas fa-plus"></i> ${t('addBtnText')}`;
             addBtn.onclick = addNewProduct;
             document.querySelectorAll('#adminTab input, #adminTab select').forEach(i=>i.value='');
@@ -443,6 +458,13 @@
     
     ['newCatHuBtn','newCatEnBtn'].forEach(btnId=>{ document.getElementById(btnId)?.addEventListener('click',()=>{ const isHu=btnId==='newCatHuBtn'; const inputId=isHu?'prodCatHuNew':'prodCatEnNew'; const selectId=isHu?'prodCatHuSelect':'prodCatEnSelect'; const input=document.getElementById(inputId); if(input.style.display==='none'){ input.style.display='block'; input.focus(); input.onblur=()=>{ if(input.value.trim()){ const newOption=document.createElement('option'); newOption.value=input.value.trim(); newOption.textContent=input.value.trim(); const select=document.getElementById(selectId); select.appendChild(newOption); select.value=input.value.trim(); input.style.display='none'; input.value=''; showToast(currentLang==='hu'?'Új kategória hozzáadva':'New category added'); } else { input.style.display='none'; input.value=''; } }; } else { input.style.display='none'; input.value=''; } }); });
     
+    // Figyelmeztető gomb eseménykezelő
+    document.getElementById('warningBtn').addEventListener('click', () => {
+        document.getElementById('warningContent').innerHTML = warningTexts[currentLang].replace(/\n/g, '<br>');
+        document.getElementById('warningModal').style.display = 'flex';
+    });
+    
+    // Adatbázis inicializálás (első betöltéskor)
     async function initializeDatabase() {
         const snapshot = await db.collection('products').get();
         if (snapshot.empty) {
@@ -453,7 +475,10 @@
     }
     
     function applyLanguage(){
-        document.getElementById('tabStore').innerText=t('tabStore'); document.getElementById('tabCommunity').innerText=t('tabCommunity'); document.getElementById('subText').innerText=t('subText'); document.getElementById('searchInput').placeholder=t('searchPlaceholder'); document.getElementById('licenseBtnText').innerText=t('licenseBtn'); document.getElementById('licenseTitle').innerText=t('licenseTitle'); document.getElementById('closeBtnText').innerText=t('close'); document.getElementById('reqTitle').innerText=t('reqTitle'); document.getElementById('closeReqBtnText').innerText=t('close'); document.getElementById('tooltipTitle').innerText=t('tooltipTitle'); document.getElementById('gotItText').innerText=t('gotIt'); document.getElementById('adminPanelTitle').innerText=t('adminPanelTitle'); document.getElementById('addBtnText').innerText=t('addBtnText'); document.getElementById('manageTitle').innerText=t('manageTitle'); document.getElementById('trashTitle').innerText=t('trashTitle'); document.getElementById('huTitle').innerText=t('huTitle'); document.getElementById('enTitle').innerText=t('enTitle'); document.getElementById('labelNameHu').innerText=t('labelNameHu'); document.getElementById('labelNameEn').innerText=t('labelNameEn'); document.getElementById('labelCatHu').innerText=t('labelCatHu'); document.getElementById('labelCatEn').innerText=t('labelCatEn'); document.getElementById('labelUrl').innerText=t('labelUrl'); document.getElementById('labelFileType').innerText=t('labelFileType'); document.getElementById('labelOs').innerText=t('labelOs'); document.getElementById('labelPass').innerText=t('labelPass'); document.getElementById('labelReqHu').innerText=t('labelReqHu'); document.getElementById('labelReqEn').innerText=t('labelReqEn'); document.getElementById('labelInfoHu').innerText=t('labelInfoHu'); document.getElementById('labelInfoEn').innerText=t('labelInfoEn'); document.getElementById('labelLocked').innerText=t('labelLocked'); document.getElementById('licenseContent').innerHTML = licenseTexts[currentLang];
+        document.getElementById('tabStore').innerText=t('tabStore'); document.getElementById('tabCommunity').innerText=t('tabCommunity'); document.getElementById('subText').innerText=t('subText'); document.getElementById('searchInput').placeholder=t('searchPlaceholder'); document.getElementById('licenseBtnText').innerText=t('licenseBtn'); document.getElementById('licenseTitle').innerText=t('licenseTitle'); document.getElementById('closeBtnText').innerText=t('close'); document.getElementById('reqTitle').innerText=t('reqTitle'); document.getElementById('closeReqBtnText').innerText=t('close'); document.getElementById('tooltipTitle').innerText=t('tooltipTitle'); document.getElementById('gotItText').innerText=t('gotIt'); document.getElementById('adminPanelTitle').innerText=t('adminPanelTitle'); document.getElementById('addBtnText').innerText=t('addBtnText'); document.getElementById('manageTitle').innerText=t('manageTitle'); document.getElementById('trashTitle').innerText=t('trashTitle'); document.getElementById('huTitle').innerText=t('huTitle'); document.getElementById('enTitle').innerText=t('enTitle'); document.getElementById('labelNameHu').innerText=t('labelNameHu'); document.getElementById('labelNameEn').innerText=t('labelNameEn'); document.getElementById('labelCatHu').innerText=t('labelCatHu'); document.getElementById('labelCatEn').innerText=t('labelCatEn'); document.getElementById('labelUrl').innerText=t('labelUrl'); document.getElementById('labelFileType').innerText=t('labelFileType'); document.getElementById('labelOs').innerText=t('labelOs'); document.getElementById('labelPass').innerText=t('labelPass'); document.getElementById('labelReqHu').innerText=t('labelReqHu'); document.getElementById('labelReqEn').innerText=t('labelReqEn'); document.getElementById('labelInfoHu').innerText=t('labelInfoHu'); document.getElementById('labelInfoEn').innerText=t('labelInfoEn'); document.getElementById('labelLocked').innerText=t('labelLocked'); document.getElementById('warningBtnText').innerText = t('warningBtn');
+        document.getElementById('warningTitle').innerText = t('warningTitle');
+        document.getElementById('warningCloseBtn').innerText = t('warningClose');
+        document.getElementById('licenseContent').innerHTML = licenseTexts[currentLang];
         document.getElementById('realtimeStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${t('realtimeActive')}`;
         const loginSpan=document.getElementById('loginText'); if(loginSpan) loginSpan.innerText=auth.currentUser?t('logout'):t('login');
         const authBtnElem=document.getElementById('authActionBtn'); if(authBtnElem){ if(auth.currentUser) authBtnElem.innerHTML=`<i class="fas fa-sign-out-alt"></i> ${t('logout')}`; else authBtnElem.innerHTML=`<i class="fab fa-google"></i> ${t('loginGoogle')}`; }
@@ -488,11 +513,14 @@
     document.querySelectorAll('.tab').forEach(tab=>{ tab.addEventListener('click',()=>{ const tabId=tab.dataset.tab; if(tabId==='adminTab'){ if(!adminEmailMatched){ showToast(t('noAdminRights'),true); return; } if(!adminAuthorized){ requestAdminPassword((success)=>{ if(success){ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); document.querySelectorAll('#tabsContent>div').forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); renderAdminList(); updateCategorySelects(); } }); return; } } document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); document.querySelectorAll('#tabsContent>div').forEach(c=>c.classList.remove('active')); document.getElementById(tabId).classList.add('active'); if(tabId==='adminTab' && adminAuthorized){ renderAdminList(); updateCategorySelects(); } }); });
     document.getElementById('licenseBtn').addEventListener('click',()=>document.getElementById('licenseModal').style.display='flex');
     document.getElementById('closeLicenseModalBtn').addEventListener('click',()=>document.getElementById('licenseModal').style.display='none');
+    document.getElementById('closeWarningModalBtn').addEventListener('click',()=>document.getElementById('warningModal').style.display='none');
     document.getElementById('closeModalBtn').addEventListener('click',()=>document.getElementById('requirementsModal').style.display='none');
     document.getElementById('licenseModal').addEventListener('click',(e)=>{ if(e.target===document.getElementById('licenseModal')) document.getElementById('licenseModal').style.display='none'; });
+    document.getElementById('warningModal').addEventListener('click',(e)=>{ if(e.target===document.getElementById('warningModal')) document.getElementById('warningModal').style.display='none'; });
     document.getElementById('requirementsModal').addEventListener('click',(e)=>{ if(e.target===document.getElementById('requirementsModal')) document.getElementById('requirementsModal').style.display='none'; });
     document.getElementById('textEditModal').addEventListener('click',(e)=>{ if(e.target===document.getElementById('textEditModal')) document.getElementById('textEditModal').style.display='none'; });
     
+    // INDÍTÁS
     setLanguage(currentLang);
     initializeDatabase().then(() => {
         setupRealtimeListeners();
