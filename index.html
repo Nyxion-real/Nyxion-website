@@ -335,16 +335,16 @@ document.getElementById('saveEditBtn').onclick = async () => {
             else if(currentEditField.field === 'infoHu') product.infoText.hu = newValue;
             else if(currentEditField.field === 'infoEn') product.infoText.en = newValue;
             await productRef.set(product);
-            showToast(currentLang==='hu'?'Mentve!':'Saved!');
-            if(editingProductId) {
-                const freshProduct = products.find(p=>p.id===editingProductId);
-                if(freshProduct) {
-                    if(currentEditField.field === 'reqHu') freshProduct.requirements.hu = newValue;
-                    else if(currentEditField.field === 'reqEn') freshProduct.requirements.en = newValue;
-                    else if(currentEditField.field === 'infoHu') freshProduct.infoText.hu = newValue;
-                    else if(currentEditField.field === 'infoEn') freshProduct.infoText.en = newValue;
-                }
+            const localProduct = products.find(p => p.id === editingProductId);
+            if(localProduct) {
+                if(currentEditField.field === 'reqHu') localProduct.requirements.hu = newValue;
+                else if(currentEditField.field === 'reqEn') localProduct.requirements.en = newValue;
+                else if(currentEditField.field === 'infoHu') localProduct.infoText.hu = newValue;
+                else if(currentEditField.field === 'infoEn') localProduct.infoText.en = newValue;
             }
+            const displayDiv = document.querySelector(`.clickable-textarea[data-field="${currentEditField.field}"]`);
+            if(displayDiv) displayDiv.innerHTML = newValue.substring(0,100) + (newValue.length>100?'...':'') || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
+            showToast(currentLang==='hu'?'Mentve!':'Saved!');
         }
     }
     document.getElementById('textEditModal').style.display = 'none';
