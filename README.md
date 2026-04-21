@@ -12,13 +12,13 @@ This includes:
 - Gaming-related content
 
 ## 🌐 Website
-GitHUB: 
+https://nyxion-real.github.io/Nyxion-website/
 
 ## 💬 Discord
-
+https://discord.com/invite/Ac5eRRCEgz
 
 ## 📺 YouTube
-
+https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg
 
 ## 📦 Downloads
 All downloadable files are available on the website.
