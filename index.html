@@ -80,8 +80,7 @@
         .community-btn { background: rgba(8, 16, 28, 0.7); backdrop-filter: blur(10px); padding: 0.9rem 2rem; border-radius: 60px; text-decoration: none; font-weight: 600; color: var(--text-main); border: 1px solid var(--glass-edge); transition: 0.2s; display: inline-flex; align-items: center; gap: 12px; }
         .license-btn { display: block; margin: 3rem auto 0; background: rgba(0, 80, 150, 0.2); backdrop-filter: blur(12px); border: 1px solid var(--primary); border-radius: 60px; padding: 0.9rem 2rem; font-weight: 700; font-size: 0.9rem; color: var(--primary); cursor: pointer; text-align: center; width: fit-content; min-width: 250px; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 12, 0.92); backdrop-filter: blur(12px); z-index: 1000; display: none; align-items: center; justify-content: center; }
-        .modal-card { background: linear-gradient(145deg, #0c1225, #050811); border: 1px solid var(--primary); border-radius: 2rem; padding: 2rem; width: 500px; max-width: 90%; color: var(--text-main); box-shadow: 0 30px 50px rgba(0,0,0,0.6); }
-        .modal-card-large { width: 600px; max-width: 95%; }
+        .modal-card { background: linear-gradient(145deg, #0c1225, #050811); border: 1px solid var(--primary); border-radius: 2rem; padding: 2rem; width: 600px; max-width: 95%; color: var(--text-main); box-shadow: 0 30px 50px rgba(0,0,0,0.6); }
         .modal-card h4 { color: var(--primary); font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--primary); padding-bottom: 0.6rem; }
         .warning-text { font-size: 0.95rem; line-height: 1.6; color: #ffaa88; }
         .license-text { font-size: 0.9rem; line-height: 1.5; max-height: 70vh; overflow-y: auto; }
@@ -98,9 +97,9 @@
         .admin-col h4 { color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem; border-left: 3px solid var(--primary); padding-left: 0.8rem; }
         .admin-field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
         .admin-field label { font-weight: 600; color: var(--primary); font-size: 0.8rem; }
-        .admin-field .clickable-textarea { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,166,255,0.4); border-radius: 40px; padding: 0.7rem 1rem; color: white; font-family: inherit; cursor: pointer; transition: 0.2s; word-break: break-word; white-space: pre-wrap; min-height: 60px; }
-        .admin-field .clickable-textarea:hover { border-color: var(--primary); background: rgba(0,166,255,0.1); }
-        .admin-field input, .admin-field select { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,166,255,0.4); border-radius: 40px; padding: 0.7rem 1rem; color: white; font-family: inherit; }
+        .admin-field textarea { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,166,255,0.4); border-radius: 1rem; padding: 0.7rem 1rem; color: white; font-family: inherit; resize: vertical; min-height: 80px; width: 100%; }
+        .admin-field textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
+        .admin-field input, .admin-field select { background: rgba(0,0,0,0.6); border: 1px solid rgba(0,166,255,0.4); border-radius: 40px; padding: 0.7rem 1rem; color: white; font-family: inherit; width: 100%; }
         .admin-btn { background: var(--primary); border: none; padding: 0.7rem 1.5rem; border-radius: 40px; font-weight: bold; cursor: pointer; margin-top: 1rem; color: #03050b; transition: 0.2s; }
         .admin-btn:hover { transform: scale(1.02); box-shadow: 0 0 10px var(--primary-glow); }
         .admin-btn-danger { background: #cc3366; color: white; }
@@ -129,18 +128,17 @@
 <div id="tabsContent"><div id="storeTab" class="active"><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Keresés név szerint..."></div><button id="warningBtn" class="warning-btn"><i class="fas fa-shield-alt"></i> <span id="warningBtnText">⚠️ Vírusfigyelmeztetés</span></button><div class="filter-group" id="categoryFilters"></div></div><div id="storeList" class="grid-3"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Betöltés...</div></div></div>
 <div id="communityTab"><div class="community-links"><a class="community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="community-btn" href="https://www.instagram.com/nex.us80/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="community-btn" href="https://www.tiktok.com/@nexus_395?lang=hu-HU" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
 <div id="adminTab"><div class="admin-panel"><h3 style="color:var(--primary); margin-bottom:1rem;"><i class="fas fa-shield-alt"></i> <span id="adminPanelTitle">Adminisztrátori felület</span></h3>
-<div class="admin-two-columns"><div class="admin-col"><h4><i class="fas fa-language"></i> <span id="huTitle">Magyar (HU)</span></h4><div class="admin-field"><label id="labelNameHu">Név</label><input type="text" id="prodNameHu" placeholder="Pl. Windows segédprogram"></div><div class="admin-field"><label id="labelCatHu">Kategória</label><div class="category-row"><select id="prodCatHuSelect"><option value="">-- Válassz --</option></select><button id="newCatHuBtn" title="Új kategória"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatHuNew" placeholder="Új kategória neve" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqHu">Követelmény</label><div class="clickable-textarea" data-field="reqHu" data-lang="hu">📝 Kattints ide a szerkesztéshez</div></div><div class="admin-field"><label id="labelInfoHu">Info szöveg</label><div class="clickable-textarea" data-field="infoHu" data-lang="hu">📝 Kattints ide a szerkesztéshez</div></div></div>
-<div class="admin-col"><h4><i class="fas fa-language"></i> <span id="enTitle">Angol (EN)</span></h4><div class="admin-field"><label id="labelNameEn">Name</label><input type="text" id="prodNameEn" placeholder="E.g. Windows Utility"></div><div class="admin-field"><label id="labelCatEn">Category</label><div class="category-row"><select id="prodCatEnSelect"><option value="">-- Select --</option></select><button id="newCatEnBtn" title="New category"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatEnNew" placeholder="New category name" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqEn">Requirements</label><div class="clickable-textarea" data-field="reqEn" data-lang="en">📝 Click to edit</div></div><div class="admin-field"><label id="labelInfoEn">Info text</label><div class="clickable-textarea" data-field="infoEn" data-lang="en">📝 Click to edit</div></div></div></div>
+<div class="admin-two-columns"><div class="admin-col"><h4><i class="fas fa-language"></i> <span id="huTitle">Magyar (HU)</span></h4><div class="admin-field"><label id="labelNameHu">Név</label><input type="text" id="prodNameHu" placeholder="Pl. Windows segédprogram"></div><div class="admin-field"><label id="labelCatHu">Kategória</label><div class="category-row"><select id="prodCatHuSelect"><option value="">-- Válassz --</option></select><button id="newCatHuBtn" title="Új kategória"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatHuNew" placeholder="Új kategória neve" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqHu">Követelmény</label><textarea id="prodReqHu" rows="3" placeholder="🔧 Rendszerkövetelmények..."></textarea></div><div class="admin-field"><label id="labelInfoHu">Info szöveg</label><textarea id="prodInfoHu" rows="3" placeholder="Részletes leírás..."></textarea></div></div>
+<div class="admin-col"><h4><i class="fas fa-language"></i> <span id="enTitle">Angol (EN)</span></h4><div class="admin-field"><label id="labelNameEn">Name</label><input type="text" id="prodNameEn" placeholder="E.g. Windows Utility"></div><div class="admin-field"><label id="labelCatEn">Category</label><div class="category-row"><select id="prodCatEnSelect"><option value="">-- Select --</option></select><button id="newCatEnBtn" title="New category"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatEnNew" placeholder="New category name" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqEn">Requirements</label><textarea id="prodReqEn" rows="3" placeholder="🔧 System requirements..."></textarea></div><div class="admin-field"><label id="labelInfoEn">Info text</label><textarea id="prodInfoEn" rows="3" placeholder="Detailed description..."></textarea></div></div></div>
 <div class="admin-two-columns"><div class="admin-col"><div class="admin-field"><label id="labelUrl">GitHub URL</label><input type="text" id="prodUrl" placeholder="https://github.com/.../release.exe"></div><div class="admin-field"><label id="labelFileType">File típus</label><input type="text" id="prodFileType" value=".exe"></div><div class="admin-field"><label id="labelOs">OS</label><input type="text" id="prodOs" value="Win10/11"></div><div class="admin-field"><label id="labelPass">Jelszó (lakat)</label><input type="text" id="prodPass" value="nexus"></div></div>
 <div class="admin-col"><div class="admin-field"><label id="labelLocked">Zárolt (Locked)</label><select id="prodLocked"><option value="false">Nincs zárolva</option><option value="true">Zárolva</option></select></div><div style="margin-top: 1rem;"><button id="addProductBtn" class="admin-btn"><i class="fas fa-plus"></i> <span id="addBtnText">Új kártya hozzáadása</span></button></div></div></div>
 <div class="product-list-admin"><h4 style="color:var(--primary); margin-bottom:0.5rem;"><i class="fas fa-list"></i> <span id="manageTitle">Meglévő kártyák</span></h4><div id="adminProductList"></div></div>
 <div class="trash-section"><div class="trash-title" id="trashToggle"><i class="fas fa-trash-alt"></i> <span id="trashTitle">🗑️ Lomtár</span> <i class="fas fa-chevron-down"></i></div><div id="trashItems" class="trash-items"></div></div></div></div></div>
 <button id="licenseBtn" class="license-btn"><i class="fas fa-file-contract"></i> <span id="licenseBtnText">⚖️ LICENC & JOGI NYILATKOZAT</span></button></div>
 <div class="realtime-badge"><i class="fas fa-sync-alt"></i> <span id="realtimeStatus">Valós idejű frissítés aktív</span></div>
-<div id="licenseModal" class="overlay"><div class="modal-card modal-card-large"><h4><i class="fas fa-file-contract"></i> <span id="licenseTitle">Szoftverlicenc és Jogi nyilatkozat</span></h4><div class="license-text" id="licenseContent"></div><button class="close-modal" id="closeLicenseModalBtn"><span id="closeBtnText">Bezárás</span></button></div></div>
-<div id="warningModal" class="overlay"><div class="modal-card modal-card-large"><h4><i class="fas fa-exclamation-triangle"></i> <span id="warningTitle">⚠️ Vírusfigyelmeztetés</span></h4><div class="warning-text" id="warningContent"></div><button class="close-modal" id="closeWarningModalBtn"><span id="warningCloseBtn">Bezárás</span></button></div></div>
+<div id="licenseModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-file-contract"></i> <span id="licenseTitle">Szoftverlicenc és Jogi nyilatkozat</span></h4><div class="license-text" id="licenseContent"></div><button class="close-modal" id="closeLicenseModalBtn"><span id="closeBtnText">Bezárás</span></button></div></div>
+<div id="warningModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-exclamation-triangle"></i> <span id="warningTitle">⚠️ Vírusfigyelmeztetés</span></h4><div class="warning-text" id="warningContent"></div><button class="close-modal" id="closeWarningModalBtn"><span id="warningCloseBtn">Bezárás</span></button></div></div>
 <div id="requirementsModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-microchip"></i> <span id="reqTitle">Rendszerkövetelmény</span></h4><p id="requirementsText"></p><button class="close-modal" id="closeModalBtn"><span id="closeReqBtnText">Bezárás</span></button></div></div>
-<div id="textEditModal" class="overlay"><div class="modal-card"><h4 id="editModalTitle">Szerkesztés</h4><textarea id="editTextarea" rows="6" style="width:100%; background:#0a1022; border:1px solid var(--primary); border-radius:1rem; padding:1rem; color:white; font-family:inherit;"></textarea><div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;"><button id="cancelEditBtn" class="admin-btn admin-btn-danger">Bezárás</button></div></div></div>
 <div id="highlightTooltip" class="highlight-tooltip"><h4><i class="fas fa-flask"></i> <span id="tooltipTitle">Termék infó</span></h4><p id="tooltipText"></p><button id="closeTooltipBtn" style="margin-top:12px; background:none; border:1px solid var(--primary); border-radius:30px; padding:4px 12px;"><span id="gotItText">Rendben</span></button></div>
 
 <script>
@@ -167,8 +165,6 @@ let trash = [];
 let currentLang = localStorage.getItem('nexusLang') || 'hu';
 let activeCategory = "all", searchQuery = "";
 let editingProductId = null;
-let currentEditField = null;
-let tempEditedValue = "";
 let adminAuthorized = false, adminEmailMatched = false;
 let productsUnsubscribe = null;
 let trashUnsubscribe = null;
@@ -184,8 +180,8 @@ const warningTexts = {
 };
 
 const translations = {
-    hu: { login:"Belépés", logout:"Kilépés", loginGoogle:"Belépés Google-lel", filterAll:"Összes", download:"LETÖLTÉS", locked:"ZÁROLT", reqBtn:"Köv.", copy:"Másol", share:"Megoszt", info:"Info", noResults:"Nincs találat.", passwordAlert:(p)=>`Jelszó: ${p}`, toastCopied:" link másolva", toastDownload:" letöltés indítása", toastLocked:"🔒 Zárt tartalom", toastNoLink:"🔒 Nincs elérhető link", toastShare:"✨ Megosztva", toastShareFail:"⚠️ Megosztás sikertelen", toastCopyFail:"❌ Másolás sikertelen", close:"Bezárás", reqTitle:"Rendszerkövetelmény", tooltipTitle:"Termék infó", gotIt:"Rendben", licenseTitle:"Szoftverlicenc és Jogi nyilatkozat", licenseBtn:"⚖️ LICENC & JOGI NYILATKOZAT", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Keresés név szerint...", tabStore:"⟡ TERMÉKEK", tabCommunity:"⟡ KÖZÖSSÉG", adminPanelTitle:"Adminisztrátori felület", addBtnText:"Új kártya hozzáadása", manageTitle:"Meglévő kártyák", trashTitle:"🗑️ Lomtár", huTitle:"Magyar (HU)", enTitle:"Angol (EN)", labelNameHu:"Név", labelNameEn:"Name", labelCatHu:"Kategória", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File típus", labelOs:"OS", labelPass:"Jelszó (lakat)", labelReqHu:"Követelmény", labelReqEn:"Requirements", labelInfoHu:"Info szöveg", labelInfoEn:"Info text", labelLocked:"Zárolt (Locked)", adminPasswordPrompt:"🔐 ADMINISZTRÁTORI HITELESÍTÉS\n\nA folytatáshoz add meg a jelszót:", adminPasswordWrong:"Hibás jelszó! Nincs hozzáférés.", adminAuthSuccess:"Admin hitelesítés sikeres!", noAdminRights:"Nincs jogosultság az admin panelhez!", editModalTitle:"Szerkesztés", save:"Mentés", cancel:"Mégse", restore:"Visszaállítás", permanentDelete:"Végleges törlés", edit:"Szerkeszt", lockUnlock:"Zárolás/Ki", delete:"Törlés", loading:"Betöltés...", realtimeActive:"Valós idejű frissítés aktív", warningBtn:"⚠️ Figyelmeztetés", warningTitle:"⚠️ Figyelmeztetés", warningClose:"Bezárás" },
-    en: { login:"Login", logout:"Logout", loginGoogle:"Login with Google", filterAll:"All", download:"DOWNLOAD", locked:"LOCKED", reqBtn:"Req.", copy:"Copy", share:"Share", info:"Info", noResults:"No results.", passwordAlert:(p)=>`Password: ${p}`, toastCopied:" link copied", toastDownload:" download started", toastLocked:"🔒 Locked content", toastNoLink:"🔒 No link available", toastShare:"✨ Shared", toastShareFail:"⚠️ Sharing failed", toastCopyFail:"❌ Copy failed", close:"Close", reqTitle:"System Requirements", tooltipTitle:"Product Info", gotIt:"Got it", licenseTitle:"Software License & Disclaimer", licenseBtn:"⚖️ LICENSE & DISCLAIMER", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Search by name...", tabStore:"⟡ PRODUCTS", tabCommunity:"⟡ COMMUNITY", adminPanelTitle:"Administrator Panel", addBtnText:"Add new card", manageTitle:"Existing cards", trashTitle:"🗑️ Trash", huTitle:"Hungarian (HU)", enTitle:"English (EN)", labelNameHu:"Name", labelNameEn:"Name", labelCatHu:"Category", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File type", labelOs:"OS", labelPass:"Password (lock)", labelReqHu:"Requirements", labelReqEn:"Requirements", labelInfoHu:"Info text", labelInfoEn:"Info text", labelLocked:"Locked", adminPasswordPrompt:"🔐 ADMIN AUTHENTICATION\n\nEnter password to continue:", adminPasswordWrong:"Wrong password! Access denied.", adminAuthSuccess:"Admin authentication successful!", noAdminRights:"Access denied!", editModalTitle:"Edit", save:"Save", cancel:"Cancel", restore:"Restore", permanentDelete:"Permanent delete", edit:"Edit", lockUnlock:"Lock/Unlock", delete:"Delete", loading:"Loading...", realtimeActive:"Real-time updates active", warningBtn:"⚠️ Warning", warningTitle:"⚠️ Warning", warningClose:"Close" }
+    hu: { login:"Belépés", logout:"Kilépés", loginGoogle:"Belépés Google-lel", filterAll:"Összes", download:"LETÖLTÉS", locked:"ZÁROLT", reqBtn:"Köv.", copy:"Másol", share:"Megoszt", info:"Info", noResults:"Nincs találat.", passwordAlert:(p)=>`Jelszó: ${p}`, toastCopied:" link másolva", toastDownload:" letöltés indítása", toastLocked:"🔒 Zárt tartalom", toastNoLink:"🔒 Nincs elérhető link", toastShare:"✨ Megosztva", toastShareFail:"⚠️ Megosztás sikertelen", toastCopyFail:"❌ Másolás sikertelen", close:"Bezárás", reqTitle:"Rendszerkövetelmény", tooltipTitle:"Termék infó", gotIt:"Rendben", licenseTitle:"Szoftverlicenc és Jogi nyilatkozat", licenseBtn:"⚖️ LICENC & JOGI NYILATKOZAT", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Keresés név szerint...", tabStore:"⟡ TERMÉKEK", tabCommunity:"⟡ KÖZÖSSÉG", adminPanelTitle:"Adminisztrátori felület", addBtnText:"Új kártya hozzáadása", manageTitle:"Meglévő kártyák", trashTitle:"🗑️ Lomtár", huTitle:"Magyar (HU)", enTitle:"Angol (EN)", labelNameHu:"Név", labelNameEn:"Name", labelCatHu:"Kategória", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File típus", labelOs:"OS", labelPass:"Jelszó (lakat)", labelReqHu:"Követelmény", labelReqEn:"Requirements", labelInfoHu:"Info szöveg", labelInfoEn:"Info text", labelLocked:"Zárolt (Locked)", adminPasswordPrompt:"🔐 ADMINISZTRÁTORI HITELESÍTÉS\n\nA folytatáshoz add meg a jelszót:", adminPasswordWrong:"Hibás jelszó! Nincs hozzáférés.", adminAuthSuccess:"Admin hitelesítés sikeres!", noAdminRights:"Nincs jogosultság az admin panelhez!", edit:"Szerkeszt", lockUnlock:"Zárolás/Ki", delete:"Törlés", loading:"Betöltés...", realtimeActive:"Valós idejű frissítés aktív", warningBtn:"⚠️ Figyelmeztetés", warningTitle:"⚠️ Figyelmeztetés", warningClose:"Bezárás", restore:"Visszaállítás", permanentDelete:"Végleges törlés" },
+    en: { login:"Login", logout:"Logout", loginGoogle:"Login with Google", filterAll:"All", download:"DOWNLOAD", locked:"LOCKED", reqBtn:"Req.", copy:"Copy", share:"Share", info:"Info", noResults:"No results.", passwordAlert:(p)=>`Password: ${p}`, toastCopied:" link copied", toastDownload:" download started", toastLocked:"🔒 Locked content", toastNoLink:"🔒 No link available", toastShare:"✨ Shared", toastShareFail:"⚠️ Sharing failed", toastCopyFail:"❌ Copy failed", close:"Close", reqTitle:"System Requirements", tooltipTitle:"Product Info", gotIt:"Got it", licenseTitle:"Software License & Disclaimer", licenseBtn:"⚖️ LICENSE & DISCLAIMER", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Search by name...", tabStore:"⟡ PRODUCTS", tabCommunity:"⟡ COMMUNITY", adminPanelTitle:"Administrator Panel", addBtnText:"Add new card", manageTitle:"Existing cards", trashTitle:"🗑️ Trash", huTitle:"Hungarian (HU)", enTitle:"English (EN)", labelNameHu:"Name", labelNameEn:"Name", labelCatHu:"Category", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File type", labelOs:"OS", labelPass:"Password (lock)", labelReqHu:"Requirements", labelReqEn:"Requirements", labelInfoHu:"Info text", labelInfoEn:"Info text", labelLocked:"Locked", adminPasswordPrompt:"🔐 ADMIN AUTHENTICATION\n\nEnter password to continue:", adminPasswordWrong:"Wrong password! Access denied.", adminAuthSuccess:"Admin authentication successful!", noAdminRights:"Access denied!", edit:"Edit", lockUnlock:"Lock/Unlock", delete:"Delete", loading:"Loading...", realtimeActive:"Real-time updates active", warningBtn:"⚠️ Warning", warningTitle:"⚠️ Warning", warningClose:"Close", restore:"Restore", permanentDelete:"Permanent delete" }
 };
 function t(key, p=null){ let txt=translations[currentLang][key]; if(p && typeof txt==='function') return txt(p); return txt || key; }
 
@@ -200,6 +196,15 @@ function setupRealtimeListeners() {
         snapshot.forEach(doc => { products.push({ id: doc.id, ...doc.data() }); });
         renderStore();
         buildCategoryFilters();
+        if (adminAuthorized && editingProductId) {
+            const currentProduct = products.find(p => p.id === editingProductId);
+            if (currentProduct) {
+                document.getElementById('prodReqHu').value = currentProduct.requirements.hu || '';
+                document.getElementById('prodReqEn').value = currentProduct.requirements.en || '';
+                document.getElementById('prodInfoHu').value = currentProduct.infoText.hu || '';
+                document.getElementById('prodInfoEn').value = currentProduct.infoText.en || '';
+            }
+        }
         if (adminAuthorized) { renderAdminList(); updateCategorySelects(); }
         document.getElementById('realtimeStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${t('realtimeActive')}`;
     }, (error) => { console.error("Products listener error:", error); showToast("Adatbázis hiba!", true); });
@@ -317,29 +322,6 @@ window.permanentDelete = async function(trashId){
     }
 };
 
-function openTextEditor(field, lang, currentValue){
-    currentEditField = { field, lang };
-    document.getElementById('editModalTitle').innerText = t('editModalTitle') + ` - ${field} (${lang.toUpperCase()})`;
-    document.getElementById('editTextarea').value = currentValue || '';
-    tempEditedValue = currentValue || '';
-    document.getElementById('textEditModal').style.display = 'flex';
-}
-
-document.getElementById('editTextarea').addEventListener('input', (e) => {
-    tempEditedValue = e.target.value;
-});
-
-function closeModalWithoutSave() {
-    document.getElementById('textEditModal').style.display = 'none';
-    currentEditField = null;
-    tempEditedValue = "";
-}
-
-document.getElementById('cancelEditBtn').onclick = closeModalWithoutSave;
-document.getElementById('textEditModal').addEventListener('click', (e) => { 
-    if(e.target === document.getElementById('textEditModal')) closeModalWithoutSave(); 
-});
-
 window.editProductById = function(id){
     if(!adminAuthorized){ requestAdminPassword((s)=>{ if(s) editProductById(id); }); return; }
     editingProductId = id;
@@ -356,23 +338,13 @@ window.editProductById = function(id){
     document.getElementById('prodOs').value = p.os;
     document.getElementById('prodPass').value = p.pass;
     document.getElementById('prodLocked').value = p.locked ? "true" : "false";
-    document.querySelector(`.clickable-textarea[data-field="reqHu"]`).innerHTML = p.requirements.hu || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
-    document.querySelector(`.clickable-textarea[data-field="reqEn"]`).innerHTML = p.requirements.en || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
-    document.querySelector(`.clickable-textarea[data-field="infoHu"]`).innerHTML = p.infoText.hu || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
-    document.querySelector(`.clickable-textarea[data-field="infoEn"]`).innerHTML = p.infoText.en || '📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit');
+    document.getElementById('prodReqHu').value = p.requirements.hu || '';
+    document.getElementById('prodReqEn').value = p.requirements.en || '';
+    document.getElementById('prodInfoHu').value = p.infoText.hu || '';
+    document.getElementById('prodInfoEn').value = p.infoText.en || '';
     const addBtn = document.getElementById('addProductBtn');
     addBtn.innerHTML = `<i class="fas fa-save"></i> ${currentLang==='hu'?'Módosítás mentése':'Save changes'}`;
     addBtn.onclick = async () => {
-        let updatedRequirementsHu = p.requirements.hu;
-        let updatedRequirementsEn = p.requirements.en;
-        let updatedInfoHu = p.infoText.hu;
-        let updatedInfoEn = p.infoText.en;
-        if(currentEditField) {
-            if(currentEditField.field === 'reqHu') updatedRequirementsHu = tempEditedValue;
-            else if(currentEditField.field === 'reqEn') updatedRequirementsEn = tempEditedValue;
-            else if(currentEditField.field === 'infoHu') updatedInfoHu = tempEditedValue;
-            else if(currentEditField.field === 'infoEn') updatedInfoEn = tempEditedValue;
-        }
         const updatedProduct = {
             ...p,
             name: { hu: document.getElementById('prodNameHu').value, en: document.getElementById('prodNameEn').value },
@@ -385,17 +357,14 @@ window.editProductById = function(id){
             os: document.getElementById('prodOs').value,
             pass: document.getElementById('prodPass').value,
             locked: document.getElementById('prodLocked').value === 'true',
-            requirements: { hu: updatedRequirementsHu, en: updatedRequirementsEn },
-            infoText: { hu: updatedInfoHu, en: updatedInfoEn }
+            requirements: { hu: document.getElementById('prodReqHu').value, en: document.getElementById('prodReqEn').value },
+            infoText: { hu: document.getElementById('prodInfoHu').value, en: document.getElementById('prodInfoEn').value }
         };
         await db.collection('products').doc(id).set(updatedProduct);
         addBtn.innerHTML = `<i class="fas fa-plus"></i> ${t('addBtnText')}`;
         addBtn.onclick = addNewProduct;
-        document.querySelectorAll('#adminTab input, #adminTab select').forEach(i=>i.value='');
-        document.querySelectorAll('.clickable-textarea').forEach(div=>div.innerHTML='📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit'));
+        document.querySelectorAll('#adminTab input, #adminTab select, #adminTab textarea').forEach(i=>i.value='');
         editingProductId = null;
-        currentEditField = null;
-        tempEditedValue = "";
         showToast(t('adminAuthSuccess'));
     };
 };
@@ -429,18 +398,16 @@ async function addNewProduct(){
             hu: document.getElementById('prodNameHu').value, 
             en: document.getElementById('prodNameEn').value 
         }, 
-        requirements: { hu: "", en: "" }, 
-        infoText: { hu: "", en: "" } 
+        requirements: { hu: document.getElementById('prodReqHu').value, en: document.getElementById('prodReqEn').value }, 
+        infoText: { hu: document.getElementById('prodInfoHu').value, en: document.getElementById('prodInfoEn').value } 
     };
     if(!newProd.name.hu || !newProd.name.en){ showToast(currentLang==='hu'?'Név megadása kötelező!':'Name is required!',true); return; }
     await db.collection('products').doc(newId).set(newProd);
-    document.querySelectorAll('#adminTab input, #adminTab select').forEach(i=>i.value='');
-    document.querySelectorAll('.clickable-textarea').forEach(div=>div.innerHTML='📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit'));
+    document.querySelectorAll('#adminTab input, #adminTab select, #adminTab textarea').forEach(i=>i.value='');
     showToast(t('adminAuthSuccess'));
 }
 
 document.getElementById('addProductBtn').onclick = addNewProduct;
-document.querySelectorAll('.clickable-textarea').forEach(div=>{ div.addEventListener('click',()=>{ if(!adminAuthorized){ requestAdminPassword((s)=>{ if(s) div.click(); }); return; } const field=div.dataset.field, lang=div.dataset.lang; let currentValue=''; const pid=editingProductId; if(pid){ const p=products.find(p=>p.id===pid); if(p){ if(field==='reqHu') currentValue=p.requirements.hu; else if(field==='reqEn') currentValue=p.requirements.en; else if(field==='infoHu') currentValue=p.infoText.hu; else if(field==='infoEn') currentValue=p.infoText.en; } } openTextEditor(field, lang, currentValue); }); });
 
 ['newCatHuBtn','newCatEnBtn'].forEach(btnId=>{ document.getElementById(btnId)?.addEventListener('click',()=>{ const isHu=btnId==='newCatHuBtn'; const inputId=isHu?'prodCatHuNew':'prodCatEnNew'; const selectId=isHu?'prodCatHuSelect':'prodCatEnSelect'; const input=document.getElementById(inputId); if(input.style.display==='none'){ input.style.display='block'; input.focus(); input.onblur=()=>{ if(input.value.trim()){ const newOption=document.createElement('option'); newOption.value=input.value.trim(); newOption.textContent=input.value.trim(); const select=document.getElementById(selectId); select.appendChild(newOption); select.value=input.value.trim(); input.style.display='none'; input.value=''; showToast(currentLang==='hu'?'Új kategória hozzáadva':'New category added'); } else { input.style.display='none'; input.value=''; } }; } else { input.style.display='none'; input.value=''; } }); });
 
@@ -470,7 +437,6 @@ function applyLanguage(){
     buildCategoryFilters(); 
     renderStore(); 
     updateCategorySelects();
-    document.querySelectorAll('.clickable-textarea').forEach(div=>{ if(!div.innerHTML || div.innerHTML.startsWith('📝')) div.innerHTML='📝 '+(currentLang==='hu'?'Kattints ide a szerkesztéshez':'Click to edit'); });
     const trashToggle=document.getElementById('trashToggle'); if(trashToggle) trashToggle.onclick=()=>{ document.getElementById('trashItems').classList.toggle('show'); };
     if(adminAuthorized) renderAdminList();
 }
