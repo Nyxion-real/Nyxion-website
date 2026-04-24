@@ -57,8 +57,8 @@
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
         .glass-card { background: var(--bg-surface); backdrop-filter: blur(14px); border: 1px solid var(--glass-edge); border-radius: var(--card-radius); padding: 1.6rem; transition: var(--transition); position: relative; display: flex; flex-direction: column; box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5); }
         .glass-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 28px 40px -15px rgba(0, 166, 255, 0.2); }
-        .locked-card { opacity: 0.7; }
-        .locked-card::after { content: "\f023"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.8rem; color: var(--primary); opacity: 0.5; pointer-events: none; }
+        .locked-card { opacity: 0.85; position: relative; }
+        .locked-card::after { content: "\f023"; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: 1rem; right: 1rem; font-size: 1.8rem; color: var(--primary); opacity: 0.7; pointer-events: none; }
         .card-header { border-left: 3px solid var(--primary); padding-left: 1rem; margin-bottom: 1.2rem; }
         .card-header h2 { font-size: 1.55rem; font-weight: 700; background: linear-gradient(135deg, #fff, var(--primary)); background-clip: text; -webkit-background-clip: text; color: transparent; }
         .category-badge { display: inline-block; background: rgba(0, 166, 255, 0.15); border-radius: 40px; padding: 0.2rem 0.8rem; font-size: 0.7rem; font-weight: 600; color: var(--primary); margin-bottom: 0.8rem; }
@@ -68,7 +68,6 @@
         .file-type { border: 1px solid var(--primary); color: var(--primary); }
         .os-badge { border: 1px solid #ffcc44; color: #ffcc44; }
         .pass-btn { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--primary); border-radius: 50%; width: 32px; height: 32px; cursor: pointer; color: var(--primary); transition: 0.2s; }
-        .pass-btn:hover { background: var(--primary); color: #03050b; }
         .button-group { display: flex; gap: 0.8rem; margin: 0.5rem 0; }
         .btn-download, .btn-requirements { flex: 1; text-align: center; font-weight: 700; padding: 0.7rem 0; border-radius: 60px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; border: none; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-download { background: linear-gradient(95deg, #0066ff, #0099ff); color: white; box-shadow: 0 4px 12px rgba(0, 100, 255, 0.3); }
@@ -83,10 +82,11 @@
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 12, 0.92); backdrop-filter: blur(12px); z-index: 1000; display: none; align-items: center; justify-content: center; }
         .modal-card { background: linear-gradient(145deg, #0c1225, #050811); border: 1px solid var(--primary); border-radius: 2rem; padding: 2rem; width: 600px; max-width: 95%; color: var(--text-main); box-shadow: 0 30px 50px rgba(0,0,0,0.6); }
         .modal-card h4 { color: var(--primary); font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--primary); padding-bottom: 0.6rem; }
-        .warning-text { font-size: 0.95rem; line-height: 1.6; color: #ffaa88; white-space: pre-line; }
+        .warning-text { font-size: 0.95rem; line-height: 1.6; color: #ffaa88; }
         .license-text { font-size: 0.9rem; line-height: 1.5; max-height: 70vh; overflow-y: auto; }
         .close-modal { background: rgba(255,255,255,0.1); border: none; padding: 0.5rem 1.5rem; border-radius: 40px; cursor: pointer; margin-top: 1.5rem; color: white; transition: 0.2s; font-weight: 600; }
         .close-modal:hover { background: var(--primary); color: #03050b; }
+        .highlight-tooltip { position: fixed; background: rgba(6, 12, 24, 0.98); backdrop-filter: blur(20px); border: 1px solid var(--primary); border-radius: 1.2rem; padding: 1rem; width: 280px; z-index: 1100; font-size: 0.85rem; display: none; flex-direction: column; gap: 0.8rem; }
         .toast-msg { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #0a1022ee; backdrop-filter: blur(12px); padding: 10px 24px; border-radius: 60px; border-left: 4px solid var(--primary); z-index: 1200; color: white; white-space: nowrap; }
         #tabsContent > div { display: none; }
         #tabsContent > div.active { display: block; }
@@ -118,161 +118,85 @@
         .loading-spinner { text-align: center; padding: 2rem; color: var(--primary); }
         .realtime-badge { position: fixed; bottom: 10px; left: 10px; background: rgba(0,166,255,0.2); border-radius: 20px; padding: 4px 10px; font-size: 0.7rem; color: #00ffaa; z-index: 100; }
         @media (max-width: 900px) { .admin-two-columns { grid-template-columns: 1fr; } .wrapper { padding: 1rem; } .top-bar { right: 0.8rem; top: 0.8rem; gap: 6px; } .warning-btn span { display: none; } .warning-btn i { margin: 0; } .warning-btn { padding: 0.4rem 0.8rem; } }
-        .password-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .password-modal {
-            background: linear-gradient(145deg, #0c1225, #050811);
-            border: 1px solid var(--primary);
-            border-radius: 2rem;
-            padding: 2rem;
-            width: 400px;
-            max-width: 90%;
-            text-align: center;
-        }
-        .password-modal input {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 1rem 0;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--primary);
-            border-radius: 2rem;
-            color: white;
-            font-size: 1rem;
-            text-align: center;
-        }
-        .password-modal button {
-            background: var(--primary);
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-weight: bold;
-            margin: 0 0.5rem;
-        }
     </style>
 </head>
 <body>
 <div class="tech-bg"><div class="gradient-orb"></div><div class="gradient-orb gradient-orb2"></div></div>
 <div class="top-bar"><div class="lang-switch" id="langSwitch"><button class="lang-btn" data-lang="hu">HU</button><button class="lang-btn" data-lang="en">EN</button></div><div class="auth-panel" id="authFixed"><div id="authStateContainer"><button id="authActionBtn" class="auth-btn"><i class="fab fa-google"></i> <span id="loginText">Belépés</span></button></div><div id="userInfoArea" style="display:none;" class="user-info"><img id="userAvatarSmall" class="user-avatar-sm" src=""><span id="userNameSmall" class="user-name"></span></div></div></div>
-<div class="wrapper">
-    <div class="hero">
-        <div class="logo-ring"><i class="fas fa-cube"></i></div>
-        <div class="brand">NYXION COLLECTIVE</div>
-        <h1>NYXION STORE</h1>
-        <div class="sub" id="subText">premium .exe releases • direct GitHub</div>
-    </div>
-    <div class="tabs" id="mainTabs">
-        <div class="tab active" data-tab="storeTab" id="tabStore">⟡ TERMÉKEK</div>
-        <div class="tab" data-tab="communityTab" id="tabCommunity">⟡ KÖZÖSSÉG</div>
-        <div class="tab" id="adminTabBtn" data-tab="adminTab" style="display:none;">⟡ ADMIN PANEL</div>
-    </div>
-    <div id="tabsContent">
-        <div id="storeTab" class="active">
-            <div class="search-filter-bar">
-                <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Keresés név szerint..."></div>
-                <button id="warningBtn" class="warning-btn"><i class="fas fa-shield-alt"></i> <span id="warningBtnText">⚠️ Vírusfigyelmeztetés</span></button>
-                <div class="filter-group" id="categoryFilters"></div>
-            </div>
-            <div id="storeList" class="grid-3"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Betöltés...</div></div>
-        </div>
-        <div id="communityTab">
-            <div class="community-links">
-                <a class="community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a>
-                <a class="community-btn" href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-                <a class="community-btn" href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-                <a class="community-btn" href="#" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
-            </div>
-        </div>
-        <div id="adminTab">
-            <div class="admin-panel">
-                <h3 style="color:var(--primary); margin-bottom:1rem;"><i class="fas fa-shield-alt"></i> <span id="adminPanelTitle">Adminisztrátori felület</span></h3>
-                <div class="admin-two-columns">
-                    <div class="admin-col">
-                        <h4><i class="fas fa-language"></i> <span id="huTitle">Magyar (HU)</span></h4>
-                        <div class="admin-field"><label id="labelNameHu">Név</label><input type="text" id="prodNameHu" placeholder="Pl. Windows segédprogram"></div>
-                        <div class="admin-field"><label id="labelCatHu">Kategória</label><div class="category-row"><select id="prodCatHuSelect"><option value="">-- Válassz --</option></select><button id="newCatHuBtn" title="Új kategória"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatHuNew" placeholder="Új kategória neve" style="display:none; margin-top:0.5rem;"></div>
-                        <div class="admin-field"><label id="labelReqHu">Követelmény</label><textarea id="prodReqHu" rows="3" placeholder="🔧 Rendszerkövetelmények..."></textarea></div>
-                        <div class="admin-field"><label id="labelInfoHu">Info szöveg</label><textarea id="prodInfoHu" rows="3" placeholder="Részletes leírás..."></textarea></div>
-                    </div>
-                    <div class="admin-col">
-                        <h4><i class="fas fa-language"></i> <span id="enTitle">Angol (EN)</span></h4>
-                        <div class="admin-field"><label id="labelNameEn">Name</label><input type="text" id="prodNameEn" placeholder="E.g. Windows Utility"></div>
-                        <div class="admin-field"><label id="labelCatEn">Category</label><div class="category-row"><select id="prodCatEnSelect"><option value="">-- Select --</option></select><button id="newCatEnBtn" title="New category"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatEnNew" placeholder="New category name" style="display:none; margin-top:0.5rem;"></div>
-                        <div class="admin-field"><label id="labelReqEn">Requirements</label><textarea id="prodReqEn" rows="3" placeholder="🔧 System requirements..."></textarea></div>
-                        <div class="admin-field"><label id="labelInfoEn">Info text</label><textarea id="prodInfoEn" rows="3" placeholder="Detailed description..."></textarea></div>
-                    </div>
-                </div>
-                <div class="admin-two-columns">
-                    <div class="admin-col">
-                        <div class="admin-field"><label id="labelUrl">GitHub URL</label><input type="text" id="prodUrl" placeholder="https://github.com/.../release.exe"></div>
-                        <div class="admin-field"><label id="labelFileType">File típus</label><input type="text" id="prodFileType" value=".exe"></div>
-                        <div class="admin-field"><label id="labelOs">OS</label><input type="text" id="prodOs" value="Win10/11"></div>
-                        <div class="admin-field"><label id="labelPass">Jelszó (lakat)</label><input type="text" id="prodPass" value="nyxion"></div>
-                    </div>
-                    <div class="admin-col">
-                        <div class="admin-field"><label id="labelLocked">Zárolt (Locked)</label><select id="prodLocked"><option value="false">Nincs zárolva</option><option value="true">Zárolva</option></select></div>
-                        <div style="margin-top: 1rem;"><button id="addProductBtn" class="admin-btn"><i class="fas fa-plus"></i> <span id="addBtnText">Új kártya hozzáadása</span></button></div>
-                    </div>
-                </div>
-                <div class="product-list-admin"><h4 style="color:var(--primary); margin-bottom:0.5rem;"><i class="fas fa-list"></i> <span id="manageTitle">Meglévő kártyák</span></h4><div id="adminProductList"></div></div>
-                <div class="trash-section"><div class="trash-title" id="trashToggle"><i class="fas fa-trash-alt"></i> <span id="trashTitle">🗑️ Lomtár</span> <i class="fas fa-chevron-down"></i></div><div id="trashItems" class="trash-items"></div></div>
-            </div>
-        </div>
-    </div>
-    <button id="licenseBtn" class="license-btn"><i class="fas fa-file-contract"></i> <span id="licenseBtnText">⚖️ LICENC & JOGI NYILATKOZAT</span></button>
-</div>
+<div class="wrapper"><div class="hero"><div class="logo-ring"><i class="fas fa-cube"></i></div><div class="brand">NYXION COLLECTIVE</div><h1>NYXION STORE</h1><div class="sub" id="subText">premium .exe releases • direct GitHub</div></div>
+<div class="tabs" id="mainTabs"><div class="tab active" data-tab="storeTab" id="tabStore">⟡ TERMÉKEK</div><div class="tab" data-tab="communityTab" id="tabCommunity">⟡ KÖZÖSSÉG</div><div class="tab" id="adminTabBtn" data-tab="adminTab" style="display:none;">⟡ ADMIN PANEL</div></div>
+<div id="tabsContent"><div id="storeTab" class="active"><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Keresés név szerint..."></div><button id="warningBtn" class="warning-btn"><i class="fas fa-shield-alt"></i> <span id="warningBtnText">⚠️ Vírusfigyelmeztetés</span></button><div class="filter-group" id="categoryFilters"></div></div><div id="storeList" class="grid-3"><div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Betöltés...</div></div></div>
+<div id="communityTab"><div class="community-links"><a class="community-btn" href="https://discord.gg/Ac5eRRCEgz" target="_blank"><i class="fab fa-discord"></i> Discord</a><a class="community-btn" href="https://www.youtube.com/channel/UCCHUo4oRYy2uYM8mnD_X-zg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a><a class="community-btn" href="https://www.instagram.com/nyxion_real/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a><a class="community-btn" href="https://www.tiktok.com/@nyxion_real" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a></div></div>
+<div id="adminTab"><div class="admin-panel"><h3 style="color:var(--primary); margin-bottom:1rem;"><i class="fas fa-shield-alt"></i> <span id="adminPanelTitle">Adminisztrátori felület</span></h3>
+<div class="admin-two-columns"><div class="admin-col"><h4><i class="fas fa-language"></i> <span id="huTitle">Magyar (HU)</span></h4><div class="admin-field"><label id="labelNameHu">Név</label><input type="text" id="prodNameHu" placeholder="Pl. Windows segédprogram"></div><div class="admin-field"><label id="labelCatHu">Kategória</label><div class="category-row"><select id="prodCatHuSelect"><option value="">-- Válassz --</option></select><button id="newCatHuBtn" title="Új kategória"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatHuNew" placeholder="Új kategória neve" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqHu">Követelmény</label><textarea id="prodReqHu" rows="3" placeholder="🔧 Rendszerkövetelmények..."></textarea></div><div class="admin-field"><label id="labelInfoHu">Info szöveg</label><textarea id="prodInfoHu" rows="3" placeholder="Részletes leírás..."></textarea></div></div>
+<div class="admin-col"><h4><i class="fas fa-language"></i> <span id="enTitle">Angol (EN)</span></h4><div class="admin-field"><label id="labelNameEn">Name</label><input type="text" id="prodNameEn" placeholder="E.g. Windows Utility"></div><div class="admin-field"><label id="labelCatEn">Category</label><div class="category-row"><select id="prodCatEnSelect"><option value="">-- Select --</option></select><button id="newCatEnBtn" title="New category"><i class="fas fa-plus"></i></button></div><input type="text" id="prodCatEnNew" placeholder="New category name" style="display:none; margin-top:0.5rem;"></div><div class="admin-field"><label id="labelReqEn">Requirements</label><textarea id="prodReqEn" rows="3" placeholder="🔧 System requirements..."></textarea></div><div class="admin-field"><label id="labelInfoEn">Info text</label><textarea id="prodInfoEn" rows="3" placeholder="Detailed description..."></textarea></div></div></div>
+<div class="admin-two-columns"><div class="admin-col"><div class="admin-field"><label id="labelUrl">GitHub URL</label><input type="text" id="prodUrl" placeholder="https://github.com/.../release.exe"></div><div class="admin-field"><label id="labelFileType">File típus</label><input type="text" id="prodFileType" value=".exe"></div><div class="admin-field"><label id="labelOs">OS</label><input type="text" id="prodOs" value="Win10/11"></div><div class="admin-field"><label id="labelPass">Jelszó (lakat)</label><input type="text" id="prodPass" value="nyxion"></div></div>
+<div class="admin-col"><div class="admin-field"><label id="labelLocked">Zárolt (Locked)</label><select id="prodLocked"><option value="false">Nincs zárolva</option><option value="true">Zárolva</option></select></div><div style="margin-top: 1rem;"><button id="addProductBtn" class="admin-btn"><i class="fas fa-plus"></i> <span id="addBtnText">Új kártya hozzáadása</span></button></div></div></div>
+<div class="product-list-admin"><h4 style="color:var(--primary); margin-bottom:0.5rem;"><i class="fas fa-list"></i> <span id="manageTitle">Meglévő kártyák</span></h4><div id="adminProductList"></div></div>
+<div class="trash-section"><div class="trash-title" id="trashToggle"><i class="fas fa-trash-alt"></i> <span id="trashTitle">🗑️ Lomtár</span> <i class="fas fa-chevron-down"></i></div><div id="trashItems" class="trash-items"></div></div></div></div></div>
+<button id="licenseBtn" class="license-btn"><i class="fas fa-file-contract"></i> <span id="licenseBtnText">⚖️ LICENC & JOGI NYILATKOZAT</span></button></div>
 <div class="realtime-badge"><i class="fas fa-sync-alt"></i> <span id="realtimeStatus">Valós idejű frissítés aktív</span></div>
 <div id="licenseModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-file-contract"></i> <span id="licenseTitle">Szoftverlicenc és Jogi nyilatkozat</span></h4><div class="license-text" id="licenseContent"></div><button class="close-modal" id="closeLicenseModalBtn"><span id="closeBtnText">Bezárás</span></button></div></div>
 <div id="warningModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-exclamation-triangle"></i> <span id="warningTitle">⚠️ Vírusfigyelmeztetés</span></h4><div class="warning-text" id="warningContent"></div><button class="close-modal" id="closeWarningModalBtn"><span id="warningCloseBtn">Bezárás</span></button></div></div>
 <div id="requirementsModal" class="overlay"><div class="modal-card"><h4><i class="fas fa-microchip"></i> <span id="reqTitle">Rendszerkövetelmény</span></h4><p id="requirementsText"></p><button class="close-modal" id="closeModalBtn"><span id="closeReqBtnText">Bezárás</span></button></div></div>
+<div id="highlightTooltip" class="highlight-tooltip"><h4><i class="fas fa-flask"></i> <span id="tooltipTitle">Termék infó</span></h4><p id="tooltipText"></p><button id="closeTooltipBtn" style="margin-top:12px; background:none; border:1px solid var(--primary); border-radius:30px; padding:4px 12px;"><span id="gotItText">Rendben</span></button></div>
 
 <script>
-// ==================== FIREBASE KONFIGURÁCIÓ ====================
 const firebaseConfig = {
-    apiKey: "AIzaSyAiAkkx98M2282NHiHvfuxQjf5kgeAp7Q8",
-    authDomain: "nyxion-store.firebaseapp.com",
-    projectId: "nyxion-store",
-    storageBucket: "nyxion-store.firebasestorage.app",
-    messagingSenderId: "952595532605",
-    appId: "1:952595532605:web:49e58df3b31d451ed61354"
+  apiKey: "AIzaSyAiAkkx98M2282NHiHvfuxQjf5kgeAp7Q8",
+  authDomain: "nyxion-store.firebaseapp.com",
+  projectId: "nyxion-store",
+  storageBucket: "nyxion-store.firebasestorage.app",
+  messagingSenderId: "952595532605",
+  appId: "1:952595532605:web:49e58df3b31d451ed61354"
 };
-
+    
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 const db = firebase.firestore();
 
-// ==================== ADMIN JELSZÓ HASH (SHA-256) ====================
-// A jelszó: NyxionAdmin2025
-const ADMIN_PASSWORD_HASH = "5d5eaeaf172b281b0a069b6b1c1a7a8a0a3d8e0f3c4a2b1c9d8e7f6a5b4c3d2e";
+const ADMIN_EMAIL_HASH = "a39e125749a51c569ac9cfdb12b1de8393df63b0ad3c7b82eb52d1a861185a04";
 
-// ==================== GLOBÁLIS VÁLTOZÓK ====================
+async function hashEmail(text) { 
+    const encoder = new TextEncoder(); 
+    const data = encoder.encode(text.trim().toLowerCase()); 
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data); 
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,'0')).join(''); 
+}
+
 let products = [];
 let trash = [];
 let currentLang = localStorage.getItem('nyxionLang') || 'hu';
 let activeCategory = "all";
 let searchQuery = "";
 let editingProductId = null;
-let adminAuthorized = false;
-let authUser = null;
+let isAdmin = false;
+let productsUnsubscribe = null;
+let trashUnsubscribe = null;
 
-// ==================== SEGÉDFÜGGVÉNYEK ====================
-async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+const licenseTexts = {
+    hu: `<p><strong>Version 2.0 – Kutatási és Fejlesztési Licenc</strong><br>Utolsó frissítés: 2025. április</p><p><strong>1. Cél</strong><br>Kizárólag oktatási, tesztelési és kutatási célokra. Nem tartalmaz rosszindulatú kódot.</p><p><strong>2. Felelősség kizárása</strong><br>A szoftvert „AHOGY VAN” biztosítjuk, minden garancia nélkül.</p><p><strong>3. Felhasználói felelősség</strong><br>A felhasználó köteles betartani a helyi törvényeket, és megfelelő biztonsági környezetben tesztelni.</p><p><strong>4. Szellemi tulajdon</strong><br>A „NYXION Collective” védjegy és a szoftver szerzői jogvédelem alatt áll.</p><p><strong>5. Téves pozitív riasztások</strong><br>Az alkalmazás fejlesztői eszközök miatt egyes antivírusok gyanúsíthatják. Ellenőrzött, nem tartalmaz fenyegetést.</p><p><strong>6. Adatvédelem</strong><br>A szoftver NEM gyűjt személyes adatot. Nincs telemetria.</p><p><strong>7. Licenc elfogadása</strong><br>Letöltéssel és használattal elfogadja a feltételeket. © 2025 NYXION Collective.<br>Kapcsolat: nyxion.collective.contact@gmail.com</p>`,
+    en: `<p><strong>Version 2.0 – Research & Development License</strong><br>Last updated: April 2025</p><p><strong>1. Purpose</strong><br>For educational, testing and research purposes only. Contains no malicious code.</p><p><strong>2. Disclaimer</strong><br>The Software is provided "AS IS", without any warranty.</p><p><strong>3. User Responsibility</strong><br>User must comply with local laws and test in a secure environment.</p><p><strong>4. Intellectual Property</strong><br>"NYXION Collective" trademark and software are copyrighted.</p><p><strong>5. False Positives</strong><br>Due to development tools, some antivirus may flag the file. It is verified and threat-free.</p><p><strong>6. Privacy</strong><br>The Software does NOT collect personal data. No telemetry.</p><p><strong>7. Acceptance</strong><br>By downloading and using, you accept the terms. © 2025 NYXION Collective.<br>Contact: nyxion.collective.contact@gmail.com</p>`
+};
+
+const warningTexts = {
+    hu: `⚠️ FIGYELEM! ⚠️\n\nA Windows automatikusan vírusként észlelheti a fájlokat, mivel azok fejlesztői környezetben készültek és nem rendelkeznek hivatalos digitális aláírással.\n\n✅ GARANTÁLJUK, hogy a programok rendeltetésszerű használat mellett NEM tartalmaznak adatlopó kódot, kártékony szoftvert vagy szándékos rosszindulatú funkciót.\n\n📌 Javaslat: A letöltött fájlokat használat előtt ellenőrizd a saját biztonsági szoftvereddel, és ha bizonytalan vagy, futtasd őket szeparált környezetben (sandbox).\n\n🔐 A NYXION Collective nem vállal felelősséget a nem rendeltetésszerű használatból eredő károkért.`,
+    en: `⚠️ WARNING! ⚠️\n\nWindows may automatically detect these files as viruses because they were created in a development environment and do not have an official digital signature.\n\n✅ WE GUARANTEE that when used as intended, the programs do NOT contain data-stealing code, malicious software, or intentionally harmful functions.\n\n📌 Recommendation: Before using downloaded files, check them with your own security software, and if in doubt, run them in a separate environment (sandbox).\n\n🔐 NYXION Collective assumes no responsibility for damages resulting from unintended use.`
+};
+
+const translations = {
+    hu: { login:"Belépés", logout:"Kilépés", loginGoogle:"Belépés Google-lel", filterAll:"Összes", download:"LETÖLTÉS", locked:"ZÁROLT", reqBtn:"Köv.", copy:"Másol", share:"Megoszt", info:"Info", noResults:"Nincs találat. Próbálj másik kifejezést.", passwordAlert:(p)=>`Jelszó: ${p}\nHa a Windows blokkolja, tiltsd le az Smart App Control-t.`, toastCopied:" link másolva", toastDownload:" letöltés indítása", toastLocked:"🔒 Zárt tartalom", toastNoLink:"🔒 Nincs elérhető link", toastShare:"✨ Megosztva", toastShareFail:"⚠️ Megosztás sikertelen", toastCopyFail:"❌ Másolás sikertelen", close:"Bezárás", reqTitle:"Rendszerkövetelmény", tooltipTitle:"Termék infó", gotIt:"Rendben", licenseTitle:"Szoftverlicenc és Jogi nyilatkozat", licenseBtn:"⚖️ LICENC & JOGI NYILATKOZAT", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Keresés név szerint...", tabStore:"⟡ TERMÉKEK", tabCommunity:"⟡ KÖZÖSSÉG", adminPanelTitle:"Adminisztrátori felület", addBtnText:"Új kártya hozzáadása", manageTitle:"Meglévő kártyák", trashTitle:"🗑️ Lomtár", huTitle:"Magyar (HU)", enTitle:"Angol (EN)", labelNameHu:"Név", labelNameEn:"Name", labelCatHu:"Kategória", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File típus", labelOs:"OS", labelPass:"Jelszó (lakat)", labelReqHu:"Követelmény", labelReqEn:"Requirements", labelInfoHu:"Info szöveg", labelInfoEn:"Info text", labelLocked:"Zárolt (Locked)", adminNoRights:"Nincs jogosultság az admin panelhez!", edit:"Szerkeszt", lockUnlock:"Zárolás/Ki", delete:"Törlés", loading:"Betöltés...", realtimeActive:"Valós idejű frissítés aktív", warningBtn:"⚠️ Figyelmeztetés", warningTitle:"⚠️ Figyelmeztetés", warningClose:"Bezárás", restore:"Visszaállítás", permanentDelete:"Végleges törlés", saveChanges:"Módosítás mentése" },
+    en: { login:"Login", logout:"Logout", loginGoogle:"Login with Google", filterAll:"All", download:"DOWNLOAD", locked:"LOCKED", reqBtn:"Req.", copy:"Copy", share:"Share", info:"Info", noResults:"No results. Try another keyword.", passwordAlert:(p)=>`Password: ${p}\nIf Windows blocks the app, disable Smart App Control.`, toastCopied:" link copied", toastDownload:" download started", toastLocked:"🔒 Locked content", toastNoLink:"🔒 No link available", toastShare:"✨ Shared", toastShareFail:"⚠️ Sharing failed", toastCopyFail:"❌ Copy failed", close:"Close", reqTitle:"System Requirements", tooltipTitle:"Product Info", gotIt:"Got it", licenseTitle:"Software License & Disclaimer", licenseBtn:"⚖️ LICENSE & DISCLAIMER", subText:"premium .exe releases • direct GitHub", searchPlaceholder:"Search by name...", tabStore:"⟡ PRODUCTS", tabCommunity:"⟡ COMMUNITY", adminPanelTitle:"Administrator Panel", addBtnText:"Add new card", manageTitle:"Existing cards", trashTitle:"🗑️ Trash", huTitle:"Hungarian (HU)", enTitle:"English (EN)", labelNameHu:"Name", labelNameEn:"Name", labelCatHu:"Category", labelCatEn:"Category", labelUrl:"GitHub URL", labelFileType:"File type", labelOs:"OS", labelPass:"Password (lock)", labelReqHu:"Requirements", labelReqEn:"Requirements", labelInfoHu:"Info text", labelInfoEn:"Info text", labelLocked:"Locked", adminNoRights:"Access denied!", edit:"Edit", lockUnlock:"Lock/Unlock", delete:"Delete", loading:"Loading...", realtimeActive:"Real-time updates active", warningBtn:"⚠️ Warning", warningTitle:"⚠️ Warning", warningClose:"Close", restore:"Restore", permanentDelete:"Permanent delete", saveChanges:"Save changes" }
+};
+
+function t(key, p=null){ 
+    let txt = translations[currentLang][key]; 
+    if(p && typeof txt === 'function') return txt(p); 
+    return txt || key; 
 }
 
-function showToast(msg, isError = false) {
+function showToast(msg, isError=false){
     let d = document.createElement('div');
     d.className = 'toast-msg';
     d.innerText = msg;
@@ -281,67 +205,114 @@ function showToast(msg, isError = false) {
     setTimeout(() => { d.style.opacity = '0'; setTimeout(() => d.remove(), 400); }, 2300);
 }
 
-function escapeHtml(s) {
-    if (!s) return '';
-    return s.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
+function escapeHtml(s){ 
+    if(!s) return ''; 
+    return s.replace(/[&<>]/g, function(m){ 
+        if(m === '&') return '&amp;'; 
+        if(m === '<') return '&lt;'; 
+        if(m === '>') return '&gt;'; 
         return m;
+    }); 
+}
+
+async function copyToClipboard(url, name){
+    try { 
+        await navigator.clipboard.writeText(url); 
+        showToast(name + t('toastCopied')); 
+    } catch(e){ 
+        showToast(t('toastCopyFail'), true); 
+    }
+}
+
+async function shareLink(url, name){
+    if(navigator.share){
+        try { 
+            await navigator.share({
+                title: `${name} - NYXION`,
+                text: `Download ${name} for free!`,
+                url: url
+            }); 
+            showToast(t('toastShare')); 
+        } catch(e){ 
+            if(e.name !== 'AbortError') {
+                console.error("Share error:", e);
+                showToast(t('toastShareFail'), true);
+            }
+        } 
+    } else {
+        await copyToClipboard(url, name);
+    }
+}
+
+function setupRealtimeListeners() {
+    if (productsUnsubscribe) productsUnsubscribe();
+    if (trashUnsubscribe) trashUnsubscribe();
+    
+    productsUnsubscribe = db.collection('products').onSnapshot((snapshot) => {
+        products = [];
+        snapshot.forEach(doc => { 
+            products.push({ id: doc.id, ...doc.data() }); 
+        });
+        renderStore();
+        buildCategoryFilters();
+        if (isAdmin) {
+            if (editingProductId) {
+                const currentProduct = products.find(p => p.id === editingProductId);
+                if (currentProduct) {
+                    document.getElementById('prodReqHu').value = currentProduct.requirements?.hu || '';
+                    document.getElementById('prodReqEn').value = currentProduct.requirements?.en || '';
+                    document.getElementById('prodInfoHu').value = currentProduct.infoText?.hu || '';
+                    document.getElementById('prodInfoEn').value = currentProduct.infoText?.en || '';
+                }
+            }
+            renderAdminList(); 
+            updateCategorySelects();
+        }
+        document.getElementById('realtimeStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${t('realtimeActive')}`;
+    }, (error) => { 
+        console.error("Products listener error:", error); 
+        showToast("Adatbázis hiba!", true); 
+    });
+    
+    trashUnsubscribe = db.collection('trash').onSnapshot((snapshot) => {
+        trash = [];
+        snapshot.forEach(doc => { 
+            trash.push({ id: doc.id, ...doc.data() }); 
+        });
+        if (isAdmin) renderTrashList();
+    }, (error) => { 
+        console.error("Trash listener error:", error); 
     });
 }
 
-// ==================== NYELVI SZÖVEGEK ====================
-const licenseTexts = {
-    hu: `<p><strong>Version 2.0 – Kutatási és Fejlesztési Licenc</strong><br>Utolsó frissítés: 2025. április</p><p><strong>1. Cél</strong><br>Kizárólag oktatási, tesztelési és kutatási célokra.</p><p><strong>2. Felelősség kizárása</strong><br>A szoftvert „AHOGY VAN” biztosítjuk.</p><p><strong>3. Felhasználói felelősség</strong><br>A felhasználó köteles betartani a helyi törvényeket.</p><p><strong>4. Szellemi tulajdon</strong><br>„NYXION Collective” védjegy.</p><p><strong>5. Adatvédelem</strong><br>A szoftver NEM gyűjt személyes adatot.</p><p><strong>6. Licenc elfogadása</strong><br>Letöltéssel elfogadja a feltételeket. © 2025 NYXION Collective.</p>`,
-    en: `<p><strong>Version 2.0 – Research & Development License</strong><br>Last updated: April 2025</p><p><strong>1. Purpose</strong><br>For educational, testing and research purposes only.</p><p><strong>2. Disclaimer</strong><br>The Software is provided "AS IS".</p><p><strong>3. User Responsibility</strong><br>User must comply with local laws.</p><p><strong>4. Intellectual Property</strong><br>"NYXION Collective" trademark.</p><p><strong>5. Privacy</strong><br>The Software does NOT collect personal data.</p><p><strong>6. Acceptance</strong><br>By downloading, you accept the terms. © 2025 NYXION Collective.</p>`
-};
-
-const warningTexts = {
-    hu: `⚠️ FIGYELEM! ⚠️\n\nA Windows automatikusan vírusként észlelheti a fájlokat, mivel azok fejlesztői környezetben készültek.\n\n✅ GARANTÁLJUK, hogy a programok NEM tartalmaznak kártékony kódot.\n\n📌 Javaslat: Használat előtt ellenőrizd a fájlokat, vagy futtasd őket szeparált környezetben.\n\n🔐 A NYXION Collective nem vállal felelősséget a nem rendeltetésszerű használatból eredő károkért.`,
-    en: `⚠️ WARNING! ⚠️\n\nWindows may automatically detect these files as viruses because they were created in a development environment.\n\n✅ WE GUARANTEE that the programs do NOT contain malicious code.\n\n📌 Recommendation: Before using, check the files or run them in a separate environment.\n\n🔐 NYXION Collective assumes no responsibility for damages resulting from unintended use.`
-};
-
-const translations = {
-    hu: { login: "Belépés", logout: "Kilépés", loginGoogle: "Belépés Google-lel", filterAll: "Összes", download: "LETÖLTÉS", locked: "ZÁROLT", reqBtn: "Köv.", copy: "Másol", share: "Megoszt", info: "Info", noResults: "Nincs találat.", toastCopied: " link másolva", toastDownload: " letöltés indítása", toastLocked: "🔒 Zárt tartalom", close: "Bezárás", reqTitle: "Rendszerkövetelmény", licenseTitle: "Licenc", subText: "premium .exe releases • direct GitHub", searchPlaceholder: "Keresés...", tabStore: "⟡ TERMÉKEK", tabCommunity: "⟡ KÖZÖSSÉG", adminPanelTitle: "Admin felület", addBtnText: "Új kártya", manageTitle: "Termékek", trashTitle: "🗑️ Lomtár", huTitle: "Magyar", enTitle: "English", labelNameHu: "Név", labelNameEn: "Name", labelCatHu: "Kategória", labelCatEn: "Category", labelUrl: "GitHub URL", labelFileType: "File típus", labelOs: "OS", labelPass: "Jelszó", labelReqHu: "Követelmény", labelReqEn: "Requirements", labelInfoHu: "Info", labelInfoEn: "Info text", labelLocked: "Zárolt", adminAuthSuccess: "Sikeres admin hitelesítés!", noAdminRights: "Nincs jogosultság!", edit: "Szerkeszt", lockUnlock: "Zárol/Ki", delete: "Törlés", loading: "Betöltés...", realtimeActive: "Valós idejű frissítés", warningBtn: "⚠️ Figyelmeztetés", warningTitle: "⚠️ Figyelmeztetés", warningClose: "Bezárás", restore: "Visszaállítás", permanentDelete: "Végleges törlés", adminPasswordPrompt: "🔐 ADMIN JELSZÓ:", adminPasswordWrong: "Hibás jelszó!" },
-    en: { login: "Login", logout: "Logout", loginGoogle: "Login with Google", filterAll: "All", download: "DOWNLOAD", locked: "LOCKED", reqBtn: "Req.", copy: "Copy", share: "Share", info: "Info", noResults: "No results.", toastCopied: " link copied", toastDownload: " download started", toastLocked: "🔒 Locked", close: "Close", reqTitle: "Requirements", licenseTitle: "License", subText: "premium .exe releases • direct GitHub", searchPlaceholder: "Search...", tabStore: "⟡ PRODUCTS", tabCommunity: "⟡ COMMUNITY", adminPanelTitle: "Admin Panel", addBtnText: "Add card", manageTitle: "Products", trashTitle: "🗑️ Trash", huTitle: "Hungarian", enTitle: "English", labelNameHu: "Name", labelNameEn: "Name", labelCatHu: "Category", labelCatEn: "Category", labelUrl: "GitHub URL", labelFileType: "File type", labelOs: "OS", labelPass: "Password", labelReqHu: "Requirements", labelReqEn: "Requirements", labelInfoHu: "Info", labelInfoEn: "Info text", labelLocked: "Locked", adminAuthSuccess: "Admin auth success!", noAdminRights: "Access denied!", edit: "Edit", lockUnlock: "Lock/Unlock", delete: "Delete", loading: "Loading...", realtimeActive: "Real-time active", warningBtn: "⚠️ Warning", warningTitle: "⚠️ Warning", warningClose: "Close", restore: "Restore", permanentDelete: "Permanent delete", adminPasswordPrompt: "🔐 ADMIN PASSWORD:", adminPasswordWrong: "Wrong password!" }
-};
-
-function t(key, p = null) {
-    let txt = translations[currentLang][key];
-    if (p && typeof txt === 'function') return txt(p);
-    return txt || key;
-}
-
-// ==================== TERMÉK MEGJELENÍTÉS ====================
-function renderStore() {
+function renderStore(){
     const container = document.getElementById('storeList');
-    if (!container) return;
+    if(!container) return;
     
     let filtered = products.filter(p => 
         !p.deleted && 
-        (p.name?.[currentLang] || '').toLowerCase().includes(searchQuery) && 
-        (activeCategory === 'all' || (p.category?.[currentLang] || '') === activeCategory)
+        p.name[currentLang].toLowerCase().includes(searchQuery) && 
+        (activeCategory === 'all' || p.category[currentLang] === activeCategory)
     );
     
-    if (filtered.length === 0) {
-        container.innerHTML = `<div class="no-results"><i class="fas fa-box-open"></i> ${t('noResults')}</div>`;
-        return;
+    if(filtered.length === 0){ 
+        container.innerHTML = `<div class="no-results"><i class="fas fa-box-open"></i> ${t('noResults')}</div>`; 
+        return; 
     }
     
     container.innerHTML = '';
-    for (const prod of filtered) {
+    for(const prod of filtered){
         const card = document.createElement('div');
         card.className = 'glass-card';
-        if (prod.locked) card.classList.add('locked-card');
-        card.setAttribute('data-info', escapeHtml(prod.infoText?.[currentLang] || ''));
+        if(prod.locked) card.classList.add('locked-card');
+        card.setAttribute('data-info', prod.infoText[currentLang] || '');
         
         const passHtml = !prod.locked ? 
-            `<button class="pass-btn" data-pass="${escapeHtml(prod.pass || 'nyxion')}"><i class="fas fa-lock"></i></button>` : 
+            `<button class="pass-btn" data-pass="${prod.pass}"><i class="fas fa-lock"></i></button>` : 
             `<button class="pass-btn" disabled style="opacity:0.4;"><i class="fas fa-hourglass-half"></i></button>`;
         
         const downloadBtn = !prod.locked ? 
-            `<button class="btn-download" data-url="${escapeHtml(prod.githubUrl)}" data-name="${escapeHtml(prod.name[currentLang])}"><i class="fas fa-download"></i> ${t('download')}</button>` : 
+            `<button class="btn-download" data-url="${prod.githubUrl}" data-name="${prod.name[currentLang]}"><i class="fas fa-download"></i> ${t('download')}</button>` : 
             `<button class="btn-download" disabled style="background:#2a2a44;cursor:not-allowed;"><i class="fas fa-lock"></i> ${t('locked')}</button>`;
         
         const reqBtn = !prod.locked ? 
@@ -350,12 +321,12 @@ function renderStore() {
         const copyShareClass = prod.locked ? 'disabled' : '';
         
         card.innerHTML = `
-            <div class="category-badge"><i class="fas fa-tag"></i> ${escapeHtml(prod.category?.[currentLang] || 'Egyéb')}</div>
+            <div class="category-badge"><i class="fas fa-tag"></i> ${escapeHtml(prod.category[currentLang])}</div>
             <div class="card-header"><h2>${escapeHtml(prod.name[currentLang])}</h2></div>
             <div class="product-details">
                 <span class="price-badge"><i class="fas fa-gem"></i> Free</span>
-                <span class="file-type"><i class="fas fa-file-code"></i> ${escapeHtml(prod.fileType || '.exe')}</span>
-                <span class="os-badge"><i class="fab fa-windows"></i> ${escapeHtml(prod.os || 'Win10/11')}</span>
+                <span class="file-type"><i class="fas fa-file-code"></i> ${prod.fileType}</span>
+                <span class="os-badge"><i class="fab fa-windows"></i> ${prod.os}</span>
                 ${passHtml}
             </div>
             <div class="button-group">
@@ -363,8 +334,8 @@ function renderStore() {
                 ${reqBtn}
             </div>
             <div class="secondary-actions">
-                <button class="icon-btn copy-link-btn ${copyShareClass}" data-url="${escapeHtml(prod.githubUrl)}" data-name="${escapeHtml(prod.name[currentLang])}" ${prod.locked ? 'disabled' : ''}><i class="fas fa-copy"></i> <span>${t('copy')}</span></button>
-                <button class="icon-btn share-btn ${copyShareClass}" data-url="${escapeHtml(prod.githubUrl)}" data-name="${escapeHtml(prod.name[currentLang])}" ${prod.locked ? 'disabled' : ''}><i class="fas fa-share-alt"></i> <span>${t('share')}</span></button>
+                <button class="icon-btn copy-link-btn ${copyShareClass}" data-url="${prod.githubUrl}" data-name="${prod.name[currentLang]}" ${prod.locked ? 'disabled' : ''}><i class="fas fa-copy"></i> <span>${t('copy')}</span></button>
+                <button class="icon-btn share-btn ${copyShareClass}" data-url="${prod.githubUrl}" data-name="${prod.name[currentLang]}" ${prod.locked ? 'disabled' : ''}><i class="fas fa-share-alt"></i> <span>${t('share')}</span></button>
                 <button class="highlight-btn"><i class="fas fa-circle-info"></i> ${t('info')}</button>
             </div>
         `;
@@ -373,148 +344,237 @@ function renderStore() {
     attachCardEvents();
 }
 
-function attachCardEvents() {
+function attachCardEvents(){
     document.querySelectorAll('.btn-download:not([disabled])').forEach(btn => {
         btn.addEventListener('click', () => {
-            const url = btn.dataset.url, name = btn.dataset.name;
-            if (url && url !== '#') { window.open(url, '_blank'); showToast(name + t('toastDownload')); }
-            else showToast(t('toastLocked'), true);
+            const url = btn.dataset.url;
+            const name = btn.dataset.name;
+            if(url && url !== '#'){ 
+                window.open(url, '_blank'); 
+                showToast(name + t('toastDownload')); 
+            } else { 
+                showToast(t('toastLocked'), true); 
+            }
         });
     });
+    
     document.querySelectorAll('.copy-link-btn:not(.disabled)').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const url = btn.dataset.url, name = btn.dataset.name;
-            if (url && url !== '#') { await navigator.clipboard.writeText(url); showToast(name + t('toastCopied')); }
-            else showToast(t('toastLocked'), true);
+        btn.addEventListener('click', () => {
+            const url = btn.dataset.url;
+            const name = btn.dataset.name;
+            if(url && url !== '#'){ 
+                copyToClipboard(url, name); 
+            } else { 
+                showToast(t('toastNoLink'), true); 
+            }
         });
     });
+    
     document.querySelectorAll('.share-btn:not(.disabled)').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const url = btn.dataset.url, name = btn.dataset.name;
-            if (navigator.share && url && url !== '#') {
-                try { await navigator.share({ title: name, url }); showToast(t('toastShare')); }
-                catch(e) {}
-            } else if (url && url !== '#') { await navigator.clipboard.writeText(url); showToast(name + t('toastCopied')); }
-            else showToast(t('toastLocked'), true);
+        btn.addEventListener('click', () => {
+            const url = btn.dataset.url;
+            const name = btn.dataset.name;
+            if(url && url !== '#'){ 
+                shareLink(url, name); 
+            } else { 
+                showToast(t('toastNoLink'), true); 
+            }
         });
     });
+    
     document.querySelectorAll('.pass-btn:not([disabled])').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            alert(`${t('locked')}: ${btn.dataset.pass}`);
+        btn.addEventListener('click', (e) => { 
+            e.stopPropagation(); 
+            alert(t('passwordAlert', btn.dataset.pass)); 
         });
     });
+    
     document.querySelectorAll('.requirements-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.getElementById('requirementsText').innerHTML = btn.dataset.req;
             document.getElementById('requirementsModal').style.display = 'flex';
         });
     });
+    
     document.querySelectorAll('.highlight-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
             const card = btn.closest('.glass-card');
-            if (card.classList.contains('locked-card')) { showToast(t('toastLocked'), true); return; }
+            if(card.classList.contains('locked-card')){ 
+                showToast(t('toastLocked'), true); 
+                return; 
+            }
             const info = card.dataset.info;
-            alert(info.substring(0, 200));
+            document.getElementById('tooltipText').innerHTML = info;
+            const rect = card.getBoundingClientRect();
+            let left = rect.right + 15;
+            let top = rect.top;
+            if(left + 280 > window.innerWidth) left = rect.left - 295;
+            if(top + 200 > window.innerHeight) top = window.innerHeight - 210;
+            const tooltip = document.getElementById('highlightTooltip');
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+            tooltip.style.display = 'flex';
         });
     });
 }
 
-function buildCategoryFilters() {
-    const cats = [...new Set(products.filter(p => !p.deleted && p.category).map(p => p.category[currentLang]))];
+
+function buildCategoryFilters(){
+    const cats = [...new Set(products.filter(p => !p.deleted).map(p => p.category[currentLang]))];
     let html = `<div class="filter-chip ${activeCategory === 'all' ? 'active' : ''}" data-category="all">${t('filterAll')}</div>`;
-    cats.forEach(c => html += `<div class="filter-chip ${activeCategory === c ? 'active' : ''}" data-category="${c}">${escapeHtml(c)}</div>`);
+    cats.forEach(c => html += `<div class="filter-chip ${activeCategory === c ? 'active' : ''}" data-category="${c}">${c}</div>`);
     document.getElementById('categoryFilters').innerHTML = html;
-    document.querySelectorAll('.filter-chip').forEach(ch => ch.addEventListener('click', () => {
-        activeCategory = ch.dataset.category;
-        renderStore();
-        buildCategoryFilters();
-    }));
-}
-
-// ==================== FIRESTORE LISTENER ====================
-function setupRealtimeListener() {
-    db.collection('products').onSnapshot((snapshot) => {
-        products = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            data.id = doc.id;
-            if (data.deleted !== true) products.push(data);
+    document.querySelectorAll('.filter-chip').forEach(ch => {
+        ch.addEventListener('click', () => {
+            activeCategory = ch.dataset.category;
+            renderStore();
+            buildCategoryFilters();
         });
-        if (adminAuthorized) renderAdminList();
-        renderStore();
-        buildCategoryFilters();
-    }, (error) => {
-        console.error("Firestore hiba:", error);
-        showToast("Adatbázis hiba!", true);
     });
 }
 
-// ==================== ADMIN FUNKCIÓK ====================
-function showAdminPasswordDialog(callback) {
-    const overlay = document.createElement('div');
-    overlay.className = 'password-modal-overlay';
-    overlay.innerHTML = `
-        <div class="password-modal">
-            <h3 style="color:var(--primary); margin-bottom:1rem;">🔐 ${t('adminPasswordPrompt')}</h3>
-            <input type="password" id="adminPasswordInput" placeholder="••••••••" autocomplete="off">
-            <div>
-                <button id="adminPwdConfirm">✅ OK</button>
-                <button id="adminPwdCancel">❌ ${t('close')}</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-    const input = overlay.querySelector('#adminPasswordInput');
-    input.focus();
-    overlay.querySelector('#adminPwdConfirm').onclick = async () => {
-        const pwdHash = await hashPassword(input.value);
-        overlay.remove();
-        if (pwdHash === ADMIN_PASSWORD_HASH) {
-            adminAuthorized = true;
-            showToast(t('adminAuthSuccess'));
+async function checkAdminAccess(user) {
+    if(user && user.email){ 
+        const emailHash = await hashEmail(user.email); 
+        if(emailHash === ADMIN_EMAIL_HASH){
+            isAdmin = true;
             document.getElementById('adminTabBtn').style.display = 'block';
-            if (callback) callback(true);
-        } else {
-            showToast(t('adminPasswordWrong'), true);
-            if (callback) callback(false);
+            return;
         }
-    };
-    overlay.querySelector('#adminPwdCancel').onclick = () => {
-        overlay.remove();
-        if (callback) callback(false);
-    };
+    }
+    isAdmin = false;
+    document.getElementById('adminTabBtn').style.display = 'none';
+    if(document.getElementById('adminTab').classList.contains('active')) {
+        document.querySelector('.tab[data-tab="storeTab"]').click();
+    }
 }
 
-function renderAdminList() {
+function updateCategorySelects(){
+    const catsHu = [...new Set(products.filter(p => !p.deleted).map(p => p.category.hu))];
+    const catsEn = [...new Set(products.filter(p => !p.deleted).map(p => p.category.en))];
+    const huSelect = document.getElementById('prodCatHuSelect');
+    const enSelect = document.getElementById('prodCatEnSelect');
+    huSelect.innerHTML = '<option value="">-- Válassz --</option>' + catsHu.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+    enSelect.innerHTML = '<option value="">-- Select --</option>' + catsEn.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+}
+
+function renderAdminList(){
     const container = document.getElementById('adminProductList');
-    if (!container) return;
+    if(!container) return;
     const activeProducts = products.filter(p => !p.deleted);
-    if (activeProducts.length === 0) {
-        container.innerHTML = '<div style="padding:1rem; text-align:center;">✨ Nincsenek termékek</div>';
-        return;
-    }
     container.innerHTML = activeProducts.map(p => `
-        <div class="admin-product-item">
-            <div><strong>${escapeHtml(p.name?.hu || '?')}</strong> / ${escapeHtml(p.name?.en || '?')}</div>
+        <div class="admin-product-item" data-product-id="${p.id}">
+            <div><strong>${escapeHtml(p.name.hu)}</strong> / ${escapeHtml(p.name.en)} <span style="font-size:0.7rem;background:#ffaa3322;padding:2px 8px;border-radius:20px;">${p.locked ? '🔒 Zárolt' : '🔓 Nyitott'}</span></div>
             <div>
-                <button class="admin-btn" style="background:#ffaa33;" onclick="editProduct('${p.id}')">✏️ ${t('edit')}</button>
-                <button class="admin-btn" style="background:#8866cc;" onclick="toggleLock('${p.id}')">🔒 ${t('lockUnlock')}</button>
-                <button class="admin-btn admin-btn-danger" onclick="deleteProduct('${p.id}')">🗑️ ${t('delete')}</button>
+                <button class="admin-btn edit-product-btn" style="background:#ffaa33; margin-right:8px;"><i class="fas fa-edit"></i> ${t('edit')}</button>
+                <button class="admin-btn toggle-lock-btn" style="background:#8866cc;"><i class="fas fa-lock"></i> ${t('lockUnlock')}</button>
+                <button class="admin-btn admin-btn-danger delete-product-btn" style="background:#cc3366;"><i class="fas fa-trash"></i> ${t('delete')}</button>
             </div>
         </div>
     `).join('');
+    
+    document.querySelectorAll('.edit-product-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = btn.closest('.admin-product-item').dataset.productId;
+            editProductById(productId);
+        });
+    });
+    document.querySelectorAll('.toggle-lock-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = btn.closest('.admin-product-item').dataset.productId;
+            toggleLockById(productId);
+        });
+    });
+    document.querySelectorAll('.delete-product-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = btn.closest('.admin-product-item').dataset.productId;
+            moveToTrash(productId);
+        });
+    });
 }
 
-window.editProduct = async function(id) {
-    if (!adminAuthorized) return;
-    const p = products.find(p => p.id === id);
-    if (!p) return;
+function renderTrashList(){
+    const container = document.getElementById('trashItems');
+    if(!container) return;
+    if(trash.length === 0){ 
+        container.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--text-dim);"><i class="fas fa-trash-alt"></i> ' + (currentLang === 'hu' ? 'A lomtár üres' : 'Trash is empty') + '</div>'; 
+        return; 
+    }
+    container.innerHTML = trash.map((item) => `
+        <div class="trash-item" data-trash-id="${item.id}">
+            <div><strong>${escapeHtml(item.product.name.hu)}</strong> / ${escapeHtml(item.product.name.en)} <span style="font-size:0.7rem;color:#ffaa33;">(zárolt állapotban)</span></div>
+            <div>
+                <button class="restore-btn"><i class="fas fa-recycle"></i> ${t('restore')}</button>
+                <button class="permanent-delete-btn"><i class="fas fa-trash-alt"></i> ${t('permanentDelete')}</button>
+            </div>
+        </div>
+    `).join('');
+    
+    document.querySelectorAll('.restore-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const trashId = btn.closest('.trash-item').dataset.trashId;
+            await restoreFromTrash(trashId);
+        });
+    });
+    document.querySelectorAll('.permanent-delete-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const trashId = btn.closest('.trash-item').dataset.trashId;
+            if(confirm(currentLang === 'hu' ? 'Véglegesen törlöd? Ez nem visszavonható!' : 'Permanent delete? This cannot be undone!')){
+                await permanentDelete(trashId);
+            }
+        });
+    });
+}
+
+async function moveToTrash(id){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
+    const product = products.find(p => p.id === id);
+    if(product){
+        const deletedProduct = {...product, locked: true, deleted: true};
+        const trashId = "trash_" + Date.now() + "_" + Math.random().toString(36).substr(2, 6);
+        await db.collection('trash').doc(trashId).set({ id: trashId, product: deletedProduct, deletedAt: Date.now() });
+        await db.collection('products').doc(id).delete();
+        showToast(currentLang === 'hu' ? 'Termék a lomtárba helyezve (zárolt állapotban)' : 'Product moved to trash (locked)');
+        if(editingProductId === id) resetAdminForm();
+    }
+}
+
+async function restoreFromTrash(trashId){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
+    const trashDoc = await db.collection('trash').doc(trashId).get();
+    if(trashDoc.exists){
+        const restored = {...trashDoc.data().product, locked: true, deleted: false};
+        await db.collection('products').doc(restored.id).set(restored);
+        await db.collection('trash').doc(trashId).delete();
+        showToast(currentLang === 'hu' ? 'Termék visszaállítva (zárolt állapotban)' : 'Product restored (locked)');
+    }
+}
+
+async function permanentDelete(trashId){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
+    await db.collection('trash').doc(trashId).delete();
+    showToast(currentLang === 'hu' ? 'Véglegesen törölve' : 'Permanently deleted');
+}
+
+async function editProductById(id){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
+    resetAdminForm();
     editingProductId = id;
-    document.getElementById('prodNameHu').value = p.name?.hu || '';
-    document.getElementById('prodNameEn').value = p.name?.en || '';
-    document.getElementById('prodCatHuSelect').value = p.category?.hu || '';
-    document.getElementById('prodCatEnSelect').value = p.category?.en || '';
+    const p = products.find(p => p.id === id);
+    if(!p) return;
+    
+    document.getElementById('prodNameHu').value = p.name.hu || '';
+    document.getElementById('prodNameEn').value = p.name.en || '';
+    if(document.getElementById('prodCatHuSelect').querySelector(`option[value="${p.category.hu}"]`)) {
+        document.getElementById('prodCatHuSelect').value = p.category.hu;
+    } else {
+        document.getElementById('prodCatHuSelect').value = '';
+    }
+    if(document.getElementById('prodCatEnSelect').querySelector(`option[value="${p.category.en}"]`)) {
+        document.getElementById('prodCatEnSelect').value = p.category.en;
+    } else {
+        document.getElementById('prodCatEnSelect').value = '';
+    }
     document.getElementById('prodUrl').value = p.githubUrl || '';
     document.getElementById('prodFileType').value = p.fileType || '.exe';
     document.getElementById('prodOs').value = p.os || 'Win10/11';
@@ -524,38 +584,48 @@ window.editProduct = async function(id) {
     document.getElementById('prodReqEn').value = p.requirements?.en || '';
     document.getElementById('prodInfoHu').value = p.infoText?.hu || '';
     document.getElementById('prodInfoEn').value = p.infoText?.en || '';
-    document.getElementById('addProductBtn').innerHTML = `<i class="fas fa-save"></i> ${currentLang === 'hu' ? 'Mentés' : 'Save'}`;
-    document.getElementById('addProductBtn').onclick = async () => {
-        const updated = {
-            name: { hu: document.getElementById('prodNameHu').value, en: document.getElementById('prodNameEn').value },
-            category: { hu: document.getElementById('prodCatHuSelect').value, en: document.getElementById('prodCatEnSelect').value },
+    
+    const addBtn = document.getElementById('addProductBtn');
+    addBtn.innerHTML = `<i class="fas fa-save"></i> ${t('saveChanges')}`;
+    addBtn.onclick = async () => {
+        const updatedProduct = {
+            ...p,
+            name: { 
+                hu: document.getElementById('prodNameHu').value, 
+                en: document.getElementById('prodNameEn').value 
+            },
+            category: { 
+                hu: document.getElementById('prodCatHuSelect').value || p.category.hu,
+                en: document.getElementById('prodCatEnSelect').value || p.category.en
+            },
             githubUrl: document.getElementById('prodUrl').value,
             fileType: document.getElementById('prodFileType').value,
             os: document.getElementById('prodOs').value,
             pass: document.getElementById('prodPass').value,
             locked: document.getElementById('prodLocked').value === 'true',
-            requirements: { hu: document.getElementById('prodReqHu').value, en: document.getElementById('prodReqEn').value },
-            infoText: { hu: document.getElementById('prodInfoHu').value, en: document.getElementById('prodInfoEn').value },
-            deleted: false
+            requirements: { 
+                hu: document.getElementById('prodReqHu').value, 
+                en: document.getElementById('prodReqEn').value 
+            },
+            infoText: { 
+                hu: document.getElementById('prodInfoHu').value, 
+                en: document.getElementById('prodInfoEn').value 
+            }
         };
-        await db.collection('products').doc(id).set(updated);
+        await db.collection('products').doc(id).set(updatedProduct);
         resetAdminForm();
-        showToast(t('adminAuthSuccess'));
+        showToast(currentLang === 'hu' ? 'Termék frissítve!' : 'Product updated!');
     };
-};
+}
 
-window.toggleLock = async function(id) {
-    if (!adminAuthorized) return;
+async function toggleLockById(id){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
     const p = products.find(p => p.id === id);
-    if (p) await db.collection('products').doc(id).update({ locked: !p.locked });
-};
-
-window.deleteProduct = async function(id) {
-    if (!adminAuthorized) return;
-    if (confirm(currentLang === 'hu' ? 'Biztosan törlöd?' : 'Delete?')) {
-        await db.collection('products').doc(id).delete();
+    if(p){ 
+        await db.collection('products').doc(id).update({ locked: !p.locked });
+        showToast(`${currentLang === 'hu' ? 'Zárolás állapot' : 'Lock status'}: ${!p.locked ? (currentLang === 'hu' ? 'ZÁROLT' : 'LOCKED') : (currentLang === 'hu' ? 'NYITOTT' : 'OPEN')}`);
     }
-};
+}
 
 function resetAdminForm() {
     editingProductId = null;
@@ -572,59 +642,51 @@ function resetAdminForm() {
     document.getElementById('prodReqEn').value = '';
     document.getElementById('prodInfoHu').value = '';
     document.getElementById('prodInfoEn').value = '';
-    document.getElementById('addProductBtn').innerHTML = `<i class="fas fa-plus"></i> ${t('addBtnText')}`;
-    document.getElementById('addProductBtn').onclick = addNewProduct;
+    
+    const addBtn = document.getElementById('addProductBtn');
+    addBtn.innerHTML = `<i class="fas fa-plus"></i> ${t('addBtnText')}`;
+    addBtn.onclick = addNewProduct;
 }
 
-async function addNewProduct() {
-    if (!adminAuthorized) return;
-    const newId = "nyxion_" + Date.now() + "_" + Math.random().toString(36).substr(2, 6);
-    const newProd = {
-        id: newId,
-        githubUrl: document.getElementById('prodUrl').value,
-        price: "Free",
-        fileType: document.getElementById('prodFileType').value,
-        os: document.getElementById('prodOs').value,
-        pass: document.getElementById('prodPass').value,
-        locked: document.getElementById('prodLocked').value === 'true',
-        deleted: false,
-        category: {
-            hu: document.getElementById('prodCatHuSelect').value || "Egyéb",
-            en: document.getElementById('prodCatEnSelect').value || "Other"
-        },
-        name: {
-            hu: document.getElementById('prodNameHu').value,
-            en: document.getElementById('prodNameEn').value
-        },
-        requirements: {
-            hu: document.getElementById('prodReqHu').value,
-            en: document.getElementById('prodReqEn').value
-        },
-        infoText: {
-            hu: document.getElementById('prodInfoHu').value,
-            en: document.getElementById('prodInfoEn').value
-        }
+async function addNewProduct(){
+    if(!isAdmin){ showToast(t('adminNoRights'), true); return; }
+    const newId = "prod_" + Date.now() + "_" + Math.random().toString(36).substr(2, 6);
+    const newProd = { 
+        id: newId, 
+        githubUrl: document.getElementById('prodUrl').value, 
+        price: "Free", 
+        fileType: document.getElementById('prodFileType').value, 
+        os: document.getElementById('prodOs').value, 
+        pass: document.getElementById('prodPass').value, 
+        locked: document.getElementById('prodLocked').value === 'true', 
+        deleted: false, 
+        category: { 
+            hu: document.getElementById('prodCatHuSelect').value || "Egyéb", 
+            en: document.getElementById('prodCatEnSelect').value || "Other" 
+        }, 
+        name: { 
+            hu: document.getElementById('prodNameHu').value, 
+            en: document.getElementById('prodNameEn').value 
+        }, 
+        requirements: { 
+            hu: document.getElementById('prodReqHu').value, 
+            en: document.getElementById('prodReqEn').value 
+        }, 
+        infoText: { 
+            hu: document.getElementById('prodInfoHu').value, 
+            en: document.getElementById('prodInfoEn').value 
+        } 
     };
-    if (!newProd.name.hu || !newProd.name.en) {
-        showToast(t('noAdminRights'), true);
-        return;
+    if(!newProd.name.hu || !newProd.name.en){ 
+        showToast(currentLang === 'hu' ? 'Név megadása kötelező!' : 'Name is required!', true); 
+        return; 
     }
     await db.collection('products').doc(newId).set(newProd);
     resetAdminForm();
-    showToast(t('adminAuthSuccess'));
+    showToast(currentLang === 'hu' ? 'Termék hozzáadva!' : 'Product added!');
 }
 
-function updateCategorySelects() {
-    const catsHu = [...new Set(products.filter(p => !p.deleted && p.category).map(p => p.category.hu))];
-    const catsEn = [...new Set(products.filter(p => !p.deleted && p.category).map(p => p.category.en))];
-    const huSelect = document.getElementById('prodCatHuSelect');
-    const enSelect = document.getElementById('prodCatEnSelect');
-    huSelect.innerHTML = '<option value="">-- Válassz --</option>' + catsHu.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-    enSelect.innerHTML = '<option value="">-- Select --</option>' + catsEn.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-}
-
-// ==================== NYELV ÉS FELHASZNÁLÓ KEZELÉS ====================
-function applyLanguage() {
+function applyLanguage(){
     document.getElementById('tabStore').innerText = t('tabStore');
     document.getElementById('tabCommunity').innerText = t('tabCommunity');
     document.getElementById('subText').innerText = t('subText');
@@ -634,6 +696,8 @@ function applyLanguage() {
     document.getElementById('closeBtnText').innerText = t('close');
     document.getElementById('reqTitle').innerText = t('reqTitle');
     document.getElementById('closeReqBtnText').innerText = t('close');
+    document.getElementById('tooltipTitle').innerText = t('tooltipTitle');
+    document.getElementById('gotItText').innerText = t('gotIt');
     document.getElementById('adminPanelTitle').innerText = t('adminPanelTitle');
     document.getElementById('addBtnText').innerText = t('addBtnText');
     document.getElementById('manageTitle').innerText = t('manageTitle');
@@ -657,150 +721,189 @@ function applyLanguage() {
     document.getElementById('warningTitle').innerText = t('warningTitle');
     document.getElementById('warningCloseBtn').innerText = t('warningClose');
     document.getElementById('licenseContent').innerHTML = licenseTexts[currentLang];
-    document.getElementById('warningContent').innerHTML = warningTexts[currentLang];
     document.getElementById('realtimeStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${t('realtimeActive')}`;
-    if (authUser) {
-        document.getElementById('loginText').innerText = t('logout');
-        document.getElementById('authActionBtn').innerHTML = `<i class="fas fa-sign-out-alt"></i> ${t('logout')}`;
-    } else {
-        document.getElementById('loginText').innerText = t('login');
-        document.getElementById('authActionBtn').innerHTML = `<i class="fab fa-google"></i> ${t('loginGoogle')}`;
+    
+    const loginSpan = document.getElementById('loginText');
+    if(loginSpan) loginSpan.innerText = auth.currentUser ? t('logout') : t('login');
+    const authBtnElem = document.getElementById('authActionBtn');
+    if(authBtnElem){
+        if(auth.currentUser) authBtnElem.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${t('logout')}`;
+        else authBtnElem.innerHTML = `<i class="fab fa-google"></i> ${t('loginGoogle')}`;
     }
-    renderStore();
-    buildCategoryFilters();
+    
+    activeCategory = "all";
+    buildCategoryFilters(); 
+    renderStore(); 
     updateCategorySelects();
+    if(isAdmin) renderAdminList();
 }
 
-function setLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('nyxionLang', lang);
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if (btn.dataset.lang === lang) btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-    applyLanguage();
+function setLanguage(lang){ 
+    currentLang = lang; 
+    localStorage.setItem('nyxionLang', lang); 
+    document.querySelectorAll('.lang-btn').forEach(btn => { 
+        if(btn.dataset.lang === lang) btn.classList.add('active'); 
+        else btn.classList.remove('active'); 
+    }); 
+    activeCategory = "all";
+    applyLanguage(); 
 }
 
-function updateAuthUI(user) {
-    authUser = user;
-    if (user) {
-        document.getElementById('authActionBtn').innerHTML = `<i class="fas fa-sign-out-alt"></i> ${t('logout')}`;
-        document.getElementById('authActionBtn').onclick = () => auth.signOut();
-        document.getElementById('userInfoArea').style.display = 'flex';
-        document.getElementById('userAvatarSmall').src = user.photoURL || 'https://placehold.co/40x40/0a1220/cyan?text=U';
-        document.getElementById('userNameSmall').innerText = user.displayName || user.email?.split('@')[0] || 'User';
-        document.getElementById('loginText').innerText = t('logout');
-        
-        // Admin panel megjelenítése (jelszó kell hozzá)
-        document.getElementById('adminTabBtn').style.display = 'block';
-    } else {
-        document.getElementById('authActionBtn').innerHTML = `<i class="fab fa-google"></i> ${t('loginGoogle')}`;
-        document.getElementById('authActionBtn').onclick = () => auth.signInWithPopup(provider);
-        document.getElementById('userInfoArea').style.display = 'none';
-        document.getElementById('adminTabBtn').style.display = 'none';
-        adminAuthorized = false;
+function updateAuthUI(user){
+    if(user){ 
+        const authBtn = document.getElementById('authActionBtn');
+        authBtn.innerHTML = `<i class="fas fa-sign-out-alt"></i> ${t('logout')}`;
+        authBtn.onclick = () => auth.signOut(); 
+        document.getElementById('userInfoArea').style.display = 'flex'; 
+        document.getElementById('userAvatarSmall').src = user.photoURL || 'https://placehold.co/40x40/0a1220/cyan?text=U'; 
+        document.getElementById('userNameSmall').innerText = user.displayName || user.email?.split('@')[0] || (currentLang === 'hu' ? 'Felhasználó' : 'User'); 
+        checkAdminAccess(user); 
+    } else { 
+        const authBtn = document.getElementById('authActionBtn');
+        authBtn.innerHTML = `<i class="fab fa-google"></i> ${t('loginGoogle')}`;
+        authBtn.onclick = () => auth.signInWithPopup(provider).catch(err => showToast(`Login error: ${err.message}`, true)); 
+        document.getElementById('userInfoArea').style.display = 'none'; 
+        isAdmin = false; 
+        document.getElementById('adminTabBtn').style.display = 'none'; 
+        resetAdminForm();
     }
 }
 
-// ==================== ESEMÉNYEK ÉS INDÍTÁS ====================
-document.getElementById('searchInput').addEventListener('input', e => { searchQuery = e.target.value.toLowerCase(); renderStore(); });
-document.getElementById('warningBtn').addEventListener('click', () => document.getElementById('warningModal').style.display = 'flex');
-document.getElementById('licenseBtn').addEventListener('click', () => document.getElementById('licenseModal').style.display = 'flex');
+document.getElementById('searchInput').addEventListener('input', e => { 
+    searchQuery = e.target.value.toLowerCase(); 
+    renderStore(); 
+});
+
+document.getElementById('warningBtn').addEventListener('click', () => {
+    document.getElementById('warningContent').innerHTML = warningTexts[currentLang].replace(/\n/g, '<br>');
+    document.getElementById('warningModal').style.display = 'flex';
+});
+
+document.getElementById('licenseBtn').addEventListener('click', () => {
+    document.getElementById('licenseModal').style.display = 'flex';
+});
+
 document.getElementById('closeLicenseModalBtn').addEventListener('click', () => document.getElementById('licenseModal').style.display = 'none');
 document.getElementById('closeWarningModalBtn').addEventListener('click', () => document.getElementById('warningModal').style.display = 'none');
 document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('requirementsModal').style.display = 'none');
-document.getElementById('trashToggle').addEventListener('click', () => document.getElementById('trashItems').classList.toggle('show'));
+document.getElementById('closeTooltipBtn').addEventListener('click', () => document.getElementById('highlightTooltip').style.display = 'none');
 
-document.getElementById('newCatHuBtn').addEventListener('click', () => {
-    const input = document.getElementById('prodCatHuNew');
-    if (input.style.display === 'none') {
-        input.style.display = 'block';
-        input.focus();
-        input.onblur = () => {
-            if (input.value.trim()) {
-                const opt = document.createElement('option');
-                opt.value = input.value.trim();
-                opt.textContent = input.value.trim();
-                document.getElementById('prodCatHuSelect').appendChild(opt);
-                document.getElementById('prodCatHuSelect').value = input.value.trim();
-            }
-            input.style.display = 'none';
-            input.value = '';
-        };
-    } else {
-        input.style.display = 'none';
-        input.value = '';
+document.getElementById('highlightTooltip').addEventListener('click', (e) => {
+    if(e.target === document.getElementById('highlightTooltip')) {
+        document.getElementById('highlightTooltip').style.display = 'none';
     }
 });
 
-document.getElementById('newCatEnBtn').addEventListener('click', () => {
-    const input = document.getElementById('prodCatEnNew');
-    if (input.style.display === 'none') {
-        input.style.display = 'block';
-        input.focus();
-        input.onblur = () => {
-            if (input.value.trim()) {
-                const opt = document.createElement('option');
-                opt.value = input.value.trim();
-                opt.textContent = input.value.trim();
-                document.getElementById('prodCatEnSelect').appendChild(opt);
-                document.getElementById('prodCatEnSelect').value = input.value.trim();
-            }
-            input.style.display = 'none';
-            input.value = '';
-        };
-    } else {
-        input.style.display = 'none';
-        input.value = '';
-    }
+document.getElementById('licenseModal').addEventListener('click', (e) => {
+    if(e.target === document.getElementById('licenseModal')) document.getElementById('licenseModal').style.display = 'none';
+});
+document.getElementById('warningModal').addEventListener('click', (e) => {
+    if(e.target === document.getElementById('warningModal')) document.getElementById('warningModal').style.display = 'none';
+});
+document.getElementById('requirementsModal').addEventListener('click', (e) => {
+    if(e.target === document.getElementById('requirementsModal')) document.getElementById('requirementsModal').style.display = 'none';
 });
 
-// Admin tab jelszavas védelem
-const adminTabBtn = document.getElementById('adminTabBtn');
-adminTabBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (!authUser) {
-        showToast(t('noAdminRights'), true);
-        return;
-    }
-    if (!adminAuthorized) {
-        showAdminPasswordDialog((success) => {
-            if (success) {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                adminTabBtn.classList.add('active');
-                document.querySelectorAll('#tabsContent>div').forEach(c => c.classList.remove('active'));
-                document.getElementById('adminTab').classList.add('active');
-                renderAdminList();
-                updateCategorySelects();
-            }
-        });
-        return;
-    }
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    adminTabBtn.classList.add('active');
-    document.querySelectorAll('#tabsContent>div').forEach(c => c.classList.remove('active'));
-    document.getElementById('adminTab').classList.add('active');
-    renderAdminList();
-    updateCategorySelects();
+document.getElementById('trashToggle').addEventListener('click', () => {
+    document.getElementById('trashItems').classList.toggle('show');
 });
 
-// Normál tab váltás
-document.querySelectorAll('.tab:not(#adminTabBtn)').forEach(tab => {
+document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
         const tabId = tab.dataset.tab;
+        if(tabId === 'adminTab' && !isAdmin){
+            showToast(t('adminNoRights'), true);
+            return;
+        }
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('#tabsContent>div').forEach(c => c.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
+        if(tabId === 'adminTab' && isAdmin){
+            renderAdminList();
+            updateCategorySelects();
+            resetAdminForm();
+        }
     });
 });
 
-document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+document.getElementById('newCatHuBtn')?.addEventListener('click', () => {
+    const input = document.getElementById('prodCatHuNew');
+    if(input.style.display === 'none'){
+        input.style.display = 'block';
+        input.focus();
+        input.onblur = () => {
+            if(input.value.trim()){
+                const newOption = document.createElement('option');
+                newOption.value = input.value.trim();
+                newOption.textContent = input.value.trim();
+                const select = document.getElementById('prodCatHuSelect');
+                select.appendChild(newOption);
+                select.value = input.value.trim();
+                input.style.display = 'none';
+                input.value = '';
+                showToast(currentLang === 'hu' ? 'Új kategória hozzáadva' : 'New category added');
+            } else {
+                input.style.display = 'none';
+                input.value = '';
+            }
+        };
+    } else {
+        input.style.display = 'none';
+        input.value = '';
+    }
+});
+
+document.getElementById('newCatEnBtn')?.addEventListener('click', () => {
+    const input = document.getElementById('prodCatEnNew');
+    if(input.style.display === 'none'){
+        input.style.display = 'block';
+        input.focus();
+        input.onblur = () => {
+            if(input.value.trim()){
+                const newOption = document.createElement('option');
+                newOption.value = input.value.trim();
+                newOption.textContent = input.value.trim();
+                const select = document.getElementById('prodCatEnSelect');
+                select.appendChild(newOption);
+                select.value = input.value.trim();
+                input.style.display = 'none';
+                input.value = '';
+                showToast(currentLang === 'hu' ? 'Új kategória hozzáadva' : 'New category added');
+            } else {
+                input.style.display = 'none';
+                input.value = '';
+            }
+        };
+    } else {
+        input.style.display = 'none';
+        input.value = '';
+    }
+});
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+});
 
 auth.onAuthStateChanged(updateAuthUI);
-resetAdminForm();
+
+async function initializeDatabase() {
+    const snapshot = await db.collection('products').get();
+    if (snapshot.empty) {
+        const defaultProducts = [
+            {
+			}
+        ];
+        for (const prod of defaultProducts) {
+            await db.collection('products').doc(prod.id).set(prod);
+        }
+    }
+}
+
 setLanguage(currentLang);
-setupRealtimeListener();
+initializeDatabase().then(() => { 
+    setupRealtimeListeners(); 
+});
 </script>
 </body>
 </html>
