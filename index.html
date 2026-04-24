@@ -243,25 +243,26 @@ function t(key, p=null){ let txt=translations[currentLang][key]; if(p && typeof 
 function showToast(msg, isError=false){ let d=document.createElement('div'); d.className='toast-msg'; d.innerText=msg; d.style.background=isError?'#6a1e3ccc':'#0f2a3ecc'; document.body.appendChild(d); setTimeout(()=>{ d.style.opacity='0'; setTimeout(()=>d.remove(),400); },2300); }
 function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>]/g,function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-function setupRealtimeListeners() {
-    if (productsUnsubscribe) productsUnsubscribe();
-    productsUnsubscribe = db.collection('products').onSnapshot((snapshot) => {
+function setupRealtimeListener() {
+    console.log("Listener beállítása...");
+    
+    db.collection('products').onSnapshot((snapshot) => {
+        console.log("Snapshot érkezett, dokumentumok száma:", snapshot.size);
         products = [];
-        snapshot.forEach(doc => { products.push({ id: doc.id, ...doc.data() }); });
+        snapshot.forEach(doc => { 
+            const data = doc.data();
+            data.id = doc.id;
+            console.log("Betöltött termék:", data.id, data.name);
+            if (!data.deleted) products.push(data); 
+        });
+        console.log("Products tömb hossza:", products.length);
         renderStore();
         buildCategoryFilters();
-        if (adminAuthorized && editingProductId) {
-            const currentProduct = products.find(p => p.id === editingProductId);
-            if (currentProduct) {
-                document.getElementById('prodReqHu').value = currentProduct.requirements?.hu || '';
-                document.getElementById('prodReqEn').value = currentProduct.requirements?.en || '';
-                document.getElementById('prodInfoHu').value = currentProduct.infoText?.hu || '';
-                document.getElementById('prodInfoEn').value = currentProduct.infoText?.en || '';
-            }
-        }
-        if (adminAuthorized) { renderAdminList(); updateCategorySelects(); }
         document.getElementById('realtimeStatus').innerHTML = `<i class="fas fa-check-circle"></i> ${t('realtimeActive')}`;
-    }, (error) => { console.error("Products listener error:", error); showToast("Adatbázis hiba! Ellenőrizd a Firestore szabályokat.", true); });
+    }, (error) => { 
+        console.error("Listener hiba:", error);
+        showToast("Adatbázis hiba! Ellenőrizd a Firebase beállításokat.", true);
+    });
 }
 
 function renderStore() {
